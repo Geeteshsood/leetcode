@@ -6,26 +6,22 @@ using namespace std;
 class Solution {
 	public:
 	
-	
-	int lcs(int i,int j,string &s,vector<vector<int>> &dp){
-	    
-	    if(i==s.size() || j==s.size())return 0;
-	    
-	    if(dp[i][j] != -1)return dp[i][j];
-	    
-	    if(s[i] == s[j] && i!=j){
-	        return dp[i][j] = 1 + lcs(i+1,j+1,s,dp);
-	    }
-
-	   return dp[i][j] = max( lcs(i,j+1,s,dp) , lcs(i+1,j,s,dp));
-	}
-	
 	int LongestRepeatingSubsequence(string s){
 	    
 	    int n = s.size();
-	    vector<vector<int>> dp(n,vector<int>(n,-1));
+	    vector<vector<int>> dp(n+1,vector<int>(n+1,0));
+	    dp[0][0] = 1;
 	    
-        return lcs(0,0,s,dp);	    
+	    for(int i=1;i<n+1;i++){
+	        for(int j=1;j<n+1;j++){
+	            if(s[i-1] == s[j-1] && i!=j){
+	               dp[i][j] = 1 + dp[i-1][j-1];
+	            }
+	            else dp[i][j] = max(dp[i-1][j],dp[i][j-1]);
+	        }
+	    }
+        
+        return dp[n][n];
 	}
 };
 
