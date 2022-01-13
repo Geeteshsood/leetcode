@@ -1,39 +1,29 @@
 class Solution {
 public:
-    
-    int find(int i,int j,string &s,string &t,vector<vector<int>> &dp){
-        
-         if(dp[i][j] != -1)return dp[i][j];
-        
-         if(i == s.size() || j == t.size()){
-             
-             int cost = 0;
-             
-             for(int k=i;k<s.size();k++){
-                 cost += (int)s[k];
-             }
-             for(int k=j;k<t.size();k++){
-                 cost += (int)t[k];
-             }
-             
-           return dp[i][j] = cost;
-         }
-         
-         if(s[i] == t[j]){
-             return dp[i][j] = find(i+1,j+1,s,t,dp);
-         }
-            
-         int x = (int)s[i] + find(i+1,j,s,t,dp);
-         int y = (int)t[j] + find(i,j+1,s,t,dp);
-        
-         return dp[i][j] = min(x,y);
-    }
-    
     int minimumDeleteSum(string s, string t) {
         
-        int n = s.size() , m = t.size();
-        vector<vector<int>> dp(n+1,vector<int>(m+1,-1));
+        int m = s.length() , n = t.length();
+    
+        vector<vector<int>> dp(m + 1, vector<int> (n + 1));
         
-        return find(0,0,s,t,dp);
+        for(int i=1;i<m+1;i++){
+            dp[i][0] = (int)s[i-1] + dp[i-1][0];
+        }
+        for(int j=1;j<n+1;j++){
+            dp[0][j] = (int)t[j-1] + dp[0][j-1];
+        }
+        
+        for(int i=1;i<m+1;i++){
+            for(int j=1;j<n+1;j++){
+                if(s[i-1] == t[j-1]){
+                    dp[i][j] = dp[i-1][j-1];
+                }
+                else{
+                    dp[i][j] = min((int)s[i-1] + dp[i-1][j] , (int)t[j-1] + dp[i][j-1]);
+                }
+            }
+        }
+        
+      return dp[m][n];
     }
 };
