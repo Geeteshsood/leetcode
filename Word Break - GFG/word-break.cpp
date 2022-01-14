@@ -11,33 +11,36 @@ using namespace std;
 // A : given string to search
 // B : vector of available strings
 
-class Solution
+      class Solution
 {
 public:
-    int wordBreak(string s, vector<string> &B) {
-        
-       unordered_set<string> dict;
-        
-        for(auto &i:B){
-            dict.insert(i);
-        }
-        
-        int n = s.size();
-        vector<bool> dp(n);
-        
-        for(int j=0;j<n;j++){
-            for(int i=0;i<=j;i++){
-                string str = s.substr(i,j-i+1);
-                if(dict.count(str) && (i == 0 || dp[i-1])){
-                    dp[j] = true;
-                    break;
-                }
-            }
-        }
-        
-     return dp[n-1] ;  
+    int wordBreak(string A, vector<string> &B) {
+         int n=A.size();
+         int m1=B.size();
+         
+          unordered_set<string> dict;
+          
+          for(int i=0;i<m1;i++){
+              dict.insert(B[i]);
+          }
+          
+          vector<int>dp(n+1,0);
+          dp[n]=1;
+          
+          for(int k=n-1;k>=0;k--){
+              string s="";
+              for(int i=k;i<n;i++){
+                  s+=A[i];
+                  if(dict.count(s) && dp[i+1]){
+                      dp[k]=1;
+                      break;
+                  }
+              }
+          }
+          return dp[0];
     }
 };
+
 
 // { Driver Code Starts.
 
