@@ -24,6 +24,31 @@ int main() {
 }
 // } Driver Code Ends
 
+/*
+k = 3.
+
+ 0  1  2  3  4  5  
+ ----------------
+    -------------
+       ----------
+          -------
+    
+ 0  1  2  3  4  5  
+ -------------
+    ----------
+       -------
+        
+agar hum 4 se uska best mangege  
+uske paas >=3 size ka max subarray ka sum pada hoga jo 4 par end ho rahe hai.
+    
+us maximum me agar hum 5 add karde.
+toh humare paas >=4 size ka max subarray ka sum aa jayega jo 5 par end ho rahe hai.
+    
+isko hum 5 par end hone wale 3 size ke subarray ke sum ke saath compare kar lenge.
+    
+usse hum 5 par khatam hone wale >=3 size (or >=k ) subarray ka max sum mil jayenga.
+
+*/
 
 long long int maxSumWithK(long long int arr[], long long int n, long long int k) 
 {
@@ -47,6 +72,8 @@ long long int maxSumWithK(long long int arr[], long long int n, long long int k)
         dp[i] = max(dp[i] , dp[i-1] + arr[i]);
         ans = max(ans,dp[i]);
     }
+    
+    
     
     
     return ans;
