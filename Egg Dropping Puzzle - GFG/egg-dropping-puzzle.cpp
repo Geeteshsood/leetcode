@@ -6,34 +6,37 @@ using namespace std;
 class Solution
 {
     public:
-    
-    int find(int e,int f,vector<vector<int>> &dp){
-        
-       if(dp[e][f] != -1){
-           return dp[e][f];
-       }
-        
-       if(f == 1)return dp[e][f] = 1;
-       else if(f == 0)return dp[e][f] = 0;
-       else if(e == 1)return dp[e][f] = f;
-        
-       int ans = INT_MAX , val = 0;
-        
-       for(int k=1;k<=f;k++){
-           int x = 1 + find(e-1,k-1,dp);
-           int y = 1 + find(e,f-k,dp);
-         
-           val = max(x,y);
-           ans = min(ans,val);
-       }
-        
-       return dp[e][f] = ans;
-    }
-    int eggDrop(int e, int n) 
+    //Function to find minimum number of attempts needed in 
+    //order to find the critical floor.
+    int eggDrop(int k, int n) 
     {
-        vector<vector<int>> dp(e+1,vector<int>(n+1,-1));
+        vector<vector<int>> dp(k+1,vector<int>(n+1));
         
-        return find(e,n,dp);
+        for(int f=1;f<n+1;f++)dp[1][f] = f;
+            
+        for(int e=2;e<k+1;e++){
+            for(int f=1;f<n+1;f++){
+                int ans = INT_MAX ,val = 0;
+                
+                int start = 1 , end = f;
+                
+                while(start <= end){
+                     int mid = end - (end-start)/2;
+                     int up = dp[e][f-mid] , down = dp[e-1][mid-1];
+                    
+                     if(up > down){
+                         start = mid + 1;
+                     }
+                     else end = mid - 1;
+                    
+                     val = 1 + max(down , up);
+                     ans = min(val,ans);
+                }
+                dp[e][f] = ans;
+            }
+        }
+        
+     return dp[k][n];
     }
 };
 
