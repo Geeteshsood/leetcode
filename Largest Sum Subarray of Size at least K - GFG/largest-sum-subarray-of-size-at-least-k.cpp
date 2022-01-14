@@ -53,29 +53,25 @@ usse hum 5 par khatam hone wale >=3 size (or >=k ) subarray ka max sum mil jayen
 long long int maxSumWithK(long long int arr[], long long int n, long long int k) 
 {
     
-    long long int sum = 0;
+    long long int val = 0 , sum = 0;
     vector<long long int> dp(n);
     
-    for(long long int i=0;i<k;i++){
-        sum+=arr[i];
+    dp[0] = max(val,arr[0]);
+    for(long long int i=1;i<n;i++){
+        dp[i] = max(val,arr[i] + dp[i-1]);
     }
     
-    dp[k-1] = sum;
+    for(long long int i=0;i<k;i++){
+        sum += arr[i];
+    }
+    
+    long long int ans = sum;
+    
     for(long long int i=k;i<n;i++){
         sum += arr[i] - arr[i-k];
-        dp[i] = sum;
+        ans = max(ans,dp[i-k] + sum);
     }
-    
-    long long int ans = dp[k-1];
-    
-    for(long long int i=k;i<n;i++){
-        dp[i] = max(dp[i] , dp[i-1] + arr[i]);
-        ans = max(ans,dp[i]);
-    }
-    
-    
-    
-    
+
     return ans;
     
 }
