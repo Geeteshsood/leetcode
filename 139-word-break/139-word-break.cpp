@@ -1,32 +1,35 @@
 class Solution {
 public:
     
-     unordered_set<string> se;
+    unordered_set<string> se;
     
     bool find(int i,int j,string &s,vector<vector<int>> &dp){
         
+         if(dp[i][j] != -1)return dp[i][j];
         
-        if(dp[i][j] != -1)return dp[i][j];
+         if(se.count(s.substr(i,j-i+1)))return dp[i][j] = true;
         
-        if(se.count(s.substr(i,j-i+1)))return dp[i][j] = true;
-        
-        if(i == j)return dp[i][j] = false;
+         if(i == j)return dp[i][j] = false;
         
         for(int k=i;k<j;k++){
-            bool f1 = find(i,k,s,dp);
-            bool f2 = find(k+1,j,s,dp);
             
-            if(f1 && f2)return dp[i][j] = true;
+            string str = s.substr(i,k-i+1);
+            if(se.count(str)){
+                if(find(k+1,j,s,dp)){
+                    return dp[i][j] = true;
+                }
+            }
+            
         }
         
-        return dp[i][j] = false;
+      return dp[i][j] = false;  
     }
     
     
     bool wordBreak(string s, vector<string>& wordDict) {
         
-        for(auto &it:wordDict){
-            se.insert(it);
+        for(auto &i:wordDict){
+            se.insert(i);
         }
         
         int n = s.size();
