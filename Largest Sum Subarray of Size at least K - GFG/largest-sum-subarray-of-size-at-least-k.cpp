@@ -41,14 +41,13 @@ long long int maxSumWithK(long long int arr[], long long int n, long long int k)
         dp[i] = sum;
     }
     
+    long long int ans = dp[k-1];
+    
     for(long long int i=k;i<n;i++){
         dp[i] = max(dp[i] , dp[i-1] + arr[i]);
-    }
-    
-    long long int ans = INT_MIN;
-    for(long long int i=k-1;i<n;i++){
         ans = max(ans,dp[i]);
     }
+    
     
     return ans;
     
