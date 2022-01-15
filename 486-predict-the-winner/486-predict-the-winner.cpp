@@ -1,48 +1,48 @@
-typedef pair<int,int> pi;
-class Solution {
+class Solution{
 public:
     
-    pi find(int i,int j,vector<int> &nums,bool flag,vector<vector<pi>> &dp){
+    int find(int i,int j,vector<int> &nums,bool flag,vector<vector<int>> &dp){
         
-        if(dp[i][j].first != -1){
+        if(dp[i][j] != -1){
             return dp[i][j];
         }
         
         if(i == j){
-            if(flag)return dp[i][j] = {nums[i],0};
-            else return dp[i][j] = {0,nums[j]};
+            if(flag)return nums[i];
+            else return -nums[i];
         }
         
+        int val = 0;
+        
         if(flag){ 
-            auto[fp1,sp1] = find(i+1,j,nums,false,dp);
-            auto[fp2,sp2] = find(i,j-1,nums,false,dp);
+            int s1 = find(i+1,j,nums,false,dp);
+            int s2 = find(i,j-1,nums,false,dp);
             
-            fp1 += nums[i] , fp2 += nums[j];
+            s1 += nums[i] , s2 += nums[j];
             
-            if(fp1 > fp2)return dp[i][j] = {fp1,sp1};
-            else return dp[i][j] = {fp2,sp2};
+            val = max(s1,s2);
         }
         else{
             
-            auto[fp1,sp1] = find(i+1,j,nums,true,dp);
-            auto[fp2,sp2] = find(i,j-1,nums,true,dp);
+            int s1 = find(i+1,j,nums,true,dp);
+            int s2 = find(i,j-1,nums,true,dp);
             
-            sp1 += nums[i] , sp2 += nums[j];
+            s1 -= nums[i] , s2 -= nums[j];
             
-            if(sp1 > sp2)return dp[i][j] = {fp1,sp1};
-            else return dp[i][j] = {fp2,sp2};
+            val = min(s1,s2);
         }
      
-     return dp[i][j] = {-1,-1};
+     return dp[i][j] = val ;
     }
     
     
     bool PredictTheWinner(vector<int>& nums) {
         
         int n = nums.size();
-        vector<vector<pi>> dp(n,vector<pi>(n,{-1,-1}));
-        auto [fp,sp] = find(0,n-1,nums,true,dp);
+        vector<vector<int>> dp(n,vector<int>(n,-1));
         
-      return fp>=sp;  
+        int score = find(0,n-1,nums,true,dp);
+        
+      return score>=0;  
     }
 };
