@@ -1,48 +1,34 @@
-class Solution{
+class Solution {
 public:
-    
-    int find(int i,int j,vector<int> &nums,bool flag,vector<vector<int>> &dp){
-        
-        if(dp[i][j] != -1){
-            return dp[i][j];
-        }
-        
-        if(i == j){
-            if(flag)return nums[i];
-            else return -nums[i];
-        }
-        
-        int val = 0;
-        
-        if(flag){ 
-            int s1 = find(i+1,j,nums,false,dp);
-            int s2 = find(i,j-1,nums,false,dp);
-            
-            s1 += nums[i] , s2 += nums[j];
-            
-            val = max(s1,s2);
-        }
-        else{
-            
-            int s1 = find(i+1,j,nums,true,dp);
-            int s2 = find(i,j-1,nums,true,dp);
-            
-            s1 -= nums[i] , s2 -= nums[j];
-            
-            val = min(s1,s2);
-        }
-     
-     return dp[i][j] = val ;
-    }
-    
-    
     bool PredictTheWinner(vector<int>& nums) {
         
         int n = nums.size();
-        vector<vector<int>> dp(n,vector<int>(n,-1));
+        vector<vector<int>> dp(n,vector<int>(n)) ,sum(n,vector<int>(n));
         
-        int score = find(0,n-1,nums,true,dp);
+         for(int i=0;i<n;i++){
+            for(int j=i;j<n;j++){
+               if(j>0)sum[i][j] = nums[j] + sum[i][j-1];
+               else sum[0][0] = nums[0];
+            }
+        }
         
-      return score>=0;  
+        for(int g=0;g<n;g++){
+            for(int i=0,j=g;i<n && j<n;i++,j++){
+                if(g == 0){
+                    dp[i][j] = nums[i];
+                    continue;
+                }
+                
+                int x = nums[j] + sum[i][j-1] - dp[i][j-1];
+                int y = nums[i] + sum[i+1][j] - dp[i+1][j];
+                
+                dp[i][j] = max(x,y);
+            }
+        }
+
+        int total = sum[0][n-1],fp = dp[0][n-1];
+        int sp = total-fp;
+        
+     return fp>=sp;
     }
 };
