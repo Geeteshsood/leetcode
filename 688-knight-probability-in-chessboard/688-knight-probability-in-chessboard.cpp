@@ -1,54 +1,47 @@
 class Solution {
 public:
     
+    bool isValid(int i,int j,int n){
+        return !(i<0 || j<0 || i>=n || j>=n);
+    }
+    
     double knightProbability(int n, int k, int row, int column) {
         
-        vector<pair<int,int>> dir {{-2,-1},{-2,1},{2,-1},{2,1},{-1,-2},{-1,2},{1,-2},{1,2}};
-        vector<vector<double>> dp(n,vector<double>(n,0));
+        vector<vector<double>> cur(n,vector<double>(n));
+        vector<vector<int>> dir {{-2,-1},{-2,1},{2,-1},{2,1},{-1,-2},{-1,2},{1,-2},{1,2}};
         
-        double lev = 0, prob = 1;
+        cur[row][column] = (double)1;
         
-        queue<pair<int,int>> q;
-        q.push({row,column});
-        dp[row][column] = 1;
+     while(k>0){
         
-        while(q.size() && lev<k){
-            
-           int size = q.size();
-           prob = 0;
-            
-           for(int idx = 0;idx<size;idx++){
-              
-              int i = q.front().first;
-              int j = q.front().second;
-               
-              q.pop();
-               
-              for(auto it:dir){
-                  
-                 int x = i + it.first;
-                 int y = j + it.second;
-                  
-                  if(x>=0 && y>=0 && x<n && y<n){
-                      
-                      if(dp[x][y] == 0){
-                          q.push({x,y});
-                      }
-                      
-                      dp[x][y] += dp[i][j]/8;
-                      
-                      if(lev == k-1){
-                          prob+=(dp[i][j]/8);
-                      } 
-                  }
-              }
-               
-             dp[i][j] = 0;
-           }
-            
-           lev++; 
+        vector<vector<double>> next(n,vector<double>(n));
+         
+        for(int i=0;i<n;i++){
+            for(int j=0;j<n;j++){
+                
+                for(auto &it : dir){
+                    int x = i + it[0] , y = j + it[1];
+                    
+                    if(isValid(x,y,n)){
+                        next[x][y] += cur[i][j]/8;
+                    }
+                }
+                
+                
+            }
         }
-
-     return prob;
+        k--;
+        cur = next; 
+     }  
+        
+     double sum = 0;
+        
+     for(int i=0;i<n;i++){
+         for(int j=0;j<n;j++){
+             sum += cur[i][j];
+         }
+     }
+        
+      return sum;  
     }
 };
