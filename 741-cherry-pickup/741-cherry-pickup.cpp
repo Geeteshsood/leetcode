@@ -1,11 +1,11 @@
 class Solution {
 public:
     
-    int dp[50][50][50][50];
+    int dp[50][50][50];
     bool flag = false;
     
     bool isValid(int i,int j,int n){
-        return i < 0 || j < 0 || i >= n || j >= n;
+        return i >= n || j >= n;
     }
     
     int find(int r1,int c1,int r2,int c2,vector<vector<int>> &grid){
@@ -16,7 +16,7 @@ public:
         
       int x = grid[r1][c1] , y = grid[r2][c2];
         
-      if(dp[r1][c1][r2][c2] != -1)return dp[r1][c1][r2][c2];
+      if(dp[r1][c1][r2] != -1)return dp[r1][c1][r2];
         
       int val = 0;
         
@@ -33,7 +33,7 @@ public:
         
       int res = max({dd,rr,dr,rd});
         
-      return dp[r1][c1][r2][c2] = val + res;
+      return dp[r1][c1][r2] = val + res;
     }
     
     int cherryPickup(vector<vector<int>>& grid) {
