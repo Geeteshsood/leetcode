@@ -15,17 +15,15 @@ public:
         int val = 0;
         
         if(s[i] == t[j]){
+            
             int x = lcs(i+1,j+1,s,t,dp);
-            int y = lcs(i+1,j,s,t,dp);
-            
-            if(x != INT_MIN)val += x;
-            if(y != INT_MIN)val += y;
-        }
-        else{
-            int x = lcs(i+1,j,s,t,dp);
             
             if(x != INT_MIN)val += x;
         }
+        
+        int y = lcs(i+1,j,s,t,dp);
+        
+        if(y != INT_MIN)val += y;
         
       return dp[i][j] = val;  
     }
