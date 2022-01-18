@@ -1,49 +1,25 @@
 class Solution {
 public:
-    int maxSumTwoNoOverlap(vector<int>& nums, int fl, int sl) {
+    int maxSumTwoNoOverlap(vector<int>& nums, int f, int s) {
         
-        int n = nums.size() ,sum = 0;
-        vector<int> left(n),right(n);
+        int n = nums.size();
         
-        for(int i=0;i<fl;i++){
-            sum += nums[i];
+        for(int i=1;i<n;i++){
+           nums[i] += nums[i-1];
         }
         
-        left[fl-1] = sum;
+        int ans = nums[f+s-1] , lmax = nums[f-1] , rmax = nums[s-1] , lsum = 0 , rsum = 0;
         
-        for(int i=fl;i<n;i++){
-            sum += nums[i] - nums[i-fl];
-            left[i] = max(left[i-1],sum);
+        for(int i=f+s;i<n;i++){
+            rsum = nums[i] - nums[i-s];                // second subarray sum
+            lmax = max(lmax,nums[i-s]-nums[i-s-f]);   //  first subarray maximum sum to its left
+            
+            lsum = nums[i] - nums[i-f];               // first subarray sum
+            rmax = max(rmax,nums[i-f]-nums[i-s-f]);   // second subarray maximum sum to its left
+            
+            ans = max({ans,rsum + lmax,lsum + rmax});
         }
-        
-        sum = 0;
-        
-        for(int i=n-1;i>=n-fl;i--){
-            sum += nums[i];
-        }
-        
-        right[n-fl] = sum;
-        
-        for(int i=n-fl-1;i>=0;i--){
-            sum += nums[i]-nums[i+fl];
-            right[i] = max(right[i+1],sum);
-        }
-        
-        sum = 0;
-        for(int i=0;i<sl;i++){
-            sum += nums[i];
-        }
-        
-        int ans = sum + right[sl];
-        
-        for(int i=sl;i<n-1;i++){
-            sum += nums[i]-nums[i-sl];
-            ans = max(ans,sum + max(right[i+1],left[i-sl]));
-        }
-        
-        sum += nums[n-1]-nums[n-1-sl];
-        ans = max(ans,sum + left[n-1-sl]);
-        
-        return ans;
+       
+     return ans;   
     }
 };
