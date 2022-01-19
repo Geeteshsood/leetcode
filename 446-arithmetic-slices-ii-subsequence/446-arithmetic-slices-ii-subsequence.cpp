@@ -13,10 +13,15 @@ public:
                diff=(long)nums[i]-(long)nums[j];
                    
                if(dp[j].count(diff)){
-                    ans+=dp[j][diff];
+                    ans+=dp[j][diff];            // RUNNING CODE
                     dp[i][diff]+=dp[j][diff]+1;
                }   
                else dp[i][diff]+=1;
+               
+//                 int cnt = dp[j][diff];
+//                 ans+=cnt;
+//                 dp[i][diff]+=cnt+1;             giving TLE
+               
            }
                 
         }
