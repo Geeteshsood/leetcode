@@ -3,7 +3,7 @@ public:
     int numberOfArithmeticSlices(vector<int>& nums) {
        
         int n = nums.size();
-        unordered_map<long, int> dp[max(1, (int)nums.size())];
+        unordered_map<long, int> dp[max(1,n)];
         
         long sum = 0;
         
