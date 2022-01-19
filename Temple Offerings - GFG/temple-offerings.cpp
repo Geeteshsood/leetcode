@@ -9,56 +9,29 @@ using namespace std;
 
 class Solution{
 public:
-
-    int find(int i,int arr[],vector<int> &candy){
+    int offerings(int n, int arr[]){
         
-        if(i == candy.size()-1){
-            if(arr[i] > arr[i-1])return candy[i] = candy[i-1] + 1;
-            return candy[i] = 1;
+        vector<int> left(n),right(n);
+        
+        left[0] = 1;
+        for(int i=1;i<n;i++){
+            if(arr[i] > arr[i-1]){
+                left[i] = 1 + left[i-1];
+            }
+            else left[i] = 1;
         }
         
-        int a = arr[i-1] , b = arr[i] , c = arr[i+1];
-        
-        if(b == a && b <= c){
-            candy[i] = 1;
-            find(i+1,arr,candy);
+        right[n-1] = 1;
+        for(int i=n-2;i>=0;i--){
+            if(arr[i] > arr[i+1]){
+                right[i] = 1 + right[i+1];
+            }
+            else right[i] = 1;
         }
-        else if(b == a){
-          candy[i] = 1 + find(i+1,arr,candy);
-        }
-        else if(b > a && b > c){
-          candy[i] = 1 + max(candy[i-1],find(i+1,arr,candy));
-        }
-        else if(b<a && b<c){
-            candy[i] = 1;
-            find(i+1,arr,candy);
-        }
-        else if( b<a && b>c){
-            candy[i] = 1 + find(i+1,arr,candy);
-        }
-        else{
-            candy[i] = 1 + candy[i-1];
-            find(i+1,arr,candy);
-        }
-     
-     return candy[i]; 
-    }
-    
-    int offerings(int N, int arr[]){
-        
-        if(N == 1)return 1;
-        
-        vector<int> candy(N);
-        
-        if(arr[0] <= arr[1]){
-            candy[0] = 1;
-            find(1,arr,candy);
-        }
-        else candy[0] = 1 + find(1,arr,candy);
         
         int sum = 0;
-        for(int i=0;i<N;i++){
-            sum += candy[i];
+        for(int i=0;i<n;i++){
+            sum += max(left[i],right[i]);
         }
       
       return sum;  
