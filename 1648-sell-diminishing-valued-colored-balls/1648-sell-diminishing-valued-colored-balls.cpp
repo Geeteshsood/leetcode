@@ -2,48 +2,36 @@ typedef long long ll;
 
 class Solution {
 public:
-    int maxProfit(vector<int>& inventory, int orders) {
+    int maxProfit(vector<int>& nums, int order) {
         
-        sort(inventory.begin(),inventory.end());
+        sort(nums.rbegin(),nums.rend());
         
-        ll order = (ll)orders;
+        nums.push_back(0);
+        int n = nums.size() ;
+        ll sum = 0 , mod = 1e9 + 7;
         
-        ll mod = 1e9 + 7;
-        vector<ll> nums;
-        nums.push_back((ll)0);
-        
-        for(ll i=0;i<inventory.size();i++){
-            nums.push_back((ll)inventory[i]);
-        }
-        
-        ll n = (ll)inventory.size() + 1 , sum = 0;
-        ll j = n-1;
-        
-        for(ll i = j-1;i>=0;i--){
+        for(int i=1;i<n;i++){
             
-            ll len = j-i;
-            ll val = (len*(nums[j]-nums[i]));
-            
-            if(val < 0)val += mod;
+            ll val = i*(nums[0]-nums[i]);
             
             if(val < order){
                 
-                ll y = nums[j] , x = nums[i];
+                ll y = nums[0] , x = nums[i];
 
-                sum += ( len*((y*(y+1))-(x*(x+1))) )/2;
+                sum += ( i*((y*(y+1))-(x*(x+1))) )/2;
+                
                 order -= val;
             }
             else{
-                 ll y = nums[j] , rem = order%len;
-                 ll x = y - (order/len);
+                 ll y = nums[0] , rem = order%i;
+                 ll x = y - (order/i);
 
-                 sum += ( len*((y*(y+1))-(x*(x+1))) )/2;
+                 sum += ( i*((y*(y+1))-(x*(x+1))) )/2;
                  sum += (rem*x);
                 
-                 order = 0;
                  break;
             }
-            nums[j] = nums[i];
+            nums[0] = nums[i];
         }
         
         sum = sum%mod;
