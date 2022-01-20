@@ -29,21 +29,15 @@ public:
             if(val < order){
                 
                 ll y = nums[j] , x = nums[i];
-                
-                ll a = (y*(y+1));
-                ll b = (x*(x+1));
-    
-                sum += ((len*(a-b)))/2;
+
+                sum += ( len*((y*(y+1))-(x*(x+1))) )/2;
                 order -= val;
             }
             else{
                  ll y = nums[j] , rem = order%len;
                  ll x = y - (order/len);
-                
-                 ll a = (y*(y+1));
-                 ll b = (x*(x+1));
-                 
-                 sum += ((len*(a-b)))/2;
+
+                 sum += ( len*((y*(y+1))-(x*(x+1))) )/2;
                  sum += (rem*x);
                 
                  order = 0;
