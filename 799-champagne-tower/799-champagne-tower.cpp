@@ -3,7 +3,7 @@ public:
     double champagneTower(int k, int r, int c) {
         
         if(r >= k)return 0;
-        int n = 200;
+        int n = 100;
         vector<vector<double>> dp(n+1,vector<double>(n+1));
         
         dp[0][0] = (double)k;
