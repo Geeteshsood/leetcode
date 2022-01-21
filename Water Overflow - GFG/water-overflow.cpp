@@ -7,23 +7,24 @@ class Solution {
   public:
     double waterOverflow(int k, int r, int c) {
         
-        if(r > k)return 0;
+        if(r > k || c > r)return 0;
         
-        vector<vector<double>> dp(k,vector<double>(k));
+        vector<vector<double>> dp(r+1,vector<double>(r+1));
         
         dp[0][0] = (double)k;
         
-        for(int i=0;i<k;i++){
+        for(int i=0;i<r;i++){
             bool flag = true;
-            for(int j=0;j<k;j++){
+            for(int j=0;j<=i;j++){
                 if(dp[i][j]<=1)continue;
                 
                 flag = false;
                 double rem = dp[i][j]-(double)1;
                 dp[i][j] = (double)1;
-                dp[i+1][j] += rem /2;
+                dp[i+1][j]   += rem/2;
                 dp[i+1][j+1] += rem/2;
             }
+            
             if(flag)break;
         }
         
