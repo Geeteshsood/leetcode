@@ -1,24 +1,36 @@
+typedef long long ll;
+typedef pair<ll,ll> pi;
+
 class Solution {
 public:
     int nthSuperUglyNumber(int n, vector<int>& primes) {
         
-       int m = primes.size();
-       vector<int> pointer(m,0);
-       vector<int> dp(n);
+       ll m = primes.size();
+       vector<ll> poller(m,0);
+       vector<ll> dp(n);
        dp[0] = 1;
-    
-       for(int i=1;i<n;i++){
+        
+       priority_queue<pi,vector<pi>,greater<pi>> pq;
+      
+       for(ll i=0;i<m;i++){
+           pq.push({primes[i],i});
+       }
+       
+       for(ll i=1;i<n;i++){
            
-           int val = INT_MAX;
-           for(int j=0;j<m;j++){
-                val = min(val , primes[j]*dp[pointer[j]]);
-           }
+           ll val = pq.top().first;
            
            dp[i] = val;
            
-           for(int j=0;j<m;j++){
-                if(primes[j]*dp[pointer[j]]==val)
-                    pointer[j]++;
+           while(pq.top().first == val){
+               
+               ll j = pq.top().second;
+               pq.pop();
+               
+               poller[j]++;
+               ll x = primes[j]*dp[poller[j]];
+               
+               pq.push({x,j});
            }
        }
        
