@@ -1,5 +1,7 @@
 class Solution {
 public:
+    // using simple string getting TLE 
+    //   AC BY USING string_view
     
     int distinctEchoSubstrings(string str) {
         
@@ -7,7 +9,7 @@ public:
         
         string_view s = str;
         
-        set<string_view> se;
+        unordered_set<string_view> se;
         
         for(int g=1;g<n;g+=2){
             
