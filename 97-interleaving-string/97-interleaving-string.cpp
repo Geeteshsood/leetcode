@@ -1,35 +1,33 @@
 class Solution {
 public:
-    
-    bool find(int i,int j,int k,string &s1,string &s2,string &s3,vector<vector<int>> &dp){
-        
-        int x = s1.size() , y = s2.size() , z = s3.size();
-        
-        if(i == x && j == y && k == z)return true;
-        
-        if(i<x && j<y && dp[i][j] != -1)return dp[i][j];
-        
-        bool flag = false;
-        
-        if(i<x && j<y && k<z &&  s1[i] == s3[k] && s2[j] == s3[k]){
-             flag = find(i+1,j,k+1,s1,s2,s3,dp) || find(i,j+1,k+1,s1,s2,s3,dp);
-        }
-        else if(i<x && k<z &&s1[i] == s3[k]){
-             flag = find(i+1,j,k+1,s1,s2,s3,dp);
-        }
-        else if(j<y && k<z && s2[j] == s3[k]){
-             flag = find(i,j+1,k+1,s1,s2,s3,dp);
-        }
-        
-       if(i<x && j<y)dp[i][j] = flag; 
-        
-       return flag;
-    }
-    
     bool isInterleave(string s1, string s2, string s3) {
         
-        vector<vector<int>> dp(s1.size(),vector<int>(s2.size(),-1));
+        int m = s1.length() , n = s2.length();
         
-        return find(0,0,0,s1,s2,s3,dp);
+        if(m + n != s3.length())return false;
+        
+        vector<vector<bool>> dp(m+1,vector<bool>(n+1,false));
+        
+        dp[0][0] = true;
+        
+        for(int i=0;i<m+1;i++){
+            for(int j=0;j<n+1;j++){
+                
+                int k = i+j;
+                
+                if(i>0 && j>0 && s1[i-1] == s3[k-1] && s2[j-1] == s3[k-1]){
+                    dp[i][j] = dp[i-1][j] || dp[i][j-1];
+                }
+                else if(i>0 && s1[i-1] == s3[k-1]){
+                    dp[i][j] = dp[i-1][j];
+                }
+                else if(j>0 && s2[j-1] == s3[k-1]){
+                    dp[i][j] = dp[i][j-1];
+                }
+                
+            }
+        }
+        
+      return dp[m][n];
     }
 };
