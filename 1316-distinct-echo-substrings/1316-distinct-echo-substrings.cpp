@@ -1,31 +1,29 @@
 class Solution {
 public:
-    // using simple string getting TLE 
-    //   AC BY USING string_view
-    
-    int distinctEchoSubstrings(string str) {
+    int distinctEchoSubstrings(string s) {
         
-        int n = str.size();
+        unordered_set<string> se;
         
-        string_view s = str;
+        int n = s.length();
         
-        unordered_set<string_view> se;
-        
-        for(int g=1;g<n;g+=2){
+        for(int len=1;len<=n/2;len++){
             
-            for(int i=0,j=g;i<n && j<n;i++,j++){
+            int cnt = 0;
+            
+            for(int j=0;j+len<n;j++){
                 
-                int len = (g+1)/2;
+                if(s[j] == s[j+len]){
+                    cnt++;
+                }
+                else cnt = 0;
                 
-                string_view s1 = s.substr(i,len);
-                string_view s2 = s.substr(i+len,len);
-                
-                if(s1 == s2){
-                    if(!se.count(s1))se.insert(s1);
-                }    
+                if(cnt == len){
+                    se.insert(s.substr(j-len+1,len));
+                    cnt--;
+                }
             }
         }
         
-    return se.size();
+      return se.size();
     }
 };
