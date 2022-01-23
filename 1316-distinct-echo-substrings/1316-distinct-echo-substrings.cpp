@@ -18,8 +18,9 @@ public:
                 else cnt = 0;
                 
                 if(cnt == len){
-                    if(!se.count(s.substr(j-len+1,len)))
-                        se.insert(s.substr(j-len+1,len));
+                    string str = s.substr(j-len+1,len);
+                    if(!se.count(str))
+                        se.insert(str);
                     cnt--;
                 }
             }
