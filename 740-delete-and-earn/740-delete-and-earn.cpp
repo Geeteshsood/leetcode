@@ -11,27 +11,33 @@ public:
         
        if(dp[i] != -1)return dp[i];
         
-       int idx = mp[nums[i]];
+       int idx = 1;
         
        if(mp.count(nums[i]+1)){
-           idx += mp[nums[i]+1];
+           idx += 1;
        }
         
        int x = mp[nums[i]]*nums[i] +  find(i+idx,nums,dp);
         
-       int y = find(i+mp[nums[i]],nums,dp);
+       int y = find(i+1,nums,dp);
         
       return dp[i] = max(x,y);
     }
     
-    int deleteAndEarn(vector<int>& nums) {
+    int deleteAndEarn(vector<int>& v) {
+        
+        for(auto &it : v){
+            mp[it]++;
+        }
+        
+        vector<int> nums;
+        
+        for(auto [x,y] : mp){
+            nums.push_back(x);
+        }
         
         int n = nums.size();
         vector<int> dp(n,-1);
-        
-        for(auto &it : nums){
-            mp[it]++;
-        }
         
         sort(nums.begin(),nums.end());
         
