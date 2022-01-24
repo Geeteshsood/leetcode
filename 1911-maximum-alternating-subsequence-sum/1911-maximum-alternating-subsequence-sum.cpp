@@ -6,16 +6,13 @@ typedef long long ll;
     long long maxAlternatingSum(vector<int>& nums) {
         
         ll even = 0 , odd = nums[0];
-        int n = nums.size();
         
-        for(int i=1;i<n;i++){
+        for(auto &i : nums){
             
-            ll e = max(odd - (ll)nums[i] , even);
-            ll o = max(even + (ll)nums[i] , odd);
-            
-            even = e , odd = o;
+            odd = max(odd , even + (ll)i);
+            even = odd - (ll)i;
         }
         
-     return max(even,odd);
+     return odd;
     }
 };
