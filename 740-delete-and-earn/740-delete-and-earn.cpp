@@ -1,30 +1,9 @@
 class Solution {
 public:
     
-    unordered_map<int,int> mp;
-    
-    int find(int i,vector<int> &nums,vector<int> &dp){
-        
-       if(i >= nums.size()){
-           return 0;
-       }
-        
-       if(dp[i] != -1)return dp[i];
-        
-       int idx = 1;
-        
-       if(mp.count(nums[i]+1)){
-           idx += 1;
-       }
-        
-       int x = mp[nums[i]]*nums[i] +  find(i+idx,nums,dp);
-        
-       int y = find(i+1,nums,dp);
-        
-      return dp[i] = max(x,y);
-    }
-    
     int deleteAndEarn(vector<int>& v) {
+        
+        unordered_map<int,int> mp;
         
         for(auto &it : v){
             mp[it]++;
@@ -37,10 +16,22 @@ public:
         }
         
         int n = nums.size();
-        vector<int> dp(n,-1);
+        vector<int> dp(n);
         
         sort(nums.begin(),nums.end());
         
-        return find(0,nums,dp);
+        dp[0] = nums[0]*mp[nums[0]];
+        
+        for(int i=1;i<n;i++){
+            
+            int idx = 1;
+            if(mp.count(nums[i]-1))idx = 2;
+            
+            if(i-idx>=0)dp[i] = max(dp[i-1],dp[i-idx] + nums[i]*mp[nums[i]]);
+            else dp[i] = max(dp[i-1], nums[i]*mp[nums[i]]);
+            
+        }
+       
+        return dp[n-1];
     }
 };
