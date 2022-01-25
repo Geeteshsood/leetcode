@@ -14,21 +14,20 @@ public:
            else if(i%3 == 2)two += i + '0'; 
         }
         
-        if(sum % 3 == 1){
-            if(one.size())one = one.substr(0,one.size()-1);
-            else two = two.substr(0,two.size()-2);
+        if(sum % 3 == 0)zero += one + two;
+        else if(sum % 3 == 1){
+            if(one.size())zero += two + one.substr(0,one.size()-1);
+            else zero+= one + two.substr(0,two.size()-2);
         }
         else if(sum % 3 == 2){
-            if(two.size())two = two.substr(0,two.size()-1);
-            else one = one.substr(0,one.size()-2); 
+            if(two.size())zero += one +  two.substr(0,two.size()-1);
+            else zero += two +  one.substr(0,one.size()-2); 
         }
         
-        zero+=one + two;
-        
         int n = zero.size();
-        if(n > 1 && zero[0] == zero[n-1] && zero[0] == '0')return "0";
-        
         sort(zero.rbegin(),zero.rend());
+        
+        if(n > 1 && zero[0] == zero[n-1] && zero[0] == '0')return "0";
         
      return zero;  
     }
