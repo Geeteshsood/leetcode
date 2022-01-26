@@ -1,9 +1,9 @@
 class Solution {
 public:
     
-    int find(int i,int d,vector<int> &arr,vector<bool> &vis,vector<int> &nex,vector<int> &prev,vector<int> &dp){
+    int find(int i,int d,vector<bool> &vis,vector<int> &nex,vector<int> &prev,vector<int> &dp){
         
-        if(i < 0 || i >= arr.size() || vis[i])return INT_MIN;
+        if(i < 0 || i >= vis.size() || vis[i])return INT_MIN;
         
         if(dp[i] != -1){
             return dp[i];
@@ -15,13 +15,13 @@ public:
         
         for(int j=i+1;j<=i+d;j++){
               if(nex[i] > j){
-                 x = max(x , find(j,d,arr,vis,nex,prev,dp));
+                 x = max(x , find(j,d,vis,nex,prev,dp));
               }
         }
         
         for(int j=i-1;j>=i-d;j--){
               if(prev[i] < j){
-                  y = max(y , find(j,d,arr,vis,nex,prev,dp));
+                  y = max(y , find(j,d,vis,nex,prev,dp));
               }
         }
         vis[i] = false;
@@ -67,7 +67,7 @@ public:
         for(int i=0;i<n;i++){
             if(vis[i])continue;
             
-            int x = find(i,d,arr,vis,nex,prev,dp);
+            int x = find(i,d,vis,nex,prev,dp);
             ans = max(ans,x);         
         }
         
