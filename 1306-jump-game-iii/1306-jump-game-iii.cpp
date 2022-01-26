@@ -9,10 +9,7 @@ public:
         
         if(arr[i] == 0)return true;
         
-        bool f1 = find(i + arr[i],arr,vis);
-        bool f2 = find(i - arr[i],arr,vis);
-        
-        return f1 || f2;
+        return find(i + arr[i],arr,vis) || find(i - arr[i],arr,vis);
     }
     
     bool canReach(vector<int>& arr, int start) {
