@@ -4,7 +4,6 @@ public:
     int find(int i,int d,vector<int> &arr,vector<bool> &vis,vector<int> &nex,vector<int> &prev,vector<int> &dp){
         
         if(i < 0 || i >= arr.size() || vis[i])return INT_MIN;
-        // cout<<i<<" -> ";
         
         if(dp[i] != -1){
             return dp[i];
@@ -28,8 +27,7 @@ public:
         vis[i] = false;
         
         x = max(x,0),y = max(y,0);
-        // cout<<endl;
-        // cout<<i<<" "<<x<<" , "<<y<<endl;
+
         return dp[i] = 1 + max(x , y);
     }
     
@@ -43,9 +41,7 @@ public:
         
         for(int i=n-1;i>=0;i--){
             
-            while(st.size() && arr[i]>arr[st.top()]){
-                st.pop();
-            }
+            while(st.size() && arr[i]>arr[st.top()])st.pop();
             
             if(st.empty())nex[i] = n;
             else nex[i] = st.top();
@@ -57,15 +53,14 @@ public:
         
          for(int i=0;i<n;i++){
             
-            while(st.size() && arr[i]>arr[st.top()]){
-                st.pop();
-            }
+            while(st.size() && arr[i]>arr[st.top()])st.pop();
             
             if(st.empty())prev[i] = -1;
             else prev[i] = st.top();
             
             st.push(i);
         }
+        
         vector<bool> vis(n,false);
         vector<int> dp(n,-1);
         
