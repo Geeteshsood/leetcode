@@ -1,18 +1,17 @@
 class Solution {
 public:
     
-    int ans = INT_MIN;
-    
     bool check(vector<bool> &per,vector<vector<int>> &mat){
     
         int n = mat.size();
         
         for(int i=0;i<n;i++){
+            
+            if(per[i] == 0)continue;
+            
             for(int j=0;j<n;j++){
-                if(per[i] == 1 && mat[i][j]!=2){
-                    if(mat[i][j] != per[j]){
-                        return false;
-                    }
+                if(mat[i][j] != 2 && mat[i][j] != per[j]){
+                    return false;
                 }
             }
         }
