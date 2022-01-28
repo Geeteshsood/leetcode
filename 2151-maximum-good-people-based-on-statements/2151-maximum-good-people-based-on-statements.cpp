@@ -20,22 +20,26 @@ public:
         return true;
     }
     
-    void allPossible(int i,int cnt,int n,vector<bool> &per,vector<vector<int>> &mat){
+    int allPossible(int i,int cnt,int n,vector<bool> &per,vector<vector<int>> &mat){
         
         if(i == n){
             
-          bool flag = check(per,mat);
-        
-         if(flag)ans = max(ans,cnt);
+           int ans = 0;
             
-         return ;
+           if(check(per,mat)){
+              ans = cnt;
+           }
+              
+           return ans;
         }
         
         per[i] = true;
-        allPossible(i+1,cnt+1,n,per,mat);
+        int x = allPossible(i+1,cnt+1,n,per,mat);
         
         per[i] = false;
-        allPossible(i+1,cnt,n,per,mat);
+        int y = allPossible(i+1,cnt,n,per,mat);
+        
+        return max(x,y);
     }
     
     int maximumGood(vector<vector<int>>& mat) {
@@ -43,8 +47,7 @@ public:
         int n = mat.size();
 
         vector<bool> per(n,false);
-        allPossible(0,0,n,per,mat);
-
-        return ans;
+        
+        return allPossible(0,0,n,per,mat);
     }
 };
