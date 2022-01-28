@@ -1,35 +1,39 @@
 class Solution {
 public:
-    typedef long long ll;
+    int mod = 1e9 + 7;
+    
+    int find(int i,int cnt,string &s,vector<vector<int>> &dp){
+        
+        int n = s.size();
+        
+        if(s[i] == 'S')cnt++;
+        if(cnt > 2)return 0;
+        
+        if(i == n-1){
+            if(cnt == 2)return 1;
+            
+            return 0;
+        }
+        
+        if(dp[i][cnt] != -1)return dp[i][cnt];
+        
+        int x = 0 , y = 0;
+        
+        if(cnt == 2){
+           x =  find(i+1,0,s,dp);
+        }
+        
+        y = find(i+1,cnt,s,dp);
+        
+     return dp[i][cnt] = (x + y)%mod;   
+    }
     
     int numberOfWays(string s) {
         
-        ll mod = 1e9 + 7;
-        ll n = s.size() , pro = 1 , cnt = 0;
+        int n = s.size();
+        vector<vector<int>> dp(n,vector<int>(3,-1));
         
-        ll sum = 0 , y = -1 , x = -1;
+        return find(0,0,s,dp);
         
-        for(int i=0;i<n;i++){
-            
-            if(s[i] == 'S'){
-                sum++;
-                cnt++;
-                if(cnt == 1)y = i;
-            }
-            
-            if(cnt == 2){
-                if(x != -1)pro = (pro * (y-x))%mod;
-                x = i;
-                cnt = 0;
-            }
-            
-        }
-        
-        if(cnt != 0)return 0;
-        
-        if(sum == 2)return 1;
-        if(sum == 0)return 0;
-        
-        return pro%mod;
     }
 };
