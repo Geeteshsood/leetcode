@@ -18,18 +18,18 @@ public:
             st.push(i);
         }
         
-        stack<int> st2;
+        while(st.size())st.pop();
         
         for(int i=n-1;i>=0;i--){
             
-            while(st2.size() && heights[i] <= heights[st2.top()]){
-                st2.pop();
+            while(st.size() && heights[i] <= heights[st.top()]){
+                st.pop();
             }
             
-            if(st2.empty())nex[i] = n;
-            else nex[i] = st2.top();
+            if(st.empty())nex[i] = n;
+            else nex[i] = st.top();
             
-            st2.push(i);
+            st.push(i);
         }
         
         int val = 0 , ans = 0;
