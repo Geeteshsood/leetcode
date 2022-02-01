@@ -10,28 +10,27 @@ public:
 		
 	int isDivisible(string s){
 	    
-	    int n = s.size() , sum = 0 , prev = 1 , cur = 0;
+	    int n = s.size() , one = 0;
 	    
-	    if(s[n-1] == '1')sum = 1;
-
-	    for(int bit=n-2;bit>=0;bit--){
-	        
-	        cur = (2*prev)%3;
-
-	        if(s[bit] == '1')sum += cur;
-	        
-	        prev = cur;
+	    for(int i=n-1;i>=0;i--){
+	         
+	         if(s[i] == '0')continue;
+	         
+	         int k = i-(n-1);
+	         
+	         if(k%2==0)one++;
+	         else one--;
+	         
 	    }
+	     
+	     
+	   // 2^k = (1-3)^k;
+	    
+	   //     = (3m + (-1)^k)%mod;
+	   //     = (-1)^k;
+	        
+	  return (one)%3==0;  
 	  
-	   //  2^29 = 2 * 2^28;
-	     
-	   //  (2^29)%mod = ((2)%mod * (2^28)%mod)%mod;
-	     
-	   //  2^28 we have calculated earlier it must be of 0 , 1 or 2
-	   //  in this way our ans will be never be out of range.
-	     
-	     
-	  return sum%3==0;  
 	}
 
 };
