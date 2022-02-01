@@ -23,6 +23,14 @@ public:
 	        prev = cur;
 	    }
 	  
+	   //  2^29 = 2 * 2^28;
+	     
+	   //  (2^29)%mod = ((2)%mod * (2^28)%mod)%mod;
+	     
+	   //  2^28 we have calculated earlier it must be of 0 , 1 or 2
+	   //  in this way our ans will be never be out of range.
+	     
+	     
 	  return sum%3==0;  
 	}
 
