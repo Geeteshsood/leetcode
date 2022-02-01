@@ -21,6 +21,8 @@ public:
         
         for(int i=0;i<n;i++){
             // cout<<s<<endl;
+            bool flag = true;
+            
             if(s[i] == '1')s[i] = '0',one--;
             else s[i] = '1',one++;
             
@@ -29,7 +31,9 @@ public:
             if(s[i] == '0')val -= 1<<(n-i-1);
             else val += 1<<(n-i-1);
             
-            if(!vis[s] && find(s,cnt+1,val,one)){
+            if(vis.count(s) && vis[s])flag = false;
+            
+            if(flag && find(s,cnt+1,val,one)){
                 
                 ans.push_back(val);
                 return true;
