@@ -7,7 +7,12 @@ public:
             int m = nums1.size() , n = nums2.size();
             int len = m + n;
         
-            for(int i=0;i<m;i++){
+        
+            int start = 0 , end = m-1;
+        
+            while(start<=end){
+                
+                int i = start + (end-start)/2;
                 
                 if(flag) it = lower_bound(nums2.begin(),nums2.end(),nums1[i]) - nums2.begin();
                 else  it = upper_bound(nums2.begin(),nums2.end(),nums1[i]) - nums2.begin();
@@ -22,10 +27,11 @@ public:
                      val1 = nums1[i];
                 }
                 
+                if(idx <= (len-1)/2)start = i+1;
+                else end = i-1;
+                    
             }
            
-            // cout<<val1<<" "<<val2<<endl;
-        
       return {val1,val2};
     }
     
