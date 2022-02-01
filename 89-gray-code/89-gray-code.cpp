@@ -1,68 +1,25 @@
 class Solution {
 public:
     
-    vector<int> ans;
-    unordered_map<string,bool> vis;
-    
-    bool find(string s,int cnt,int val,int one){
+    vector<int> find(int n){
         
-        // cout<<s<<" "<<one<<endl;
-        int n = s.size();
-        if(cnt == (1<<n)){
+       if(n == 1)return {0,1};
+        
+        auto ans = find(n-1);
+        
+        int sz = ans.size();
+        int val = 1<<(n-1);
+        
+        for(int i=sz-1;i>=0;i--){
             
-            if(one == 1){
-                return true;
-            }
-            
-            return false;
+            ans.push_back(val + ans[i]);
         }
         
-        vis[s] = true;
-        
-        for(int i=0;i<n;i++){
-            // cout<<s<<endl;
-            bool flag = true;
-            
-            if(s[i] == '1')s[i] = '0',one--;
-            else s[i] = '1',one++;
-            
-            int x = val;
-            // cout<<s<<"*"<<endl;
-            if(s[i] == '0')val -= 1<<(n-i-1);
-            else val += 1<<(n-i-1);
-            
-            if(vis.count(s) && vis[s])flag = false;
-            
-            if(flag && find(s,cnt+1,val,one)){
-                
-                ans.push_back(val);
-                return true;
-            }
-            
-            val = x;
-            if(s[i] == '1')s[i] = '0',one--;
-            else s[i] = '1',one++;
-        }
-        
-        vis[s] = false;
-        
-        return false;
+        return ans;
     }
     
     vector<int> grayCode(int n) {
         
-         string s;
-        
-         for(int i=0;i<n;i++){
-             s+='0';
-         }
-        
-         find(s,1,0,0);
-         ans.push_back(0);
-        
-        reverse(ans.begin(),ans.end());
-        
-        return ans;
-        
+        return find(n);
     }
 };
