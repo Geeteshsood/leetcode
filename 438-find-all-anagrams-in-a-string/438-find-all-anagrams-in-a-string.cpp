@@ -5,8 +5,7 @@ public:
         int m = s.size() , n = p.size();
         vector<int> ans;
         
-        vector<int> mp1(26,0);
-        vector<int> mp2(26,0);
+        vector<int> mp1(26,0) , mp2(26,0);
         
         if(n > m)return {};
         
