@@ -1,24 +1,16 @@
 class Solution {
 public:
-    typedef long long ll;
     
-    int integerReplacement(int N) {
+    int integerReplacement(int n) {
         
-        ll n = (ll)N;
-        int cnt = 0;
+        if(n == INT_MAX)return 32;
+        if(n == 1)return 0;
         
-        while(n!=1){
-            
-            if(n == 3)return cnt + 2;
-            
-            if(n%2==0)n = n/2;
-            else{
-                if(n%4 == 1)n = n-1;
-                else n = n+1;
-            }
-            cnt++;
+        
+        if(n%2 == 0){
+            return 1 + integerReplacement(n/2);
         }
         
-        return cnt;
+        return 1 + min(integerReplacement(n+1) , integerReplacement(n-1));
     }
 };
