@@ -1,10 +1,12 @@
 class Solution {
 public:
+    typedef pair<int,pair<int,int>> pi;
+    
     vector<vector<int>> fourSum(vector<int>& nums, int target) {
         
              sort(nums.begin(),nums.end());
 
-             set<vector<int>> s;
+             set<pi> s;
         
              vector<vector<int>> ans;
         
@@ -21,9 +23,9 @@ public:
                        int right = nums[x] + nums[y];
                        
                        if(left == target - right){
-                           if(!s.count({nums[i],nums[j],nums[x]})){
+                           if(!s.count({nums[i],{nums[j],nums[x]}})){
                                ans.push_back({nums[i],nums[j],nums[x],nums[y]});
-                               s.insert({nums[i],nums[j],nums[x]});
+                               s.insert({nums[i],{nums[j],nums[x]}});
                            }
                            x++;
                        }
