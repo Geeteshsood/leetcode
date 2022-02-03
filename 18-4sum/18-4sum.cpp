@@ -29,12 +29,12 @@ public:
                        }
                         
                        if(left <= target - right){
+                           while( x<y && nums[x] == nums[x+1])x++;
                            x++;
-                           while( x<y && nums[x] == nums[x-1])x++;
                        }
                        else{
+                           while( x<y && nums[y] == nums[y-1])y--;;
                            y--;
-                           while( x<y && nums[y] == nums[y+1])y--;;
                        }
                     } 
   
