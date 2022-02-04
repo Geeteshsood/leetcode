@@ -32,29 +32,19 @@ public:
          print(n,board);
          return;
      }
-        
-//       for(int i=0;i<n;i++){
-//          for(int j=0;j<n;j++){
-//              cout<<board[i][j]<<" ";
-//          }
-//           cout<<endl;
-//      }
-//            cout<<"**"<<endl;
-        
+
       for(int j=0;j<n;j++){
          
-         // cout<<d1[i+j]<<" "<<d2[i-j]<<" "<<row[i]<<" "<<col[j]<<endl;
-                                                                 
        if(check(i,j)){
              
-             d1[i+j] = 1 , d2[9 + i-j] = 1 , row[i] = 1 , col[j] = 1;
+             d1[i+j] = d2[9 + i-j] = row[i] = col[j] = 1;
              board[i][j] = 'Q';
              // set bit
              
              solve(i+1,j,n,board);
              
              board[i][j] = '.';
-             d1[i+j] = 0 , d2[9 + i-j] = 0 , row[i] = 0 , col[j] = 0;
+             d1[i+j] = d2[9 + i-j] = row[i] = col[j] = 0;
              // clear bit.
          }
       }   
