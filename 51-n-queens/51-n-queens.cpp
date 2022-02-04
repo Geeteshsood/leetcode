@@ -1,7 +1,7 @@
 class Solution {
 public:
     
-     int row[10],col[10],d1[19],d2[19];
+     int col=0,d1=0,d2=0;
              
      vector<vector<string>> ans;     
     
@@ -22,8 +22,11 @@ public:
     
     bool check(int i,int j){
         
-      return !(d1[i+j] || d2[9+i-j] || row[i] || col[j]);
-        
+        bool x = d1 & (1<<(i+j));
+        bool y = d2 & (1<<(9 + i-j));
+        bool z = col & (1<<(j));
+      
+      return !(x || y || z);
     }
     
      void solve(int i,int j,int n,vector<vector<char>> &board){
@@ -35,17 +38,21 @@ public:
 
       for(int j=0;j<n;j++){
          
-       if(check(i,j)){
+       if(check(i,j)){               // checking bit is on or off.
              
-             d1[i+j] = d2[9 + i-j] = row[i] = col[j] = 1;
+              d1 |= (1<<(i+j));
+              d2 |= (1<<(9 + i-j));  // bit set
+             col |= (1<<(j));
+                 
              board[i][j] = 'Q';
-             // set bit
              
              solve(i+1,j,n,board);
              
              board[i][j] = '.';
-             d1[i+j] = d2[9 + i-j] = row[i] = col[j] = 0;
-             // clear bit.
+             
+              d1 ^= (1<<(i+j));
+              d2 ^= (1<<(9 + i-j));   // bit unset
+             col ^= (1<<(j));
          }
       }   
         
