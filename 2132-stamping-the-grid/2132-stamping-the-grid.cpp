@@ -1,7 +1,7 @@
 class Solution {
 public:
     
-    vector<vector<int>> find(vector<vector<int>> &grid){
+    vector<vector<int>> prefixSum(vector<vector<int>> &grid){
         
          int m = grid.size() , n = grid[0].size();
          vector<vector<int>> sum(m+1,vector<int>(n+1));
@@ -18,16 +18,9 @@ public:
     bool possibleToStamp(vector<vector<int>>& grid, int sh, int sw) {
         
         int m = grid.size() , n = grid[0].size();
-        vector<vector<int>> sum = find(grid);    
+        
+        vector<vector<int>> sum = prefixSum(grid);    
 
-        // for(int i=0;i<m;i++){
-        //     for(int j=0;j<n;j++){
-        //         cout<<sum[i][j]<<" ";
-        //     }
-        //     cout<<endl;
-        // }
-        
-        
         vector<vector<int>> dp(m+1,vector<int>(n+1));
         
         // can we place a stamp or not.
@@ -46,27 +39,13 @@ public:
                 val = topl + botr - (topr + botl);
                 
                 if(val == 0){
-                    dp[x-1][y-1] = 1;                   // if there is not a single occupied cell that means we can                                                                     place a stamp there.
-                }
+                    dp[x-1][y-1] = 1;                   // if there is not a single occupied cell that means we 
+                }                                       // can place a stamp there.
             }
         }
-//         for(int i=0;i<m;i++){
-//             for(int j=0;j<n;j++){
-//                 cout<<dp[i][j]<<" ";
-//             }
-//             cout<<endl;
-//         }
-        
+
         // calculate prefix sum. of dp
-        dp = find(dp);
-      
-//         for(int i=0;i<m;i++){
-//             for(int j=0;j<n;j++){
-//                 cout<<dp[i][j]<<" ";
-//             }
-//             cout<<endl;
-//         }
-        
+        dp = prefixSum(dp);
         
         // checking a particular point is covered by how many stamps.
         
