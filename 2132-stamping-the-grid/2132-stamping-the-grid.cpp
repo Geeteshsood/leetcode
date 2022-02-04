@@ -4,14 +4,11 @@ public:
     vector<vector<int>> find(vector<vector<int>> &grid){
         
          int m = grid.size() , n = grid[0].size();
-         vector<vector<int>> sum(grid);
+         vector<vector<int>> sum(m+1,vector<int>(n+1));
         
-         for(int i=0;i<m;i++){
-            for(int j=0;j<n;j++){
-                // cout<<i<<" "<<j<<endl;
-                if(i > 0 && j > 0 )sum[i][j] -= sum[i-1][j-1];
-                if(j > 0 )sum[i][j] += sum[i][j-1];
-                if(i > 0)sum[i][j] += sum[i-1][j];
+         for(int i=m-1;i>=0;i--){
+            for(int j=n-1;j>=0;j--){
+                sum[i][j] = grid[i][j] + sum[i][j+1] + sum[i+1][j] - sum[i+1][j+1];
             }
         }
 
@@ -22,14 +19,16 @@ public:
         
         int m = grid.size() , n = grid[0].size();
         vector<vector<int>> sum = find(grid);    
-//            for(int i=0;i<m;i++){
-//             for(int j=0;j<n;j++){
-//                 cout<<sum[i][j]<<" ";
-//             }
-//             cout<<endl;
-//         }
+
+        // for(int i=0;i<m;i++){
+        //     for(int j=0;j<n;j++){
+        //         cout<<sum[i][j]<<" ";
+        //     }
+        //     cout<<endl;
+        // }
         
-        vector<vector<int>> dp(m,vector<int>(n));
+        
+        vector<vector<int>> dp(m+1,vector<int>(n+1));
         
         // can we place a stamp or not.
         
@@ -38,62 +37,56 @@ public:
         for(int i=0;i<m;i++){
             for(int j=0;j<n;j++){
                 
-                int x = i-sh , y = j-sw;
-            
-                if(x < 0 && y < 0){
-                    val = sum[i][j];
+                int x = i+sh , y = j+sw;
+                
+                if(x > m || y > n)break;
+                
+                int topl = sum[i][j] , botr = sum[x][y] , botl = sum[x][j] , topr = sum[i][y];
+
+                val = topl + botr - (topr + botl);
+                
+                if(val == 0){
+                    dp[x-1][y-1] = 1;                   // if there is not a single occupied cell that means we can                                                                     place a stamp there.
                 }
-                else if( y < 0){
-                    val = sum[i][j] - sum[x][j];
-                }
-                else if( x < 0){
-                    val = sum[i][j] - sum[i][y];
-                }
-                else{
-                    
-                  val = sum[i][j] + sum[x][y] - (sum[x][j] + sum[i][y]);
-                }
-                  if(val == 0 && x+1>=0 && y+1>=0){
-                      dp[x+1][y+1] = 1;
-                  }
-                 // cout<<i<<" "<<j<<" "<<val<<endl;
             }
         }
-        // cout<<" *** "<<endl;
+//         for(int i=0;i<m;i++){
+//             for(int j=0;j<n;j++){
+//                 cout<<dp[i][j]<<" ";
+//             }
+//             cout<<endl;
+//         }
         
         // calculate prefix sum. of dp
-        vector<vector<int>> res = find(dp);
+        dp = find(dp);
+      
+//         for(int i=0;i<m;i++){
+//             for(int j=0;j<n;j++){
+//                 cout<<dp[i][j]<<" ";
+//             }
+//             cout<<endl;
+//         }
         
-        //    for(int i=0;i<m;i++){
-        //     for(int j=0;j<n;j++){
-        //         cout<<res[i][j]<<" ";
-        //     }
-        //     cout<<endl;
-        // }
-        // checking a particular point cover by how many stamps.
         
-        for(int i=0;i<m;i++){
+        // checking a particular point is covered by how many stamps.
+        
+         for(int i=0;i<m;i++){
             for(int j=0;j<n;j++){
-                if(grid[i][j] == 1)continue;
-                int x = i-sh , y = j-sw;
                 
-                if(x < 0 && y < 0){
-                    val = res[i][j];
-                }
-                else if( y < 0){
-                    val = res[i][j] - res[x][j];
-                }
-                else if( x < 0){
-                    val = res[i][j] - res[i][y];
-                }
-                else val = res[i][j] + res[x][y] - (res[x][j] + res[i][y]);
+                if(grid[i][j] == 1)continue;
+                
+                int x = min(m,i+sh) , y = min(n,j+sw);
+                
+                int topl = dp[i][j] , botr = dp[x][y] , botl = dp[x][j] , topr = dp[i][y];
+
+                val = topl + botr - (topr + botl);
                 
                 if(val == 0){
                     return false;
                 }
             }
         }
-
+        
         return true;
     }
 };
