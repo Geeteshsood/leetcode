@@ -1,7 +1,8 @@
 class Solution {
 public:
     
-     unordered_map<int,int> d1,d2,row,col;
+     int row[10],col[10],d1[19],d2[19];
+             
      vector<vector<string>> ans;     
     
      void print(int n,vector<vector<char>> &board){
@@ -21,7 +22,7 @@ public:
     
     bool check(int i,int j){
         
-      return !(d1[i+j] || d2[i-j] || row[i] || col[j]);
+      return !(d1[i+j] || d2[9+i-j] || row[i] || col[j]);
         
     }
     
@@ -46,14 +47,14 @@ public:
                                                                  
        if(check(i,j)){
              
-             d1[i+j] = 1 , d2[i-j] = 1 , row[i] = 1 , col[j] = 1;
+             d1[i+j] = 1 , d2[9 + i-j] = 1 , row[i] = 1 , col[j] = 1;
              board[i][j] = 'Q';
              // set bit
              
              solve(i+1,j,n,board);
              
              board[i][j] = '.';
-             d1[i+j] = 0 , d2[i-j] = 0 , row[i] = 0 , col[j] = 0;
+             d1[i+j] = 0 , d2[9 + i-j] = 0 , row[i] = 0 , col[j] = 0;
              // clear bit.
          }
       }   
