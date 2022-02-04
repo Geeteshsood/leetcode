@@ -1,92 +1,70 @@
 class Solution {
 public:
-     
-    vector<vector<string>> ans;     
     
-     void print(vector<vector<int>> &mat){
+     unordered_map<int,int> d1,d2,row,col;
+     vector<vector<string>> ans;     
+    
+     void print(int n,vector<vector<char>> &board){
              
-         int n = mat.size();
+         vector<string> v;   
          
-         vector<string> v;    
          for(int i=0;i<n;i++){
              string str;    
              for(int j=0;j<n;j++){
-                 if(mat[i][j]==-2)str+='Q';
-                 else str+='.';
+                 str += board[i][j];
              } 
             v.push_back(str);     
-         }    
-           ans.push_back(v);
+         } 
+         
+        ans.push_back(v);
      } 
-
     
-    // blocking path for queen
-    void block(vector<vector<int>> &mat,int i,int j,int col,int recol){
+    bool check(int i,int j){
         
-           int n = mat.size();
+      return !(d1[i+j] || d2[i-j] || row[i] || col[j]);
         
-           for(int k=i+1;k<n;k++){
-               if(mat[k][j]==col){
-                   mat[k][j] = recol;
-               }
-           }
-        
-           for(int x=i+1,y=j+1;x<n && y<n;x++,y++){
-               if(mat[x][y]==col){
-                   mat[x][y] = recol;
-               }
-           }
-        
-           for(int x=i+1,y=j-1;x<n && y>=0;x++,y--){
-                if(mat[x][y]==col){
-                    mat[x][y] = recol;
-                }
-           }
     }
     
-    // for finding safe position for queen.
-    void queen(vector<vector<int>> &mat,int i,int j){
+     void solve(int i,int j,int n,vector<vector<char>> &board){
+      
+     if(i == n){
+         print(n,board);
+         return;
+     }
         
-        int n = mat.size();
+//       for(int i=0;i<n;i++){
+//          for(int j=0;j<n;j++){
+//              cout<<board[i][j]<<" ";
+//          }
+//           cout<<endl;
+//      }
+//            cout<<"**"<<endl;
         
-        if(i == n){
-            print(mat);
-            return;
-        }
+      for(int j=0;j<n;j++){
+         
+         // cout<<d1[i+j]<<" "<<d2[i-j]<<" "<<row[i]<<" "<<col[j]<<endl;
+                                                                 
+       if(check(i,j)){
+             
+             d1[i+j] = 1 , d2[i-j] = 1 , row[i] = 1 , col[j] = 1;
+             board[i][j] = 'Q';
+             // set bit
+             
+             solve(i+1,j,n,board);
+             
+             board[i][j] = '.';
+             d1[i+j] = 0 , d2[i-j] = 0 , row[i] = 0 , col[j] = 0;
+             // clear bit.
+         }
+      }   
         
-        if(j==n){
-            return ;
-        }
-    
-        if(mat[i][j] == -1){
-            block(mat,i,j,-1,i);      // j col change to i col (block)
-            mat[i][j] = -2;
-            
-            queen(mat,i+1,0);
-            
-            block(mat,i,j,i,-1);      // i col change to j col  (unblock)
-            mat[i][j] = -1;
-        }
-        
-        queen(mat,i,j+1);
     }
-
+    
     vector<vector<string>> solveNQueens(int n) {
+           
+           vector<vector<char>> board(n,vector<char>(n,'.'));
+           solve(0,0,n,board);
         
-        vector<vector<int>> mat (n,vector<int>(n,-1));
-        
-        int i=0;
-        for(int j=0;j<n;j++){
-            
-            block(mat,i,j,-1,i);
-            mat[i][j] = -2;
-            
-            queen(mat,i+1,0);
-            
-            block(mat,i,j,i,-1); 
-            mat[i][j] = -1;
-        } 
-        
-    return ans;
+        return ans;
     }
 };
