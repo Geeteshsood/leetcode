@@ -10,16 +10,10 @@ class Solution
     int isPowerOfFour(unsigned int n)
     {
       
-       unsigned int rsb = n & -n;
-       if(n != rsb)return 0;
-       
-       for(int i=0;i<32;i++){
-            if(n & (1 << i)){
-                if(i%2 != 0)return 0;
-            }
-       }
-      
-      return 1;
+        if(n > 0 && ((n & (n-1)) == 0) && ((n-1)%3 == 0))return 1;
+        
+        return 0;
+        
     }
 };
 
