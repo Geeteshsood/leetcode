@@ -8,13 +8,24 @@ public:
         
        if(n != rsb)return 0;
        
-       for(int i=0;i<32;i++){
-            if(n & (1 << i)){
-                if(i%2 != 0)return 0;
+       n = n-1;
+        
+       if(n == 0)return 1;
+        
+       int start = 0 , end = 31 , ans = 0;
+        
+       while(start <= end){
+            int mid = start + (end - start)/2;
+           
+            if(n & (1 << mid)){
+                // cout<<mid<<endl;
+                ans = mid;
+                start = mid + 1;
             }
+            else end = mid-1;
        }
       
-      return 1;
+      return (ans%2 != 0);
         
     }
 };
