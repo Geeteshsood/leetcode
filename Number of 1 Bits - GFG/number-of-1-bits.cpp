@@ -7,14 +7,16 @@ class Solution {
   public:
     int setBits(int n) {
         
-        int cnt = 0 , rsb = 0;
+        int cnt = 0;
         
         while(n){
-          rsb = n & -n;
-          n = n - rsb;
-          cnt++;
-        } 
-        
+            
+            int rsb = n & -n;
+            n = n - rsb;
+            cnt++;
+            
+        }
+      
         return cnt;
     }
 };
