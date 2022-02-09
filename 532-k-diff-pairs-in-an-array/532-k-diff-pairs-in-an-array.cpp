@@ -3,22 +3,29 @@ public:
     int findPairs(vector<int>& nums, int k) {
         
         int n = nums.size();
-        set<pair<int,int>> s;
+        sort(nums.begin(),nums.end());
+        
+        int cnt = 0;
         
         for(int i=0;i<n;i++){
+            
+            if(i > 0){
+                while(i<n && nums[i] == nums[i-1])i++;
+            }
+            
             for(int j=i+1;j<n;j++){
-                if(abs(nums[j]-nums[i]) == k){
-                    int mini = min(nums[i],nums[j]);
-                    int maxi = max(nums[i],nums[j]);
-                    
-                    if(!s.count({mini,maxi})){
-                        s.insert({mini,maxi});
-                    }
+                
+                if(j>i+1){
+                    while(j<n && nums[j] == nums[j-1])j++;
+                }
+                
+                if(j<n && abs(nums[j]-nums[i]) == k){
+                    cnt++;
                 }
             }
         }
         
         
-     return s.size();
+     return cnt;
     }
 };
