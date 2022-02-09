@@ -19,14 +19,16 @@ public:
             
             int sum = x + y + carry;
             
-            if(sum == 0)carry = 0, str = "0" + str;
-            else if(sum == 1)carry = 0,str = "1" + str;
-            else if(sum == 2)carry = 1,str = "0" + str;
-            else if(sum == 3)carry = 1,str = "1" + str;
+            if(sum == 0)carry = 0, str += "0";
+            else if(sum == 1)carry = 0,str += "1";
+            else if(sum == 2)carry = 1,str += "0";
+            else if(sum == 3)carry = 1,str += "1";
             
         }
         
-        if(carry)str = "1" + str;
+        if(carry)str += "1";
+        
+        reverse(str.begin(),str.end());
         
       return str;  
     }
