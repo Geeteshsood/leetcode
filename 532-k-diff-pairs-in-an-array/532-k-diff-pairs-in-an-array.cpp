@@ -3,7 +3,6 @@ public:
     int findPairs(vector<int>& nums, int k) {
         
         unordered_map<int,int> mp;
-        unordered_set<int> vis;
         
         for(auto &i:nums){
             mp[i]++;
@@ -15,13 +14,14 @@ public:
         
         for(int i=0;i<n;i++){
         
-            if(vis.count(nums[i]))continue;
+            if(mp[nums[i]] == -1)continue;
             
             int num1 = nums[i] + k;
+            
             if(k == 0 && mp[num1] > 1)cnt++;
             else if(k != 0 && mp.count(num1))cnt++;
             
-            vis.insert(nums[i]);
+            mp[nums[i]] = -1;
         }
         
      return cnt;
