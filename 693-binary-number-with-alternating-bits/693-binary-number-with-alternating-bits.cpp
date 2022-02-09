@@ -2,19 +2,15 @@ class Solution {
 public:
     bool hasAlternatingBits(int n) {
         
-        int x = n & 1;
+        int x = n;
         n = n>>1;
         
-        while(n){
-            
-           int y = n & 1;
-            
-           if(x^y)x = y;
-           else return false;
-               
-           n = n>>1;
-        }
+        n = n^x;
         
-      return true;  
+        if(n == 2147483647)return true;
+        
+        n = n & (n + 1);
+        
+      return n == 0;  
     }
 };
