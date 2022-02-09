@@ -5,42 +5,26 @@ public:
         
         string str;
         int m = a.size() , n  = b.size() , carry = 0;
-        int i = m-1 , j = n-1;
-        bool f1 = false , f2 = false;
+        int x = 0 , y = 0,i = m-1 , j = n-1;
         
-        while(i >=0 || j >=0 || carry){
+        while(i >=0 || j >=0){
             
-             int sum = 0;
+             // cout<<i<<" "<<j<<" "<<carry<<endl;
             
-             if(i >= 0){
-                 sum ^= (a[i]-'0');
-                 
-                 if(1 & (a[i] - '0'))f1 = true;
-                 else f1 = false;
-                 
-                 i--;
-             }
-             else f1 = false;
+             if(i >= 0)x = a[i]-'0',i--;
+             else x = 0;
             
-             if(j >= 0){
-                 sum ^= (b[j]-'0');
-                 
-                 if(1 & (b[j] - '0'))f2 = true;
-                 else f2 = false;
-                 
-                 j--;
-             }
-             else f2 = false;
+             if(j >= 0)y = b[j]-'0',j--;
+             else y = 0;
             
-             sum ^= carry;
+            int sum = x + y + carry;
             
-             str += sum + '0';
-             
-             if(carry && (f1 || f2))carry = 1;
-             else if(f1 && f2)carry = 1;
-             else carry = 0;
+            carry = sum/2;
+            str += sum%2 + '0';
             
         }
+        
+        if(carry)str += "1";
         
         reverse(str.begin(),str.end());
         
