@@ -1,16 +1,19 @@
 class Solution {
 public:
-    bool hasAlternatingBits(int n) {
+    typedef long long ll;
+    
+    bool hasAlternatingBits(int t) {
         
-        int x = n;
+        ll n = (ll)t;
+        ll x = n;
         n = n>>1;
         
         n = n^x;
         
-        if(n == 2147483647)return true;
+        n = n + 1;
         
-        n = n & (n + 1);
-        
-      return n == 0;  
+        ll rsb = n & -n;
+    
+        return rsb == n;
     }
 };
