@@ -7,52 +7,39 @@ public:
         ll n = nums.size()/3;
         vector<ll> left(n + 1),right(n + 1);
         
-        ll sum = 0;
-        priority_queue<ll> pq;
+        ll suml = accumulate(nums.begin(),nums.begin()+n,0LL);
+        ll sumr = accumulate(nums.begin() + 2*n ,nums.end(),0LL);
         
-        for(ll i=0;i<n;i++){
-            pq.push((ll)nums[i]);
-            sum += (ll)nums[i];
-        }
+        priority_queue<ll> pq1(nums.begin(),nums.begin()+n);
         
-        left[0] = sum;
+        priority_queue<ll,vector<ll>,greater<ll>> pq2(nums.begin()+2*n , nums.end());
+        
+         left[0] = suml;
+        right[n] = sumr;
         
         for(ll i=n;i<2*n;i++){
-            if((ll)nums[i] < pq.top()){
-                sum -= pq.top();
-                pq.pop();
-                pq.push((ll)nums[i]);
-                sum += (ll)nums[i];
+            if(nums[i] < pq1.top()){
+                suml = suml - pq1.top() + nums[i];
+                pq1.pop();
+                pq1.push(nums[i]);
             }
             
-            left[i-n+1] = sum;
+            left[i-n+1] = suml;
         }
-        
-        priority_queue<ll,vector<ll>,greater<ll>> pqq;
-        
-        sum = 0;
-        
-        for(ll i=3*n-1;i>=2*n;i--){
-            pqq.push((ll)nums[i]);
-            sum += (ll)nums[i];
-        }
-        
-        right[n] = sum;
         
         for(ll i=2*n-1;i>=n;i--){
-            if((ll)nums[i] > pqq.top()){
-                sum -= pqq.top();
-                pqq.pop();
-                pqq.push((ll)nums[i]);
-                sum += (ll)nums[i];
+            if(nums[i] > pq2.top()){
+                sumr = sumr - pq2.top() + nums[i];
+                pq2.pop();
+                pq2.push(nums[i]);
             }
             
-            right[i-n] = sum;
+            right[i-n] = sumr;
         }
-        // cout<<"**"<<endl;
+
         ll ans = LLONG_MAX;
         
-        for(int i=0;i<=n;i++){
+        for(ll i=0;i<=n;i++){
             ans = min(ans,left[i] - right[i]);
         }
         
