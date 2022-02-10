@@ -5,7 +5,7 @@ public:
     long long minimumDifference(vector<int>& nums) {
         
         ll n = nums.size()/3;
-        vector<ll> left(3*n),right(3*n);
+        vector<ll> left(n + 1),right(n + 1);
         
         ll sum = 0;
         priority_queue<ll> pq;
@@ -13,8 +13,9 @@ public:
         for(ll i=0;i<n;i++){
             pq.push((ll)nums[i]);
             sum += (ll)nums[i];
-            left[i] = sum;
         }
+        
+        left[0] = sum;
         
         for(ll i=n;i<2*n;i++){
             if((ll)nums[i] < pq.top()){
@@ -24,7 +25,7 @@ public:
                 sum += (ll)nums[i];
             }
             
-            left[i] = sum;
+            left[i-n+1] = sum;
         }
         
         priority_queue<ll,vector<ll>,greater<ll>> pqq;
@@ -34,8 +35,9 @@ public:
         for(ll i=3*n-1;i>=2*n;i--){
             pqq.push((ll)nums[i]);
             sum += (ll)nums[i];
-            right[i] = sum;
         }
+        
+        right[n] = sum;
         
         for(ll i=2*n-1;i>=n;i--){
             if((ll)nums[i] > pqq.top()){
@@ -45,15 +47,13 @@ public:
                 sum += (ll)nums[i];
             }
             
-            right[i] = sum;
+            right[i-n] = sum;
         }
         // cout<<"**"<<endl;
         ll ans = LLONG_MAX;
         
-        for(ll i=n-1;i<2*n;i++){
-            
-            ans = min(ans , left[i] - right[i+1]);
-            
+        for(int i=0;i<=n;i++){
+            ans = min(ans,left[i] - right[i]);
         }
         
         return ans;
