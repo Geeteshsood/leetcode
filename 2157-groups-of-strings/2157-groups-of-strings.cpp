@@ -1,8 +1,10 @@
 class Solution {
 public:
-    static bool cmp(string &a , string &b){
-        return a.size()<b.size();
-    }
+    
+   static bool cmp(string &a , string &b){
+       return a.size()<b.size();
+   }
+    
    vector<int> par;
     
    int find(int x,vector<int> &par){
@@ -14,8 +16,6 @@ public:
     
    void connect(int i,int j){
        
-        // cout<<i<<" "<<j<<endl;
-       
         int lx = find(i,par);
         int ly = find(j,par);
        
@@ -25,21 +25,17 @@ public:
    }
     
    int getbitmask(string &s){
+       
        int mask = 0;
        
        for(auto &ch : s){
            mask = mask | (1<<(ch - 'a'));
        }
-       
-      // bitset<26> bx(mask);
-      //        cout<<bx<<endl;
-      //  cout<<s<<" "<<bx<<endl;
+
        return mask;
    }
     
     vector<int> groupStrings(vector<string>& words) {
-        
-        sort(words.begin(),words.end(),cmp);
         
         int n = words.size();
         par = vector<int> (n);
@@ -53,21 +49,13 @@ public:
         for(int i=0;i<n;i++){
             
             int xmask = getbitmask(words[i]);
-            
-             // bitset<26> bx(xmask);
-             // cout<<bx<<endl;
-            
+
             for(int j=0;j<26;j++){
                 
                    bool set = xmask & (1 << j);
                 
-                   if(!set)continue;
-              
-                
+                if(set){
                    int mask = xmask ^ (1 << j) ; // unset bit
-                
-//                    bitset<26> bm(mask);
-//                    cout<<bm<<endl;
                 
                    if(mp.count(mask)){
                        connect(i,mp[mask]);
@@ -78,15 +66,20 @@ public:
                        if(mask & (1<<k))continue;
                        
                        int rmask = mask | (1 << k);    // replacing bit
-                       
-                       // bitset<26> br(rmask);
-                       // cout<<br<<endl;
-                       
+
                        if(mp.count(rmask)){
                            connect(i,mp[rmask]);
                        }                              // checking for replacing 
                    }
+                }
+                else{
+                       
+                   int amask = xmask | (1 << j);    // adding bit
                     
+                   if(mp.count(amask)){
+                       connect(i,mp[amask]);
+                   }                              // checking for addition
+                }
               }
                
           mp[xmask] = i;
