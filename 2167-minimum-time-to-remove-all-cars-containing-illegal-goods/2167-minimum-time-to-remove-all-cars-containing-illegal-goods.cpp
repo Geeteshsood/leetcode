@@ -3,24 +3,18 @@ public:
     
     int minimumTime(string s) {
         
-        int ans = INT_MAX;
+        int totalcost = INT_MAX;
         int n = s.size();
         
-        vector<int> cost(n);
+        vector<int> cost(n+1);
         
-        cost[n-1] = s[n-1]-'0';
-        
-        for(int i=n-2;i>=0;i--){
+        for(int i=n-1;i>=0;i--){
             
             cost[i] = min(2*(s[i]-'0') + cost[i+1] , n-i);
-        }
-        
-        for(int left=-1;left<n-1;left++){
             
-            ans = min(ans,left + 1 + cost[left+1]);
-            
+            totalcost = min(totalcost ,i + cost[i]);
         }
-        
-       return min(n,ans);
+
+       return min(n,totalcost);
     }
 };
