@@ -7,26 +7,42 @@ public:
         
         if(m > n)return false;
         
-       unordered_map<char,int> dp,mp;
+        vector<int> v1(26),v2(26);
         
-       for(auto &i : s1){
-           dp[i]++;
-       }
+        for(auto &i : s1){
+            v1[i-'a']++;
+        }
+         
+        for(int i=0;i<m;i++){
+            v2[s2[i]-'a']++;
+        }
         
-       for(int i=0;i<m;i++){
-           mp[s2[i]]++;
-       }
+        bool flag = true;
         
-       if(dp == mp)return true;
+        for(int i=0;i<26;i++){
+            if(v1[i] != v2[i]){
+                flag = false;
+                break;
+            }
+        }
+        
+        if(flag)return true;
         
        for(int i=m;i<n;i++){
-           mp[s2[i]]++;
+           v2[s2[i]-'a']++;
            
-           mp[s2[i-m]]--;
+           v2[s2[i-m]-'a']--;
            
-           if(mp[s2[i-m]] == 0)mp.erase(s2[i-m]);
+           bool flag = true;
+        
+           for(int i=0;i<26;i++){
+               if(v1[i] != v2[i]){
+                   flag = false;
+                   break;
+               }
+           }
            
-           if(dp == mp)return true;
+           if(flag)return true;
        }
         
       return false;  
