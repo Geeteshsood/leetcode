@@ -1,6 +1,6 @@
 class Solution {
 public:
-    // bit manipulation
+    
     bool checkInclusion(string s1, string s2) {
         
         int m = s1.size() , n = s2.size();
@@ -17,32 +17,14 @@ public:
             v2[s2[i]-'a']++;
         }
         
-        bool flag = true;
-        
-        for(int i=0;i<26;i++){
-            if(v1[i] != v2[i]){
-                flag = false;
-                break;
-            }
-        }
-        
-        if(flag)return true;
+        if(v1 == v2)return true;
         
        for(int i=m;i<n;i++){
            v2[s2[i]-'a']++;
            
            v2[s2[i-m]-'a']--;
            
-           bool flag = true;
-        
-           for(int i=0;i<26;i++){
-               if(v1[i] != v2[i]){
-                   flag = false;
-                   break;
-               }
-           }
-           
-           if(flag)return true;
+           if(v1 == v2)return true;
        }
         
       return false;  
