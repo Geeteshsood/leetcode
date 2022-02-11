@@ -7,29 +7,26 @@ public:
         
         if(m > n)return false;
         
-       unordered_map<char,int> mp;
+       unordered_map<char,int> dp,mp;
         
        for(auto &i : s1){
-           mp[i]++;
+           dp[i]++;
        }
         
        for(int i=0;i<m;i++){
-           mp[s2[i]]--;
-           if(mp[s2[i]] == 0)mp.erase(s2[i]);
+           mp[s2[i]]++;
        }
         
-       if(mp.empty())return true;
+       if(dp == mp)return true;
         
        for(int i=m;i<n;i++){
-           mp[s2[i]]--;
+           mp[s2[i]]++;
            
-           if(mp[s2[i]] == 0)mp.erase(s2[i]);
-           
-           mp[s2[i-m]]++;
+           mp[s2[i-m]]--;
            
            if(mp[s2[i-m]] == 0)mp.erase(s2[i-m]);
            
-           if(mp.empty())return true;
+           if(dp == mp)return true;
        }
         
       return false;  
