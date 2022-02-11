@@ -15,12 +15,9 @@ public:
         vector<TreeNode*> ans;
         
         for(int i=1;i<=n-2;i+=2){
-            
-            auto v1 = generate(i);
-            auto v2 = generate(n-1-i);
-            
-            for(auto &x : v1){
-                for(auto &y : v2){
+        
+            for(auto &x : generate(i)){
+                for(auto &y : generate(n-1-i)){
                    TreeNode* root = new TreeNode(0);
                    root->left = x;
                    root->right = y;
