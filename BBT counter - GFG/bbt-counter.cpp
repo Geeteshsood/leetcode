@@ -12,12 +12,9 @@ class Solution {
     long long int countBT(int h) { 
        
        ll mod = 1e9 + 7;
-       vector<ll> dp(h+1);
+       vector<ll> dp(h+1,1);
        
-       dp[1] = 1;
-       if(h>1)dp[2] = 3;
-       
-       for(int i=3;i<=h;i++){
+       for(int i=2;i<=h;i++){
            
           dp[i] = ((dp[i-1]*dp[i-1])%mod + (2*dp[i-1]*dp[i-2])%mod)%mod;
            
