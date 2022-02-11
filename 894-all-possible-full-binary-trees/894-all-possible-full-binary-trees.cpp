@@ -1,7 +1,7 @@
 class Solution {
 public:
   
-    unordered_map<int,vector<TreeNode*>> dp;
+    // unordered_map<int,vector<TreeNode*>> dp;
     
     vector<TreeNode*> generate(int n){
         
@@ -10,7 +10,7 @@ public:
             return {node};
         }
         
-        if(dp.count(n))return dp[n];
+        // if(dp.count(n))return dp[n];
         
         vector<TreeNode*> ans;
         
@@ -26,7 +26,7 @@ public:
             }
         }
        
-        return dp[n] = ans;
+        return  ans;
     }
     
     vector<TreeNode*> allPossibleFBT(int n) {
