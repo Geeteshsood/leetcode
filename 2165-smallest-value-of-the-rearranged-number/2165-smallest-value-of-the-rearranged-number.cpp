@@ -22,18 +22,8 @@ public:
                 if(str[i] == '0')cnt++;
                 else break;
             }
-            // cout<<cnt<<endl;
-            string s;
-            if(cnt < n){
-                s = str[cnt];
-            }
-            // cout<<s<<endl;
-            s.append(cnt,'0');
-            // cout<<s<<endl;
             
-            if(cnt < n)s += str.substr(cnt+1);
-            // cout<<s<<endl;
-            return stol(s);
+            if(cnt<n)swap(str[0],str[cnt]);
             
         }
         
