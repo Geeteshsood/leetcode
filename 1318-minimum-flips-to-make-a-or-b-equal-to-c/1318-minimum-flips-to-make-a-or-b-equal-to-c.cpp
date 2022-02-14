@@ -3,19 +3,12 @@ public:
     
     int minFlips(int a, int b, int c) {
         
-        int cnt = 0;
+        int x = (a&b);
+        int y =  x&c;
         
-        for(int i=0;i<32;i++){
-            
-           bool f1 = a & (1<<i);
-           bool f2 = b & (1<<i);
-           bool f3 = c & (1<<i);
-            
-           if((f1 && f2) && !f3)cnt += 2;
-           else if((f1 || f2) && !f3)cnt += 1;
-           else if((!f1 && !f2) && f3)cnt += 1;
-            
-        }
+        int cnt = __builtin_popcount(x) - __builtin_popcount(y);
+        
+        cnt += __builtin_popcount(((a|b)^c));
         
         return cnt;
     }
