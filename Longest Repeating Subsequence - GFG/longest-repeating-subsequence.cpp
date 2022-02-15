@@ -5,24 +5,32 @@ using namespace std;
  // } Driver Code Ends
 class Solution {
 	public:
-	
-	int LongestRepeatingSubsequence(string s){
-	    
-	    int n = s.size();
-	    vector<vector<int>> dp(n+1,vector<int>(n+1,0));
-	    dp[0][0] = 1;
-	    
-	    for(int i=1;i<n+1;i++){
-	        for(int j=1;j<n+1;j++){
-	            if(s[i-1] == s[j-1] && i!=j){
-	               dp[i][j] = 1 + dp[i-1][j-1];
-	            }
-	            else dp[i][j] = max(dp[i-1][j],dp[i][j-1]);
-	        }
-	    }
-        
-        return dp[n][n];
-	}
+		int LongestRepeatingSubsequence(string str){
+		    
+		    int n = str.size();
+		    vector<vector<int>> dp(n+1,vector<int>(n+1));
+		    
+		    for(int i=1;i<=n;i++){
+		        for(int j=i+1;j<=n;j++){
+		             if(str[i-1] == str[j-1]){
+		                 dp[i][j] = 1 + dp[i-1][j-1];
+		             }
+		             else{
+		                 dp[i][j] = max(dp[i-1][j],dp[i][j-1]);
+		             }
+		        }
+		    }
+		    
+		  //  for(int i=0;i<=n;i++){
+		  //      for(int j=0;j<=n;j++){
+		  //          cout<<dp[i][j]<<" ";
+		  //      }
+		  //      cout<<endl;
+		  //  }
+		   
+		    
+		 return dp[n-1][n];
+		}
 };
 
 // { Driver Code Starts.
