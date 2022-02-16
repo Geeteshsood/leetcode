@@ -4,13 +4,12 @@ public:
     bool find(int val,int digit,int player1,int mask,int n,int k,vector<int> &mp){
         
         if(val >= k){
-            if(!player1)return true;
-            else return false;
+            return !player1;
         }
         
         mask |= (1<<digit);
-        // cout<<mask<<endl;
-        if(mp[mask]!=-1)return mp[mask];
+        
+        if(mp[mask] != -1)return mp[mask];
         
         for(int i=1;i<=n;i++){
             
@@ -18,28 +17,21 @@ public:
                 
                 bool flag = find(val+i,i,!player1,mask,n,k,mp);
                 
-                if(player1 && flag){
-                    mp[mask] = true;
+                if(player1 == flag){
+                    mp[mask] = flag;
                     mask = mask^(1<<digit);
-                    return true;
+                    return flag;
                 }
-                else if(!player1 && !flag){
-                    mp[mask] = false;
-                    mask = mask^(1<<digit);
-                    return false;
-                }
+  
             }
             
         }
         
-        if(player1)mp[mask] = false;
-        else mp[mask] = true;
+        mp[mask] = !player1;
         
         mask = mask^(1<<digit);
         
-        if(player1)return false;
-        
-        return true;
+        return !player1;
     }
     
     bool canIWin(int n, int k) {
