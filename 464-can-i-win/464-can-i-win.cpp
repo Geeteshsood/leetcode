@@ -6,7 +6,7 @@ public:
     bool find(int val,int digit,int player1,int mask,int n,int k){
         
         if(val >= k){
-            return !player1;
+            return false;
         }
         
         mask |= (1<<digit);
@@ -18,29 +18,27 @@ public:
             if(!(mask & (1<<i))){
                 
                 bool flag = find(val+i,i,!player1,mask,n,k);
-                
-                if(player1 == flag){
-                    mp[mask] = flag;
-                    mask = mask^(1<<digit);
-                    return flag;
-                }
   
+                if(!flag){
+                    mp[mask] = true;
+                    mask = mask^(1<<digit);
+                    return true;
+                }
             }
             
         }
         
-        mp[mask] = !player1;
+        mp[mask] = false;
         
         mask = mask^(1<<digit);
         
-        return !player1;
+        return false;
     }
     
     bool canIWin(int n, int k) {
         
-        int size = 1<<(n+1);
-        
         int maxReach = (n*(n+1))/2;
+        
         if(maxReach < k)return false;
         
         if(k == 0)return true;
