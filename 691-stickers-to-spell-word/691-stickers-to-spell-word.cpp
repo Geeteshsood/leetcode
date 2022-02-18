@@ -1,61 +1,60 @@
 class Solution {
 public:
     
-    int find(unordered_map<string,int> &mp,vector<vector<int>> &dp,string target){
+    int find(int i,vector<string>& stickers,vector<vector<int>> &dp,int mask,string &target){
         
-        if(target.size() == 0)return 0;
-          
-        if(mp.count(target))return mp[target];
+        int n = stickers.size() , m = target.size();
+
+        if(mask == 0)return 0;
+        else if(i == n)return INT_MAX;
         
-        int n = dp.size();
+        if(dp[i][mask] != -1)return dp[i][mask];
         
-        vector<int> tar(26);
+        vector<int> mp(26);
         
-        for(auto &ch : target){
-             tar[ch-'a']++;
+        for(auto &ch : stickers[i]){
+             mp[ch-'a']++;
         }
         
-        int val = INT_MAX;
+        int nmask = 0;
         
-        for(int i=0;i<n;i++){
-           
-          if(dp[i][target[0]-'a'] == 0)continue;
-            
-          string s;
-            
-           for(int k=0;k<26;k++){
+        for(int bit=0;bit<m;bit++){
                
-               if(tar[k]-dp[i][k] > 0){
-                   s += string(tar[k]-dp[i][k],k+'a');
-               }
-           }
-             
-           val = min(val , find(mp,dp,s)); 
-       }
-      
-        if(val == INT_MAX)return mp[target] = val;
+            if(mask & (1<<bit)){
+                if(mp[target[bit]-'a']){
+                   mp[target[bit]-'a']--;
+                }
+                else{
+                    nmask = nmask | (1<<bit);
+                }
+            }
+        }
+
+        if(nmask == mask)return dp[i][mask] = find(i+1,stickers,dp,mask,target);
         
-        return mp[target] = 1 + val;
+        int x = find(i+1,stickers,dp,mask,target);
+        int y = find(i,stickers,dp,nmask,target);
+        
+        if(y != INT_MAX)y++;
+        
+        return dp[i][mask] = min(x,y);
     }
     
     int minStickers(vector<string>& stickers, string target) {
         
-        int n = stickers.size();
-
-        vector<vector<int>> dp(n,vector<int>(26));
-        
-        for(int i=0;i<n;i++){
-            for(auto &ch : stickers[i]){
-                dp[i][ch-'a']++;
-            }
+        int mask=1;
+        for(int i=0;i<target.length();i++)
+        {
+            mask=mask*2;
         }
+        mask-=1;
         
-        unordered_map<string,int> mp;
+        vector<vector<int>> dp(stickers.size() + 1,vector<int> (mask + 1,-1));
         
-        int x = find(mp,dp,target);
-         
-        if(x == INT_MAX)return -1;
-         
+        int x = find(0,stickers,dp,mask,target);
+        
+        if(x == INT_MAX)x = -1;
+        
         return x;
     }
 };
