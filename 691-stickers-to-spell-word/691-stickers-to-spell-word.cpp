@@ -1,55 +1,60 @@
 class Solution {
 public:
     
-    
-    
-    
-    int recurse(string &s,vector<string> &st,int mask,int i,vector<vector<int>> &dp)
-    {   
-        if(!mask)
-            return 0;
-        if(i==st.size())
-            return INT_MAX/2;
-        if(dp[mask][i]!=-1)
-            return dp[mask][i];
-        int mp[26]={0};
-        for(int j=0;j<st[i].length();j++)
-        {
-            mp[st[i][j]-'a']+=1;
+    int find(int i,vector<string>& stickers,vector<vector<int>> &dp,int mask,string &target){
+        
+        int n = stickers.size() , m = target.size();
+
+        if(mask == 0)return 0;
+        else if(i == n)return INT_MAX;
+        
+        if(dp[i][mask] != -1)return dp[i][mask];
+        
+        vector<int> mp(26);
+        
+        for(auto &ch : stickers[i]){
+             mp[ch-'a']++;
         }
-        int newmask=0;
-        for(int j=0;j<s.length();j++)
-        {   
-            int ith_bit=1<<j;
-            if(mask & ith_bit)
-            {
-                if(mp[s[j]-'a'])
-                {
-                    mp[s[j]-'a']-=1;
+        
+        int nmask = 0;
+        
+        for(int bit=0;bit<m;bit++){
+               
+            if(mask & (1<<bit)){
+                if(mp[target[bit]-'a']){
+                   mp[target[bit]-'a']--;
                 }
-                else
-                    newmask+=ith_bit;
+                else{
+                    nmask = nmask | (1<<bit);
+                }
             }
         }
-        if(mask==newmask)
-        {
-            return dp[mask][i]=recurse(s,st,mask,i+1,dp);
-        }
-        int b=recurse(s,st,mask,i+1,dp);
-        int a=recurse(s,st,newmask,i,dp)+1;
-        return dp[mask][i]=min(a,b);
+
+        if(nmask == mask)return dp[i][mask] = find(i+1,stickers,dp,mask,target);
+        
+        int x = find(i+1,stickers,dp,mask,target);
+        int y = find(i,stickers,dp,nmask,target);
+        
+        if(y != INT_MAX)y++;
+        
+        return dp[i][mask] = min(x,y);
     }
     
     int minStickers(vector<string>& stickers, string target) {
+        
         int mask=1;
         for(int i=0;i<target.length();i++)
         {
             mask=mask*2;
         }
         mask-=1;
-        vector<vector<int>> dp(mask+1,vector<int> (stickers.size()+1,-1));
-        int x=recurse(target,stickers,mask,0,dp);
-        return x==INT_MAX/2?-1:x;
         
+        vector<vector<int>> dp(stickers.size() + 1,vector<int> (mask + 1,-1));
+        
+        int x = find(0,stickers,dp,mask,target);
+        
+        if(x == INT_MAX)x = -1;
+        
+        return x;
     }
 };
