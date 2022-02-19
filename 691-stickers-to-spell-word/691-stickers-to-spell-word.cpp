@@ -5,8 +5,8 @@ public:
         
         int n = stickers.size() , m = target.size();
 
-        if(mask == 0)return 0;
-        else if(i == n)return INT_MAX;
+        if(!mask)return 0;
+        else if(i == n)return INT_MAX/2;
         
         if(dp[i][mask] != -1)return dp[i][mask];
         
@@ -25,7 +25,7 @@ public:
                    mp[target[bit]-'a']--;
                 }
                 else{
-                    nmask = nmask | (1<<bit);
+                    nmask |= (1<<bit);
                 }
             }
         }
@@ -33,9 +33,7 @@ public:
         if(nmask == mask)return dp[i][mask] = find(i+1,stickers,dp,mask,target);
         
         int x = find(i+1,stickers,dp,mask,target);
-        int y = find(i,stickers,dp,nmask,target);
-        
-        if(y != INT_MAX)y++;
+        int y = 1 + find(i,stickers,dp,nmask,target);
         
         return dp[i][mask] = min(x,y);
     }
@@ -53,7 +51,7 @@ public:
         
         int x = find(0,stickers,dp,mask,target);
         
-        if(x == INT_MAX)x = -1;
+        if(x == INT_MAX/2)x = -1;
         
         return x;
     }
