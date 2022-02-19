@@ -8,7 +8,7 @@ public:
         if(!mask)return 0;
         else if(i == n)return INT_MAX/2;
         
-        if(dp[i][mask] != -1)return dp[i][mask];
+        if(dp[mask][i] != -1)return dp[mask][i];
         
         vector<int> mp(26);
         
@@ -30,12 +30,12 @@ public:
             }
         }
 
-        if(nmask == mask)return dp[i][mask] = find(i+1,stickers,dp,mask,target);
+        if(nmask == mask)return dp[mask][i] = find(i+1,stickers,dp,mask,target);
         
         int x = find(i+1,stickers,dp,mask,target);
         int y = 1 + find(i,stickers,dp,nmask,target);
         
-        return dp[i][mask] = min(x,y);
+        return dp[mask][i] = min(x,y);
     }
     
     int minStickers(vector<string>& stickers, string target) {
@@ -47,7 +47,7 @@ public:
         }
         mask-=1;
         
-        vector<vector<int>> dp(stickers.size() + 1,vector<int> (mask + 1,-1));
+        vector<vector<int>> dp(mask + 1,vector<int> (stickers.size() + 1,-1));
         
         int x = find(0,stickers,dp,mask,target);
         
