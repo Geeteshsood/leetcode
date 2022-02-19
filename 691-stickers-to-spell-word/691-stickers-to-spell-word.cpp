@@ -13,7 +13,7 @@ public:
         vector<int> mp(26);
         
         for(auto &ch : stickers[i]){
-             mp[ch-'a']++;
+             mp[ch-'a']+=1;
         }
         
         int nmask = 0;
@@ -22,7 +22,7 @@ public:
                
             if(mask & (1<<bit)){
                 if(mp[target[bit]-'a']){
-                   mp[target[bit]-'a']--;
+                   mp[target[bit]-'a']-=1;
                 }
                 else{
                     nmask |= (1<<bit);
