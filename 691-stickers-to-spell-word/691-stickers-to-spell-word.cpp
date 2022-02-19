@@ -10,7 +10,7 @@ public:
         
         if(dp[mask][i] != -1)return dp[mask][i];
         
-        int mp[26]={0};
+        vector<int> mp(26,0);
         
         for(auto &ch : stickers[i]){
              mp[ch-'a']+=1;
