@@ -16,7 +16,7 @@ public:
         find(i+1,sum,nums,mask,val);
     }
     
-    bool check(int i,int mask,int cnt,vector<int> &res,int k,int &target){
+    bool check(int i,int mask,int cnt,int k,int &target){
         
         int n = res.size();
         
@@ -28,9 +28,9 @@ public:
         bool flag = false;
         
         if(!(mask & res[i])){
-            flag = check(i+1,mask^res[i],cnt+1,res,k,target);
+            flag = check(i+1,mask^res[i],cnt+1,k,target);
         }
-        return flag || check(i+1,mask,cnt,res,k,target);
+        return flag || check(i+1,mask,cnt,k,target);
     }
     
     bool canPartitionKSubsets(vector<int>& nums, int k) {
@@ -40,19 +40,14 @@ public:
         int sum = accumulate(nums.begin(),nums.end(),0);
         
         if(sum%k != 0)return false;
+        
         int val = sum/k;
         
         find(0,0,nums,0,val);
         
-        int target = 0;
-        target = 1<<(n);
-        target-=1;
+        int target = (1<<n)-1;
         
-        if(res.size() >= k){
-            if(check(0,0,0,res,k,target)){
-                return true;
-            }
-        }
+        if(res.size() >= k)return check(0,0,0,k,target);
     
        return false; 
     }
