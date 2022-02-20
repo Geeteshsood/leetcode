@@ -16,7 +16,7 @@ public:
         find(i+1,sum,nums,mask,val);
     }
     
-    bool check(int i,int mask,int cnt,int k,int &target){
+    bool check(int i,int mask,int cnt,int k,int &target,vector<vector<vector<int>>> &memo){
         
         int n = res.size();
         
@@ -24,13 +24,15 @@ public:
             return mask == target;
         }
         if(i == n || cnt > k)return false;
-            
+        
+        if(memo[i][cnt][mask] != -1)return memo[i][cnt][mask];
+        
         bool flag = false;
         
         if(!(mask & res[i])){
-            flag = check(i+1,mask^res[i],cnt+1,k,target);
+            flag = check(i+1,mask^res[i],cnt+1,k,target,memo);
         }
-        return flag || check(i+1,mask,cnt,k,target);
+        return memo[i][cnt][mask] = flag || check(i+1,mask,cnt,k,target,memo);
     }
     
     bool canPartitionKSubsets(vector<int>& nums, int k) {
@@ -47,7 +49,9 @@ public:
         
         int target = (1<<n)-1;
         
-        if(res.size() >= k)return check(0,0,0,k,target);
+        vector<vector<vector<int>>> memo(res.size(),vector<vector<int>> (k,vector<int> (target + 1,-1)));
+        
+        if(res.size() >= k)return check(0,0,0,k,target,memo);
     
        return false; 
     }
