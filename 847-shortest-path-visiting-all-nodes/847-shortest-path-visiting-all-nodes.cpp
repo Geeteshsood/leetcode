@@ -1,22 +1,15 @@
 class Solution {
 public:
     
-    int find(int i,int &mask,int &target,vector<vector<int>> &dp,vector<vector<int>> &memo){
+    int find(int i,int mask,int &target,vector<vector<int>> &dp,vector<vector<int>> &memo){
         
         int n = dp.size();
         
         mask = mask|(1<<i);
  
-        if(mask == target){
-            mask = mask ^ (1<<i);
-            return 0;
-        }
+        if(mask == target)return 0;
         
-        if(memo[i][mask] != -1){
-            int x = memo[i][mask];
-            mask = mask^(1<<i);
-            return x;
-        }
+        if(memo[i][mask] != -1)return memo[i][mask];
         
         int ans = INT_MAX;
         
@@ -26,14 +19,10 @@ public:
                 
                 int val = dp[i][j] + find(j,mask,target,dp,memo);
                 ans = min(ans,val);
-                
             }
         }
-           
-        memo[i][mask] = ans;
-        mask = mask ^ (1<<i);
-
-        return ans;
+            
+        return memo[i][mask] = ans;
     }
     
     int shortestPathLength(vector<vector<int>>& graph) {
@@ -67,11 +56,10 @@ public:
          vector<vector<int>> memo(n,vector<int>(target + 1,-1));
         
          for(int i=0;i<n;i++){
-             
              int val = find(i,mask,target,dp,memo);
              ans = min(ans,val);
          }
       
-         return ans;
+      return ans;
     }
 };
