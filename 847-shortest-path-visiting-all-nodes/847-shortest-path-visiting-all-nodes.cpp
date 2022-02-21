@@ -1,65 +1,29 @@
-class Solution {
+class Solution{
 public:
     
-    int find(int i,int mask,int &target,vector<vector<int>> &dp,vector<vector<int>> &memo){
+   char dp[12][4096] = {};
+int dfs(vector<vector<int>>& graph, int visited, int i, int cnt) {
+    int res = graph.size() * 2;    
+    if (dp[i][visited] > 0)
+        return dp[i][visited];
+    if ((visited & (1 << i)) == 0)
+        ++cnt;
+    if (cnt == graph.size())
+        return 0;        
+    if (dp[i][visited] != -1) {
+        dp[i][visited] = -1;
+        for (auto j : graph[i])
+            res = min(res, 1 + dfs(graph, visited | (1 << i), j, cnt));
         
-        int n = dp.size();
-        
-        mask = mask|(1<<i);
- 
-        if(mask == target)return 0;
-        
-        if(memo[i][mask] != -1)return memo[i][mask];
-        
-        int ans = INT_MAX;
-        
-        for(int j=0;j<n;j++){
-            
-            if(!(mask & (1<<j))){
-                
-                int val = dp[i][j] + find(j,mask,target,dp,memo);
-                ans = min(ans,val);
-            }
-        }
-            
-        return memo[i][mask] = ans;
+        dp[i][visited] = res;
     }
-    
-    int shortestPathLength(vector<vector<int>>& graph) {
-        
-         int n = graph.size() , ans = INT_MAX;
-         
-         vector<vector<int>> dp(n,vector<int>(n,INT_MAX));
-        
-          for(int i=0;i<n;i++){
-              for(auto &j : graph[i]){
-                  dp[i][j] = 1;
-              }
-          }
-        
-          for(int k=0;k<n;k++){
-              for(int i=0;i<n;i++){
-                  for(int j=0;j<n;j++){
-                      if(i == j){
-                          dp[i][j] = 0;
-                      }   
-                      else if(dp[i][k] !=INT_MAX && dp[k][j] !=INT_MAX){
-                          dp[i][j] = min(dp[i][j],dp[i][k] + dp[k][j]);
-                      }   
-                  }
-              }
-          }
-        
-         int target = (1<<n)-1;
-         int mask = 0;
-        
-         vector<vector<int>> memo(n,vector<int>(target + 1,-1));
-        
-         for(int i=0;i<n;i++){
-             int val = find(i,mask,target,dp,memo);
-             ans = min(ans,val);
-         }
-      
-      return ans;
-    }
+    return res;
+}
+int shortestPathLength(vector<vector<int>>& graph, int res = INT_MAX) {
+    if (graph.size() < 4)
+        return graph.size() - 1;
+    for (auto i = 0; i < graph.size(); ++i)
+        res = min(res, dfs(graph, 0, i, 0));
+    return res;
+}
 };
