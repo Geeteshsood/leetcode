@@ -1,7 +1,7 @@
 class Solution {
 public:
     
-    int find(int i,int mask,int &target,vector<vector<int>> &dp,vector<vector<int>> &memo){
+    int find(int i,int &mask,int &target,vector<vector<int>> &dp,vector<vector<int>> &memo){
         
         int n = dp.size();
         
@@ -12,7 +12,11 @@ public:
             return 0;
         }
         
-        if(memo[i][mask] != -1)return memo[i][mask];
+        if(memo[i][mask] != -1){
+            int x = memo[i][mask];
+            mask = mask^(1<<i);
+            return x;
+        }
         
         int ans = INT_MAX;
         
@@ -25,10 +29,11 @@ public:
                 
             }
         }
-            
-        // mask = mask ^ (1<<i);
+           
+        memo[i][mask] = ans;
+        mask = mask ^ (1<<i);
 
-        return memo[i][mask] = ans;
+        return ans;
     }
     
     int shortestPathLength(vector<vector<int>>& graph) {
@@ -64,7 +69,6 @@ public:
          for(int i=0;i<n;i++){
              
              int val = find(i,mask,target,dp,memo);
-             // cout<<mask<<endl;
              ans = min(ans,val);
          }
       
