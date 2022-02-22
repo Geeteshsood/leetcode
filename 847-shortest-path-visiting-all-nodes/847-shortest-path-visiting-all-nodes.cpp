@@ -1,29 +1,51 @@
 class Solution{
 public:
     
-   char dp[12][4096] = {};
-int dfs(vector<vector<int>>& graph, int visited, int i, int cnt) {
-    int res = graph.size() * 2;    
-    if (dp[i][visited] > 0)
-        return dp[i][visited];
-    if ((visited & (1 << i)) == 0)
-        ++cnt;
-    if (cnt == graph.size())
-        return 0;        
-    if (dp[i][visited] != -1) {
-        dp[i][visited] = -1;
-        for (auto j : graph[i])
-            res = min(res, 1 + dfs(graph, visited | (1 << i), j, cnt));
+    int find(int i,vector<vector<int>> &graph,int mask,vector<vector<int>> &dp){
         
-        dp[i][visited] = res;
+        int n = graph.size();
+        
+        mask = mask|(1<<i);
+
+        if(mask == ((1<<n)-1))return 0;
+            
+        if(dp[i][mask] > 0){
+            return dp[i][mask];
+        }
+        
+        if(dp[i][mask] == -1){
+            dp[i][mask] = 0;
+        }
+        else return INT_MAX;
+        
+        int ans = INT_MAX;
+        
+        for(auto &itr : graph[i]){
+            
+            int val = find(itr,graph,mask,dp);
+            ans = min(ans,val);
+        }
+
+        if(ans == INT_MAX){
+            dp[i][mask] = -1;
+            return ans;
+        }
+        
+        return dp[i][mask] = ans + 1;
     }
-    return res;
-}
-int shortestPathLength(vector<vector<int>>& graph, int res = INT_MAX) {
-    if (graph.size() < 4)
-        return graph.size() - 1;
-    for (auto i = 0; i < graph.size(); ++i)
-        res = min(res, dfs(graph, 0, i, 0));
-    return res;
-}
+    
+    int shortestPathLength(vector<vector<int>>& graph) {
+        
+        int n = graph.size() , ans = INT_MAX;
+        // vector<vector<int>> dp(n,vector<int>(1<<n,-1));
+        
+        for(int i=0;i<n;i++){
+            vector<vector<int>> dp(n,vector<int>(1<<n,-1));
+           int x = find(i,graph,0,dp);
+           // cout<<x<<endl;
+           ans = min(ans,x);
+        }
+        
+        return ans;
+    }
 };
