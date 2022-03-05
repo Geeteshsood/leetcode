@@ -2,14 +2,7 @@ class Solution {
 public:
     
     bool checkprime(int n){
-        
-        if(n == 1)return false;
-        
-        for(int i=2;i<n;i++){
-            if(n%i == 0)return false;
-        }
-        
-        return true;
+     return n == 2 || n == 3 || n == 5 || n == 7 || n == 11 || n == 13 || n == 17 || n == 19;
     }
     
     int countPrimeSetBits(int left, int right) {
