@@ -12,40 +12,36 @@ public:
         int m = people.size();
         vector<int> score(m,0);
         
+        int target = (1<<n)-1;
+        
+        vector<int> dp(1<<n,INT_MAX);
+        vector<vector<int>> ans(1<<n,vector<int>());
+        dp[0] = 0;
+        
         for(int i=0;i<m;i++){
             int mask = 0;
             for(int j=0;j<people[i].size();j++){
                 mask = mask | (1<<skill[people[i][j]]);
             }
             score[i] = mask;
-        }
-        
-        int target = (1<<n)-1;
-        
-        vector<int> dp(1<<n,INT_MAX);
-        vector<vector<int>> vec(1<<n,vector<int>());
-        dp[0] = 0;
-        
-        for(int mask=0;mask<(1<<n);mask++){
             
-            if(dp[mask] == INT_MAX)continue;
+            for(int mask=0;mask<(1<<n);mask++){
             
-            for(int j=0;j<m;j++){
-                
-                int nmask = mask | score[j];
+                if(dp[mask] == INT_MAX)continue;
+            
+                int nmask = mask | score[i];
                 
                 if(1 + dp[mask] < dp[nmask]){
                     dp[nmask] = 1 + dp[mask];
-                    vec[nmask] = vec[mask];
-                    vec[nmask].push_back(j);
+                    ans[nmask] = ans[mask];
+                    ans[nmask].push_back(i);
                 }
                 
             }
-            
         }
         
      // cout<<dp[target];
         
-     return vec[target];
+     return ans[target];
     }
 };
