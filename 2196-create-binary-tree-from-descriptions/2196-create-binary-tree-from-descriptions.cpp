@@ -1,40 +1,43 @@
 class Solution {
 public:
     
-   unordered_map<int,int> vis,left,right;
-    
-   TreeNode* dfs(int root){
-        
-        TreeNode* node = new TreeNode(root);
-        
-        if(left.count(root))node->left = dfs(left[root]);
-        else node->left = NULL;
-       
-        if(right.count(root))node->right = dfs(right[root]);
-        else node->right = NULL;
-       
-        return node;
-    }
-    
     TreeNode* createBinaryTree(vector<vector<int>>& edges) {
         
-         for(auto &i : edges){
-             int u = i[0] , v = i[1] , wt = i[2];
-             vis[v] = true;
-             
-             if(wt == 1)left[u]=v;
-             if(wt == 0)right[u]=v;
-         }
+        unordered_map<int,TreeNode*> mp;
+        unordered_map<TreeNode*,TreeNode*> par;
         
-         for(auto &i : edges){
-             
-             int u = i[0] , v = i[1];
-             
-             if(!vis.count(u))return dfs(u);
-             if(!vis.count(v))return dfs(v);
-             
-         }
+        TreeNode* parent;
+        TreeNode* child;
+        TreeNode*x;
         
-         return NULL;
+        for(auto &it : edges){
+            
+            int u = it[0] , v = it[1] , isLeft = it[2];
+            
+            if(mp.count(u)){
+                parent = mp[u];
+            }
+            else{
+                mp[u] = new TreeNode(u);
+                parent = mp[u];
+            }
+            
+            if(mp.count(v)){
+                child = mp[v];
+            }
+            else child = mp[v] = new TreeNode(v);
+            
+            if(isLeft)parent->left = child;
+            else parent->right = child;
+                
+            par[child] = parent;
+            x = child;
+        }
+        
+        while(par.count(x)){
+            x = par[x];
+        }
+        
+     return x;   
     }
 };
