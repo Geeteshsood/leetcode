@@ -1,8 +1,22 @@
 class Solution {
 public:
-    TreeNode* createBinaryTree(vector<vector<int>>& edges) {
+    
+   unordered_map<int,int> vis,left,right;
+    
+   TreeNode* dfs(int root){
         
-         unordered_map<int,int> vis,left,right;
+        TreeNode* node = new TreeNode(root);
+        
+        if(left.count(root))node->left = dfs(left[root]);
+        else node->left = NULL;
+       
+        if(right.count(root))node->right = dfs(right[root]);
+        else node->right = NULL;
+       
+        return node;
+    }
+    
+    TreeNode* createBinaryTree(vector<vector<int>>& edges) {
         
          for(auto &i : edges){
              int u = i[0] , v = i[1] , wt = i[2];
@@ -12,45 +26,15 @@ public:
              if(wt == 0)right[u]=v;
          }
         
-         TreeNode* root;
-        
          for(auto &i : edges){
-             int u = i[0] , v = i[1] ;
              
-             if(!vis.count(u)){
-                root = new TreeNode (u);
-                break;
-             }
-             if(!vis.count(v)){
-                root = new TreeNode (u);
-                break;
-             }
+             int u = i[0] , v = i[1];
+             
+             if(!vis.count(u))return dfs(u);
+             if(!vis.count(v))return dfs(v);
+             
          }
-         
-        queue<TreeNode*> q;
-        q.push(root);
-        // cout<<root->val<<endl;
-        while(q.size()){
-            
-            int size = q.size();
-            
-            for(int i=0;i<size;i++){
-                
-                TreeNode* node = q.front();
-                q.pop();
-                
-                if(left.count(node->val)){
-                    node->left = new TreeNode (left[node->val]);
-                    q.push(node->left);
-                }
-                if(right.count(node->val)){
-                    node->right = new TreeNode (right[node->val]);
-                    q.push(node->right);
-                }
-                
-            }
-        }
         
-       return root; 
+         return NULL;
     }
 };
