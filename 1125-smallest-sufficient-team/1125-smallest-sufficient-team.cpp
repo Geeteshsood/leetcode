@@ -1,34 +1,5 @@
 class Solution {
 public:
-    
-    unordered_map<int,vector<int>> dp[61];
-    
-    vector<int> find(int i,int mask,int target,vector<int> &score){
-        
-        if(mask == target){
-            return {-2};
-        }
-        else if(i == score.size()){
-            return {-1};
-        }
-        
-        if(dp[i].count(mask))return dp[i][mask];
-         
-        auto x = find(i+1,mask | score[i],target,score);
-        auto y = find(i+1,mask,target,score);
-        
-        if(x[0] == -1 && y[0] == -1)return dp[i][mask] = {-1};
-        else if(x[0] == -1)return dp[i][mask] = y;
-        
-         x.push_back(i);
-        
-        if(y[0] == -1)return dp[i][mask] = x;
-       
-        if(x.size() < y.size())return dp[i][mask] = x;
-        
-        return dp[i][mask] = y;
-    }
-    
     vector<int> smallestSufficientTeam(vector<string>& req, vector<vector<string>>& people) {
         
         unordered_map<string,int> skill;
@@ -49,13 +20,32 @@ public:
             score[i] = mask;
         }
         
-        int target = 1<<n;
-        target = target-1;
+        int target = (1<<n)-1;
         
-        vector<int> v = find(0,0,target,score);
-
-        vector<int> ans(v.begin()+1,v.end());
+        vector<int> dp(1<<n,INT_MAX);
+        vector<vector<int>> vec(1<<n,vector<int>());
+        dp[0] = 0;
         
-        return ans;
+        for(int mask=0;mask<(1<<n);mask++){
+            
+            if(dp[mask] == INT_MAX)continue;
+            
+            for(int j=0;j<m;j++){
+                
+                int nmask = mask | score[j];
+                
+                if(1 + dp[mask] < dp[nmask]){
+                    dp[nmask] = 1 + dp[mask];
+                    vec[nmask] = vec[mask];
+                    vec[nmask].push_back(j);
+                }
+                
+            }
+            
+        }
+        
+     // cout<<dp[target];
+        
+     return vec[target];
     }
 };
