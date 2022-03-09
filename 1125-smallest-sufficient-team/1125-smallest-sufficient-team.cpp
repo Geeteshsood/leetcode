@@ -12,35 +12,40 @@ public:
         int m = people.size();
         vector<int> score(m,0);
         
+        // calculating mask for each team
+        
+        for(int i=0;i<m;i++){
+            int mask = 0;
+            for(auto j:people[i]){
+                mask = mask | (1<<skill[j]);
+            }
+            score[i] = mask;
+        }
+        
         int target = (1<<n)-1;
         
         vector<int> dp(1<<n,INT_MAX);
         vector<vector<int>> ans(1<<n,vector<int>());
+        
         dp[0] = 0;
         
-        for(int i=0;i<m;i++){
-            int mask = 0;
-            for(int j=0;j<people[i].size();j++){
-                mask = mask | (1<<skill[people[i][j]]);
-            }
-            score[i] = mask;
+        for(int mask=0;mask<(1<<n);mask++){
             
-            for(int mask=0;mask<(1<<n);mask++){
+            if(dp[mask] == INT_MAX)continue;  // means this state cannot be reached
             
-                if(dp[mask] == INT_MAX)continue;
-            
-                int nmask = mask | score[i];
+            for(int j=0;j<m;j++){
                 
-                if(1 + dp[mask] < dp[nmask]){
+                int nmask = mask | score[j];
+                
+                if(1 + dp[mask] < dp[nmask]){     // if new state can be reached
                     dp[nmask] = 1 + dp[mask];
-                    ans[nmask] = ans[mask];
-                    ans[nmask].push_back(i);
+                    ans[nmask] = ans[mask];       // then add all teams included in old state
+                    ans[nmask].push_back(j);      // and new team
                 }
                 
             }
+            
         }
-        
-     // cout<<dp[target];
         
      return ans[target];
     }
