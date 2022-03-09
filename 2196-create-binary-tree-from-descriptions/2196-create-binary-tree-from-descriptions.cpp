@@ -2,30 +2,34 @@ class Solution {
 public:
     TreeNode* createBinaryTree(vector<vector<int>>& edges) {
         
-         int high = INT_MIN;
-         vector<int> vis(1e5+1,false);
-        
-         for(auto &it : edges){
-             high = max({high,it[0],it[1]});
-             vis[it[1]] = true;
-         }
-        
-         TreeNode* root;
-        
-         vector<int> left(high+1,-1);
-         vector<int> right(high+1,-1);
+         unordered_map<int,int> vis,left,right;
         
          for(auto &i : edges){
              int u = i[0] , v = i[1] , wt = i[2];
-             if(!vis[u])root = new TreeNode (u);
+             vis[v] = true;
              
              if(wt == 1)left[u]=v;
              if(wt == 0)right[u]=v;
          }
+        
+         TreeNode* root;
+        
+         for(auto &i : edges){
+             int u = i[0] , v = i[1] ;
+             
+             if(!vis.count(u)){
+                root = new TreeNode (u);
+                break;
+             }
+             if(!vis.count(v)){
+                root = new TreeNode (u);
+                break;
+             }
+         }
          
         queue<TreeNode*> q;
         q.push(root);
-        
+        // cout<<root->val<<endl;
         while(q.size()){
             
             int size = q.size();
@@ -35,11 +39,11 @@ public:
                 TreeNode* node = q.front();
                 q.pop();
                 
-                if(left[node->val] != -1){
+                if(left.count(node->val)){
                     node->left = new TreeNode (left[node->val]);
                     q.push(node->left);
                 }
-                if(right[node->val] != -1){
+                if(right.count(node->val)){
                     node->right = new TreeNode (right[node->val]);
                     q.push(node->right);
                 }
