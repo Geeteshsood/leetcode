@@ -1,35 +1,36 @@
-class Solution {
+class Solution{
 public:
-    
-   vector<vector<int>> ans,adj;
-    
-   void dfs(int i,int x,vector<int> &vis){
-
-       for(auto &node : adj[i]){
-           if(!vis[node]){
-             vis[node] = true;
-             ans[x].push_back(node);
-             dfs(node,x,vis);
-           }
-           
-       }
-   }
     
     vector<vector<int>> getAncestors(int n, vector<vector<int>>& edges) {
         
-        ans = vector<vector<int>>(n,vector<int>());
-        adj = vector<vector<int>>(n,vector<int>());
+         vector<vector<int>> ans(n,vector<int>());
+         vector<vector<int>> adj(n,vector<int>());
         
         for(auto &it : edges){
             int  u = it[0], v = it[1];
             adj[v].push_back(u);
         }
         
+        queue<int> q;
+        
         for(int i=0;i<n;i++){
             
             vector<int> vis(n,false);
+            q.push(i);
             
-            dfs(i,i,vis);
+            while(q.size()){
+                
+                int x = q.front();
+                q.pop();
+                
+                for(auto &y : adj[x]){
+                    if(!vis[y]){
+                        vis[y] = true;
+                        ans[i].push_back(y);
+                        q.push(y);
+                    }
+                }
+            }
         }
         
         for(int i=0;i<n;i++){
