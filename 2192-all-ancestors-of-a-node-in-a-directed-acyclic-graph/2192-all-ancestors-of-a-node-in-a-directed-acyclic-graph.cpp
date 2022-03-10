@@ -1,42 +1,20 @@
 class Solution{
 public:
     
-    vector<vector<int>> getAncestors(int n, vector<vector<int>>& edges) {
-        
-         vector<vector<int>> ans(n,vector<int>());
-         vector<vector<int>> adj(n,vector<int>());
-        
-        for(auto &it : edges){
-            int  u = it[0], v = it[1];
-            adj[v].push_back(u);
-        }
-        
-        queue<int> q;
-        
-        for(int i=0;i<n;i++){
-            
-            vector<int> vis(n,false);
-            q.push(i);
-            
-            while(q.size()){
-                
-                int x = q.front();
-                q.pop();
-                
-                for(auto &y : adj[x]){
-                    if(!vis[y]){
-                        vis[y] = true;
-                        ans[i].push_back(y);
-                        q.push(y);
-                    }
-                }
+   vector<vector<int>> getAncestors(int n, vector<vector<int>>& edges) {
+    vector<vector<int>> res(n), al(n);
+    function<void(int, int)> dfs = [&](int i, int anc){
+        for (auto j : al[i])
+            if (res[j].empty() || res[j].back() != anc) {
+                res[j].push_back(anc);
+                dfs(j, anc);    
             }
-        }
-        
-        for(int i=0;i<n;i++){
-            sort(ans[i].begin(),ans[i].end());
-        }
-        
-     return ans;  
-    }
+    };
+    for (auto &e: edges)
+        al[e[0]].push_back(e[1]);
+    for (int i = 0; i < n; ++i)
+        dfs(i, i);
+    return res;    
+}
+    
 };
