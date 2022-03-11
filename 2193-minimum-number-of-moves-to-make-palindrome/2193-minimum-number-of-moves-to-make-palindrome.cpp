@@ -5,6 +5,8 @@ public:
         
         int n = s.size();
         
+        // cout<<s<<endl;
+        
         if(n == 0){
             return 0;
         }
@@ -14,34 +16,40 @@ public:
         }
         else{
             
-            vector<int> v(26,-1);
+            vector<int> first(26,-1),last(26,-1);
             
             for(int i=0;i<n;i++){
-                if(v[s[i]-'a']==-1)v[s[i]-'a']=i;
+                if(first[s[i]-'a'] == -1)first[s[i]-'a'] = i;
+                last[s[i]-'a'] = i;
             }
             
-            int st = -1 , mini = INT_MAX;
+            int ch = -1 , mini = INT_MAX;
             
-            for(int i=n-1;i>=0;i--){
-                if(i != v[s[i]-'a']){
-                    int moves = n-i-1 + v[s[i]-'a'];
+            for(int i=0;i<26;i++){
+                if(first[i] != -1 && last[i] != -1){
+                    int moves = first[i] + n - last[i] - 1;
                     if(moves < mini){
                         mini = moves;
-                        st= i;
+                        ch = i;
                     }
                 }
             }
             
-             int f = v[s[st]-'a'];
+            if(ch != -1){
+                // cout<<ch<<endl;
              string p;
-            
-             if(f>0)p+=s.substr(0,f);
-             if(st-f>0)p+=s.substr(f+1,st-f-1);
-             if(st+1<n)p+=s.substr(st+1);
+             if(first[ch] > 0 )p += s.substr(0,first[ch]);
+             if(last[ch]-first[ch] > 1)p += s.substr(first[ch]+1,last[ch]-first[ch] - 1);
+             if(last[ch]+1 < n)p += s.substr(last[ch] + 1);
+                
+             // cout<<p<<endl;
             
              return mini + find(p);
-            
+                
+            }
         }
+        
+        return 0;
     }
     
     int minMovesToMakePalindrome(string s) {
