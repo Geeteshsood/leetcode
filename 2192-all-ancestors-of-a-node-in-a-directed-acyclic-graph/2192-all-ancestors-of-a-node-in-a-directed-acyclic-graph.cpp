@@ -1,20 +1,31 @@
-class Solution{
+class Solution {
 public:
     
-   vector<vector<int>> getAncestors(int n, vector<vector<int>>& edges) {
-    vector<vector<int>> res(n), al(n);
-    function<void(int, int)> dfs = [&](int i, int anc){
-        for (auto j : al[i])
-            if (res[j].empty() || res[j].back() != anc) {
-                res[j].push_back(anc);
-                dfs(j, anc);    
+    void dfs(int i,int an,vector<vector<int>> &res,vector<vector<int>> &adj){
+        
+        for(auto &x : adj[i]){
+            
+            if(res[x].empty() || res[x].back() != an){
+                res[x].push_back(an);
+                dfs(x,an,res,adj);
             }
-    };
-    for (auto &e: edges)
-        al[e[0]].push_back(e[1]);
-    for (int i = 0; i < n; ++i)
-        dfs(i, i);
-    return res;    
-}
+        }
+        
+    }
     
+    vector<vector<int>> getAncestors(int n, vector<vector<int>>& edges){
+        
+        vector<vector<int>> res(n,vector<int>()),adj(n,vector<int>());
+        
+        for(auto &it : edges){
+             int u = it[0] , v = it[1];
+             adj[u].push_back(v);
+        }
+        
+        for(int i=0;i<n;i++){
+            dfs(i,i,res,adj);
+        }
+        
+        return res;
+    }
 };
