@@ -1,24 +1,19 @@
 class Solution {
 public:
     
-    unordered_map<string,int> dp;
-    
     int find(string s){
         
         int n = s.size();
+        
         if(n == 0){
             return 0;
         }
           
-        if(dp.count(s))return dp[s];
-        
         if(s[0] == s[n-1]){
-            return  dp[s] = find(s.substr(1,n-2));
+            return find(s.substr(1,n-2));
         }
         else{
             
-            string s1,s2;
-            int x = INT_MAX,y = INT_MAX,z = INT_MAX;
             vector<int> v(26,-1);
             
             for(int i=0;i<n;i++){
@@ -44,9 +39,8 @@ public:
              if(st-f>0)p+=s.substr(f+1,st-f-1);
              if(st+1<n)p+=s.substr(st+1);
             
-             z = mini + find(p);
+             return mini + find(p);
             
-            return dp[s] = z;
         }
     }
     
