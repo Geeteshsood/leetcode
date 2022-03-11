@@ -4,7 +4,8 @@ public:
         
         int n = nums.size();
         
-        vector<int> cnt(1001);
+        unordered_map<int,int> cnt;
+        
         int counter = 0 , ans = -1;
         
         for(int i=0;i<n-1;i++){
