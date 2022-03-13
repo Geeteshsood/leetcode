@@ -17,19 +17,18 @@ public:
         while(pq.size()){
      
            ll u = pq.top().second;
-           ll x = pq.top().first;
+           ll path = pq.top().first;
            pq.pop();
             
-           if(dist[u] != x)continue;
+           if(dist[u] != path)continue;
             
            for(auto &it:adj[u]){
                
                ll v =  it.first;
                ll wt = it.second;
                
-               
-               if(dist[v]>x+wt){
-                   dist[v] = x + wt;
+               if(dist[v] > path + wt){
+                   dist[v] = path + wt;
                    pq.push({dist[v],v});
                }
            }
