@@ -1,1 +1,1 @@
-​
+if(dist[u] != path)continue;  // imp point
