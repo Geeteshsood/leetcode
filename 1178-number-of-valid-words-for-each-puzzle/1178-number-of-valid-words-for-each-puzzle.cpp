@@ -1,53 +1,54 @@
 class Solution {
 public:
-    
-    int getbitmask(string &s){
-        
-       int mask = 0;
-        
-       for(auto &ch : s){
-          int bit = ch - 'a';          
-          mask = mask | (1<<bit);
-       }
-            
-      return mask;
-    }
-    
     vector<int> findNumOfValidWords(vector<string>& words, vector<string>& puzzles) {
         
-        vector<int> ans;
+        int n = words.size() , m = puzzles.size();
         
-        int m = words.size() , n = puzzles.size();
+        unordered_map<int,int> word;
         
-        unordered_map<int,int> mp;
-        
-        for(auto &word : words){
-            
-           int wmask = getbitmask(word);
-           
-           mp[wmask]++;
+        for(int i=0;i<n;i++){
+            int mask = 0;
+            for(auto &ch : words[i]){
+                mask = mask | (1<<(ch-'a'));
+            }
+            word[mask]++;
         }
         
-        for(auto &puzzle : puzzles){
+        unordered_map<int,int> dp[26];
+        
+        for(auto &[mask,y] : word){
+            for(int i=0;i<26;i++){
+                if(mask & (1<<i)){
+                    dp[i][mask] = y;
+                }
+            }
+        }
+        
+        vector<int> ans(m);
+
+        for(int i=0;i<m;i++){
             
-            int pmask = getbitmask(puzzle);
+            int pmask = 0;
             
-            int bit = puzzle[0]-'a';
+            for(auto &ch : puzzles[i]){
+                pmask = pmask | (1<<(ch-'a'));
+            }
+            
             int cnt = 0;
             
-            for(auto &[wmask,freq] : mp){
-               
-                bool flag1 = (wmask == (pmask & wmask));
-                bool flag2 = (wmask & (1<<bit));
-                 
+            for(auto &[wmask,freq] : dp[puzzles[i][0]-'a']){
+                
+                bool flag1 = (pmask == (pmask | wmask));
+                bool flag2 = wmask & (1<<(puzzles[i][0]-'a'));
+                
                 if(flag1 && flag2){
                     cnt += freq;
                 }
             }
             
-            ans.push_back(cnt);
+            ans[i] = cnt;
         }
-      
+       
         return ans;
     }
 };
