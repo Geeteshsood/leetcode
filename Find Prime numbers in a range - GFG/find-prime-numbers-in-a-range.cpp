@@ -10,25 +10,26 @@ using namespace std;
 class Solution {
   public:
   
-    int isPrime(int N){
-
-        if(N == 1)return false;
+    vector<int> primeRange(int M, int N) {
+       
+        vector<bool> isPrime(N+1,true);
         
-        if(N == 2 || N == 3)return true;
+        isPrime[0] = false , isPrime[1] = false;
         
         for(int i=2;i*i<=N;i++){
-             if(N%i == 0)return false;
+            
+            if(isPrime[i]){
+                for(int j=i*i;j<=N;j+=i){
+                    isPrime[j] = false;
+                }
+            }
+            
         }
-        
-        return true;
-    }
-  
-    vector<int> primeRange(int M, int N) {
         
         vector<int> ans;
         
         for(int i=M;i<=N;i++){
-            if(isPrime(i)){
+            if(isPrime[i]){
                 ans.push_back(i);
             }
         }
