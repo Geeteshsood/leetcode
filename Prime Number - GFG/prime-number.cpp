@@ -6,17 +6,16 @@ using namespace std;
 class Solution{
 public:
     int isPrime(int N){
+
+        if(N == 1)return false;
         
-        int cnt = 0;
+        if(N == 2 || N == 3)return true;
         
-        for(int i=1;i<=sqrt(N);i++){
-            if(i*i == N){
-                cnt+=1;
-            }
-            else if(N%i == 0)cnt+=2;
+        for(int i=2;i*i<=N;i++){
+             if(N%i == 0)return false;
         }
         
-        return cnt == 2;
+        return true;
     }
 };
 
