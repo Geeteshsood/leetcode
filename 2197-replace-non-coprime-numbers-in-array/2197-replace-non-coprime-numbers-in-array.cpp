@@ -3,13 +3,6 @@ public:
     
     typedef long long ll;
     
-    ll gcd(ll a,ll b){
-        
-        if(b == 0)return a;
-        
-        return gcd(b,a%b);
-    }
-    
     vector<int> replaceNonCoprimes(vector<int>& nums) {
         
         stack<ll> st;
@@ -22,7 +15,7 @@ public:
             while(st.size()){
                 
              
-               ll gcd1 = gcd(cur,st.top());
+               ll gcd1 = __gcd(cur,st.top());
                 
                if(gcd1 > 1){
                    ll lcm = (cur*st.top())/gcd1;
