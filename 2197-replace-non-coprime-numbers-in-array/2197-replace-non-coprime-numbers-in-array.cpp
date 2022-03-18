@@ -1,43 +1,30 @@
 class Solution {
 public:
     
-    typedef long long ll;
-    
     vector<int> replaceNonCoprimes(vector<int>& nums) {
         
-        stack<ll> st;
-        ll n = nums.size();
+        vector<int> st;
+        int n = nums.size();
         
-        for(ll i=0;i<n;i++){
+        for(int i=0;i<n;i++){
             
-            ll cur = (ll)nums[i];
+            int cur = nums[i];
             
             while(st.size()){
                 
-             
-               ll gcd1 = __gcd(cur,st.top());
+               int gcd1 = __gcd(cur,st.back());
                 
                if(gcd1 > 1){
-                   ll lcm = (cur*st.top())/gcd1;
-                   st.pop();
+                   int lcm = (cur/gcd1)*st.back();
+                   st.pop_back();
                    cur = lcm;
                }
                else break;
             }
             
-            st.push(cur);
+            st.push_back(cur);
         }
         
-        int sz = st.size();
-        
-        vector<int> ans(sz);
-        
-        while(st.size()){
-            ans[sz-1] = st.top();
-            st.pop();
-            sz--;
-        }
-       
-        return ans;
+        return st;
     }
 };
