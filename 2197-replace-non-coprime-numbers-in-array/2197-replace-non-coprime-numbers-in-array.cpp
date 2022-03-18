@@ -1,5 +1,6 @@
 class Solution {
 public:
+    
     typedef long long ll;
     
     ll gcd(ll a,ll b){
@@ -11,54 +12,39 @@ public:
     
     vector<int> replaceNonCoprimes(vector<int>& nums) {
         
+        stack<ll> st;
         ll n = nums.size();
-        ll odd = 0;
-        
-        vector<ll> st1,st2;
         
         for(ll i=0;i<n;i++){
-            st1.push_back((ll)nums[i]);
-        }
-        
-        ll sz = n;
-        
-        while(true){
             
-            if(st1.size() >= 2){
-                
-                ll x = st1.back();
-                st1.pop_back();
-                ll y = st1.back();
-                st1.pop_back();
-                
-                ll gcd1 = gcd(x,y);
+            ll cur = (ll)nums[i];
             
-                if(gcd1 > 1){
-                    ll lcm = (x*y)/gcd1;
-                    st1.push_back(lcm);
-                }
-                else st1.push_back(y),st2.push_back(x);
-            }
-            else if(st1.size() == 1){
-                odd++;
-                st2.push_back(st1.back());
-                st1.pop_back();
-                if(st2.size() == sz)break;
-                st1 = st2;
-                sz = st2.size();
-                st2.clear();
+            while(st.size()){
+                
+             
+               ll gcd1 = gcd(cur,st.top());
+                
+               if(gcd1 > 1){
+                   ll lcm = (cur*st.top())/gcd1;
+                   st.pop();
+                   cur = lcm;
+               }
+               else break;
             }
             
+            st.push(cur);
         }
         
-        vector<int> ans;
+        int sz = st.size();
         
-        for(auto &i : st2){
-            ans.push_back(i);
+        vector<int> ans(sz);
+        
+        while(st.size()){
+            ans[sz-1] = st.top();
+            st.pop();
+            sz--;
         }
-        
-        if(odd%2 != 0)reverse(ans.begin(),ans.end());
-        
+       
         return ans;
     }
 };
