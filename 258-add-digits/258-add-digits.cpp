@@ -7,8 +7,7 @@ public:
         int val = 0;
         
         while(num){
-            int dig = num%10;
-            val += dig;
+            val += num%10;
             num = num/10;
         }
         
