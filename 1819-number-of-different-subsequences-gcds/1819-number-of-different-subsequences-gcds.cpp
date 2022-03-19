@@ -2,7 +2,9 @@ class Solution {
 public:
     int countDifferentSubsequenceGCDs(vector<int>& nums) {
         
-        int n = nums.size() , m = 200002;
+        int m = *max_element(nums.begin(),nums.end()) + 1;
+        
+        int n = nums.size() , cnt = 0;
         
         vector<int> valid(m,false);
         
@@ -10,7 +12,7 @@ public:
             valid[nums[i]] = true;
         }
         
-        for(int i=1;i<=1e5;i++){
+        for(int i=1;i<m;i++){
             int gcd1 = 0;
             for(int j=i;j<m;j+=i){
                 if(valid[j]){
@@ -19,17 +21,12 @@ public:
                 }
             }
             
-            if(gcd1 == i)valid[i] = true;
-        }
-     
-        int cnt = 0;
-        
-        for(int i=1;i<m;i++){
-            if(valid[i]){
+            if(gcd1 == i){
+                valid[i] = true;
                 cnt++;
             }
         }
-        
+     
         return cnt;
     }
 };
