@@ -4,6 +4,19 @@ public:
     vector<int> v;
     int ans = 0;
     
+    int calculate(vector<int> v){
+        
+        sort(v.begin(),v.end());
+        
+        int sum = 0;
+        
+        for(int i=0;i<v.size();i++){
+             sum += (i+1)*v[i];
+        }
+        
+        return sum;
+    }
+    
     void find(int i,vector<int> &nums){
         
         int n = nums.size();
@@ -11,17 +24,9 @@ public:
         
         if(i == n){
             
-            vector<int> res(v);
-            
-            sort(res.begin(),res.end());
-            int sum = 0;
-            
-            for(int i=0;i<res.size();i++){
-                 sum += (i+1)*res[i];
-            }
-            
-            ans = max(ans,sum);
+            ans = max(ans,calculate(v));
             return ;
+            
         }
         
         int val = INT_MIN;
