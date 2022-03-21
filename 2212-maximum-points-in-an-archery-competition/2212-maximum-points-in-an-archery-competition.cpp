@@ -1,37 +1,56 @@
 class Solution {
 public:
-    
-    int dp[100001][12];
-    
     vector<int> maximumBobPoints(int n, vector<int>& al) {
-        
-        memset(dp,0,sizeof(dp));
+       
         int m = al.size();
+        int target = 1<<m , maxi = INT_MIN , amask = 0;
         
-        for(int i=1;i<n+1;i++){
-            for(int j=0;j<m;j++){
-                if(j == 0){
-                    continue;
+        vector<int> dp(target,INT_MIN);
+        dp[0] = 0;
+        
+        for(int mask=0;mask<target;mask++){
+            
+            if(dp[mask] == INT_MIN)continue;
+            
+            int cur = 0;
+            
+            for(int i=0;i<12;i++){
+                if(mask & (1<<i)){
+                    cur += (al[i]+1);
                 }
-                else if(i-(al[j]+1) >= 0)dp[i][j] = max(dp[i][j-1] , j + dp[i-(al[j]+1)][j-1]);
-                else dp[i][j] = dp[i][j-1];
             }
+            
+            for(int i=0;i<12;i++){
+                
+                if(mask & (1<<i))continue;
+                
+                if(cur + al[i] + 1 <= n){
+                    
+                    int nmask = mask | (1<<i);
+                    
+                    dp[nmask] = dp[mask] + i;
+                    
+                    if(dp[nmask] > maxi){
+                        maxi = dp[nmask];
+                        amask = nmask;
+                    }
+                }
+                
+            }
+            
         }
- 
-        int i = n , j = m-1;
+        
         vector<int> ans(m);
         int sum = 0;
         
-        while(i>0 && j>0){
-            if(j > 0 && dp[i][j] != dp[i][j-1]){
-              ans[j] = al[j]+1;
-              i = i - (al[j]+1);
+        for(int i=0;i<12;i++){
+            if(amask & (1<<i)){
+                ans[i] = al[i]+1;
+                sum += ans[i];
             }
-            sum += ans[j];
-            j--;
         }
         
-        ans[0] = n-sum;
+        ans[0] = n - sum;
         
         return ans;
     }
