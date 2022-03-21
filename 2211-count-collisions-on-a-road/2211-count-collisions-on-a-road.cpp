@@ -1,43 +1,44 @@
 class Solution {
 public:
-    int countCollisions(string s) {
+    int countCollisions(string dir) {
         
-        int n = s.size() , collide = 0;
-        vector<char> st;
+        int n = dir.size() , collide = 0 , cnt = 0 , prev = -1;
         
         for(int i=0;i<n;i++){
             
-            if(s[i] != 'L'){
-                st.push_back(s[i]);
-            }
-            else{
-                char cur = s[i];
-                
-                if(st.size()){
-                    if(st.back() == 'R' && cur == 'L'){
-                        collide+=2;
-                    }
-                    else if(st.back() == 'S' && cur == 'L'){
-                        collide+=1;
-                    }
-                    cur = 'S';
-                    st.pop_back();
+            if(dir[i] == 'L'){
+                if(i == 0){
+                    prev = 0;
+                    continue;
                 }
                 
-                if(cur == 'S')st.push_back(cur);
+                if(dir[i-1] != 'R' && cnt > 0){
+                    collide++;
+                }
+                else if(dir[i-1] == 'R'){
+                    collide += 2;
+                }
+                
+                 int j = i-2;
+                 while(j >= 0 && j > prev && dir[j] == 'R'){
+                     collide++;
+                     j--;
+                 }
+            }
+            else{
+                int j = i-1;
+                if(i > 0 && dir[i] == 'S'){
+                    while(j>=0 && dir[j] == 'R'){
+                        collide++;
+                        j--;
+                    }
+                }
+                cnt++;
             }
             
+            if(dir[i] != 'R')prev = i;
         }
         
-        int cnt = 0;
-        n = st.size();
-        
-        for(int i=n-1;i>=0;i--){
-            if(st[i] == 'S')cnt++;
-            else if(st[i] == 'R' && cnt > 0)collide++;
-        }
-        
-      
-        return collide;
+     return collide;   
     }
 };
