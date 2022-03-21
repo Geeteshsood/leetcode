@@ -1,40 +1,42 @@
 class Solution {
 public:
-    vector<int> maximumBobPoints(int n, vector<int>& al) {
-       
-        int m = al.size();
-        int amask = 0 , maxi = INT_MIN;
+    
+    int maxi = INT_MIN;
+    vector<int> ans,res;
+    
+    void find(int i,int arrused,vector<int> &al,int n,int score){
         
-        for(int mask=0;mask<(1<<m);mask++){
-            
-            int arruse = 0 , score = 0;
-            
-            for(int i=0;i<12;i++){
-                if(mask & (1<<i)){
-                    arruse += (al[i]+1);
-                    score += i;
-                }
-            }
-            
-            if(arruse <= n && score > maxi){
+         if(arrused > n)return ;
+        
+         if(i == al.size()){
+            if(score > maxi){
+                ans = res;
                 maxi = score;
-                amask = mask;
             }
-            
+            return ;
         }
         
-        vector<int> ans(m);
-        int sum = 0;
+        res.push_back(al[i]+1);
+        find(i+1,arrused+al[i]+1,al,n,score +i);
+        res.pop_back();
         
-        for(int i=0;i<12;i++){
-            if(amask & (1<<i)){
-                ans[i] = al[i]+1;
-                sum += ans[i];
-            }
-        }
+        res.push_back(0);
+        find(i+1,arrused,al,n,score);
+        res.pop_back();
         
-        ans[0] = n - sum;
-        
-        return ans;
     }
-};
+    
+    vector<int> maximumBobPoints(int n, vector<int>& al) {
+        
+          find(0,0,al,n,0);
+       
+          int sum = 0;
+          for(auto &x : ans){
+              sum += x;
+          }
+            
+          ans[0] += n-sum;
+        
+      return ans;  
+    }
+};  
