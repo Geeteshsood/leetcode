@@ -3,39 +3,22 @@ public:
     vector<int> maximumBobPoints(int n, vector<int>& al) {
        
         int m = al.size();
-        int target = 1<<m , maxi = INT_MIN , amask = 0;
+        int amask = 0 , maxi = INT_MIN;
         
-        vector<int> dp(target,INT_MIN);
-        dp[0] = 0;
-        
-        for(int mask=0;mask<target;mask++){
+        for(int mask=0;mask<(1<<m);mask++){
             
-            if(dp[mask] == INT_MIN)continue;
-            
-            int cur = 0;
+            int arruse = 0 , score = 0;
             
             for(int i=0;i<12;i++){
                 if(mask & (1<<i)){
-                    cur += (al[i]+1);
+                    arruse += (al[i]+1);
+                    score += i;
                 }
             }
             
-            for(int i=0;i<12;i++){
-                
-                if(mask & (1<<i))continue;
-                
-                if(cur + al[i] + 1 <= n){
-                    
-                    int nmask = mask | (1<<i);
-                    
-                    dp[nmask] = dp[mask] + i;
-                    
-                    if(dp[nmask] > maxi){
-                        maxi = dp[nmask];
-                        amask = nmask;
-                    }
-                }
-                
+            if(arruse <= n && score > maxi){
+                maxi = score;
+                amask = mask;
             }
             
         }
