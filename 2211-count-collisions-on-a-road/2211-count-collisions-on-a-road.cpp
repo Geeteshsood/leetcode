@@ -13,7 +13,7 @@ public:
             else{
                 char cur = s[i];
                 
-                while(st.size()){
+                if(st.size()){
                     if(st.back() == 'R' && cur == 'L'){
                         collide+=2;
                     }
@@ -22,14 +22,16 @@ public:
                     }
                     cur = 'S';
                     st.pop_back();
-                    break;
                 }
+                
                 if(cur == 'S')st.push_back(cur);
             }
             
         }
+        
         int cnt = 0;
         n = st.size();
+        
         for(int i=n-1;i>=0;i--){
             if(st[i] == 'S')cnt++;
             else if(st[i] == 'R' && cnt > 0)collide++;
