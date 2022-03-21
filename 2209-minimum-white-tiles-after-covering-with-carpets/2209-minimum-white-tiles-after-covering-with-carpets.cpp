@@ -1,57 +1,46 @@
 class Solution {
 public:
-    
-    int dp[1001][1001];
-    string s;
-    
-    int find(int i,int n,int len,int move,vector<int> &count){
-       
-        int m = s.size();
+    int minimumWhiteTiles(string floor, int n, int len) {
         
-        if(move >= n)return 0;
-        if(i >= m)return 0;
+        int m = floor.size();
         
-        while(i<m && s[i] == '0' )i++;
+        vector<vector<int>> dp(n+1,vector<int>(m+1));
         
-        if(i >= m)return 0;
-        
-        if(dp[i][move] != -1)return dp[i][move];
-        
-        int zero = 0;
-        
-        if(i+len-1 < m){
-            if(i!=0)zero = count[i+len-1]-count[i-1];
-            else zero = count[i+len-1];
-        }
-        else {
-            if(i!=0)zero = count[m-1]-count[i-1];
-            else zero = count[m-1];
-        }
-        
-        // cout<<i<<" "<<zero<<endl;
-        
-        int x = zero + find(i+len,n,len,move+1,count);
-        int y = find(i+1,n,len,move,count);
-        
-        return dp[i][move] = max(x,y);
-    }
-    
-    int minimumWhiteTiles(string str, int n, int len) {
-        
-        s = str;
-        memset(dp,-1,sizeof(dp));
-        
-        vector<int> count(str.size());
-        
-        int cnt  = 0;
-        for(int i=0;i<str.size();i++){
-            if(str[i] == '1'){
-                cnt++;
+        for(int i=0;i<n+1;i++){
+            
+            for(int j=1;j<=m;j++){
+                
+                if(i == 0){
+                    if(floor[j-1] == '1'){
+                        if(j > 0)dp[i][j] = 1 + dp[i][j-1];
+                        else dp[i][j] = 1;
+                    }
+                    else if(j > 0)dp[i][j] = dp[i][j-1];
+                    
+                    continue;
+                }
+                
+                if(j-len>=0){
+                    if(floor[j-1] == '1')dp[i][j] = min(1 + dp[i][j-1],dp[i-1][j-len]);
+                    else dp[i][j] = min(dp[i][j-1],dp[i-1][j-len]);
+                }
+
             }
-            count[i] = cnt;
         }
-        int x =  find(0,n,len,0,count);
-       
-        return count[str.size()-1] - x;
+        
+        // for(int i=0;i<n+1;i++){
+        //     for(int j=0;j<=m;j++){
+        //         cout<<dp[i][j]<<" ";
+        //     }
+        //     cout<<endl;
+        // }
+        
+     return dp[n][m];
+
+// "   1 0 1 1 0 1 0 1"        
+//   0 1 1 2 3 3 4 4 5 
+//   0 0 0 1 1 2 3 3 4 
+//   0 0 0 0 0 1 1 2 3 
+
     }
 };
