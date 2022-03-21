@@ -1,38 +1,60 @@
 class Solution {
 public:
-    
-    int dp[100001][12];
-    
-    vector<int> maximumBobPoints(int n, vector<int>& al) {
+    vector<int> maximumBobPoints(int numArrows, vector<int>& aliceArrows) {
         
-        memset(dp,0,sizeof(dp));
-        int m = al.size();
+        int dp[13][numArrows+1];
         
-        for(int i=1;i<n+1;i++){
-            for(int j=0;j<m;j++){
-                if(j == 0){
-                    continue;
+        for(int i=0;i<=aliceArrows.size();i++){
+            for(int j=0;j<=numArrows;j++){
+                if(i==0 || j==0)
+                    dp[i][j]=0;
+                else if(j>aliceArrows[i-1]){
+                    dp[i][j]=max(dp[i-1][j], dp[i-1][j-aliceArrows[i-1]-1]+i-1);
                 }
-                else if(i-(al[j]+1) >= 0)dp[i][j] = max(dp[i][j-1] , j + dp[i-(al[j]+1)][j-1]);
-                else dp[i][j] = dp[i][j-1];
+                else{
+                    dp[i][j]=dp[i-1][j];
+                }
             }
         }
- 
-        int i = n , j = m-1;
-        vector<int> ans(m);
-        int sum = 0;
+        
+        // for(int i=0;i<=aliceArrows.size();i++){
+        //     for(int j=0;j<=numArrows;j++){
+        //         cout<<dp[i][j]<<" ";        
+        //     }
+        //     cout<<endl;
+        // }
+       
+        vector<int> res;
+        
+        int i=12;
+        int j=numArrows;
         
         while(i>0 && j>0){
-            if(j > 0 && dp[i][j] != dp[i][j-1]){
-              ans[j] = al[j]+1;
-              i = i - (al[j]+1);
+            
+            if(dp[i-1][j]==dp[i][j]){
+                res.push_back(0);
+                i--;
             }
-            sum += ans[j];
-            j--;
+            else{
+                res.push_back(aliceArrows[i-1]+1);
+                j-=(aliceArrows[i-1]+1);
+                i--;
+            }
         }
         
-        ans[0] = n-sum;
+        while(i>0){
+            res.push_back(0);
+            i--;
+        }
         
-        return ans;
+        int cnt=0;
+        reverse(res.begin(), res.end());
+        
+        for(int m=0;m<res.size();m++){
+            cnt+=res[m];
+        }
+        res[0]+=(numArrows-cnt);
+        return res;
+        
     }
 };
