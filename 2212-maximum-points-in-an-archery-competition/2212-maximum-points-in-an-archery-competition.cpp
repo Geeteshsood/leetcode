@@ -1,43 +1,38 @@
 class Solution {
 public:
     
-    int maxi = INT_MIN;
-    vector<int> ans,v;
-    
-    void find(int i,int moves,vector<int> &al,int n,int sum){
-        
-         if(moves > n)return ;
-        
-         if(i == al.size()){
-            if(sum > maxi){
-//                    for(auto &i : v)cout<<i<<" ";
-                
-//                      cout<<endl;
-//                      cout<<moves<<" "<<endl;
-        
-                int temp = v[0];
-                v[0] = temp+ n - moves;;
-                ans = v;
-                v[0] = temp;
-                maxi = sum;
-            }
-            return ;
-        }
-        
-        v.push_back(al[i]+1);
-         find(i+1,moves+al[i]+1,al,n,sum +i);
-        v.pop_back();
-        
-        v.push_back(0);
-         find(i+1,moves,al,n,sum);
-        v.pop_back();
-        
-    }
+    int dp[100001][12];
     
     vector<int> maximumBobPoints(int n, vector<int>& al) {
         
-     find(0,0,al,n,0);
+        memset(dp,0,sizeof(dp));
+        int m = al.size();
         
-      return ans;  
+        for(int i=1;i<n+1;i++){
+            for(int j=0;j<m;j++){
+                if(j == 0){
+                    continue;
+                }
+                else if(i-(al[j]+1) >= 0)dp[i][j] = max(dp[i][j-1] , j + dp[i-(al[j]+1)][j-1]);
+                else dp[i][j] = dp[i][j-1];
+            }
+        }
+ 
+        int i = n , j = m-1;
+        vector<int> ans(m);
+        int sum = 0;
+        
+        while(i>0 && j>0){
+            if(j > 0 && dp[i][j] != dp[i][j-1]){
+              ans[j] = al[j]+1;
+              i = i - (al[j]+1);
+            }
+            sum += ans[j];
+            j--;
+        }
+        
+        ans[0] = n-sum;
+        
+        return ans;
     }
 };
