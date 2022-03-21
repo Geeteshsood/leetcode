@@ -27,20 +27,8 @@ public:
 
             }
         }
-        
-        // for(int i=0;i<n+1;i++){
-        //     for(int j=0;j<=m;j++){
-        //         cout<<dp[i][j]<<" ";
-        //     }
-        //     cout<<endl;
-        // }
-        
-     return dp[n][m];
 
-// "   1 0 1 1 0 1 0 1"        
-//   0 1 1 2 3 3 4 4 5 
-//   0 0 0 1 1 2 3 3 4 
-//   0 0 0 0 0 1 1 2 3 
+     return dp[n][m];
 
     }
 };
