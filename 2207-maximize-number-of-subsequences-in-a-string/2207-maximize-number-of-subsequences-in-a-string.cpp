@@ -1,38 +1,26 @@
 class Solution {
 public:
-    typedef long long ll;
     
-    ll find(string &s,string &p){
-        
-        ll n = s.size();
-        
-        ll cnt = 0 , val = 0;
-        
-        for(ll i=n-1;i>=0;i--){
-            if(s[i] == p[1]){
-                cnt++;
-            }
-            if(s[i] == p[0]){
-               val += cnt;
-            }
-        }
-        
-        if(p[0] == p[1]){
-            return val - cnt;
-        }
-       
-        return val;
-    }
+    typedef long long ll;
     
     long long maximumSubsequenceCount(string text, string p) {
         
+        ll seq = 0 , freq1 = 0 , freq2 = 0;
         
-        string s1 = p[0] + text;
-        string s2 = text + p[1];
+        int n = text.size();
         
-        ll x = find(s1,p);
-        ll y = find(s2,p);
+        for(int i=n-1;i>=0;i--){
+            if(text[i] == p[1]){
+                freq2++;
+            }
+            if(text[i] == p[0]){
+                seq += freq2;
+                freq1++;
+            }
+        }
         
-        return max(x,y);
+        if(p[0] == p[1])seq-= freq1;
+        
+     return seq + max(freq1,freq2);
     }
 };
