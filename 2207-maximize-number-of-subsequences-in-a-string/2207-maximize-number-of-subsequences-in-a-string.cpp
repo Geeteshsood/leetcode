@@ -2,30 +2,23 @@ class Solution {
 public:
     typedef long long ll;
     
-    ll find(string s,string p){
+    ll find(string &s,string &p){
         
         ll n = s.size();
-        vector<ll> dp(n);
         
-        ll cnt = 0;
+        ll cnt = 0 , val = 0;
         
         for(ll i=n-1;i>=0;i--){
             if(s[i] == p[1]){
                 cnt++;
             }
-            dp[i] = cnt;
-        }
-
-        ll val = 0;
-        
-        for(ll i=0;i<n;i++){
             if(s[i] == p[0]){
-               val += dp[i];
+               val += cnt;
             }
         }
         
         if(p[0] == p[1]){
-            return val - dp[0];
+            return val - cnt;
         }
        
         return val;
