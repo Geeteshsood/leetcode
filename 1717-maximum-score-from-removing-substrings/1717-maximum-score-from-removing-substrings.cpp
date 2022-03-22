@@ -1,7 +1,9 @@
 class Solution {
 public:
     
-    int find(string s,int x,int y,char c1,char c2){
+    int find(string s,int x,int y,char c1,char c2,int cnt){
+        
+        if(cnt > 1)return 0;
         
         int gain = 0;
         string str;
@@ -18,32 +20,17 @@ public:
           else str += s[i];
             
         }
-        // cout<<str<<" "<<gain<<endl;
         
-        string res;
-        for(int i=0;i<str.size();i++){
-        
-          if(str[i] == c2){
-             if(res.size() && res.back() == c1){
-                 gain += y;
-                 res.pop_back();
-             }
-             else res += str[i];
-          }
-          else res += str[i];
-            
-        }
-        
-        return gain;
+        return gain + find(str,y,x,c2,c1,cnt+1);
         
     }
     
     int maximumGain(string s, int x, int y) {
         
         if(y > x){
-            return find(s,y,x,'a','b');
+            return find(s,y,x,'a','b',0);
         }
         
-        return find(s,x,y,'b','a');
+        return find(s,x,y,'b','a',0);
     }
 };
