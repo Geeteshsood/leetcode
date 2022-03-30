@@ -35,8 +35,8 @@ public:
             freq.push_back(fq);
         }
         
-        sort(quantity.begin(), quantity.end(), greater());
-        sort(freq.begin(), freq.end());
+        sort(quantity.rbegin(), quantity.rend());
+        sort(freq.rbegin(), freq.rend());
         
         return find(0,freq,quantity);
     }
