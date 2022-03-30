@@ -1,53 +1,43 @@
 class Solution {
 public:
     
+    bool find(int i,vector<int> &freq,vector<int> &quantity){
+        
+        int n = freq.size() , m = quantity.size();
+        
+        if(i == m){
+            return true;
+        }
+    
+        for(int j=0;j<n;j++){
+            
+            if(quantity[i] <= freq[j]){
+                
+                freq[j]-=quantity[i];
+                if(find(i+1,freq,quantity))return true;
+                freq[j]+=quantity[i];
+            }
+        }
+        
+        return false;
+    }
+    
     bool canDistribute(vector<int>& nums, vector<int>& quantity) {
-       
+        
+        vector<int> freq;
         unordered_map<int,int> mp;
         
-        for(auto &num : nums){
-            mp[num]++;
+        for(auto &i : nums){
+            mp[i]++;
         }
         
-        vector<int> res;
-        for(auto &[num,freq] : mp){
-            res.push_back(freq);
+        for(auto &[num,fq] : mp){
+            freq.push_back(fq);
         }
         
-        int n = res.size() , m = quantity.size();
+        sort(quantity.begin(), quantity.end(), greater());
+        sort(freq.begin(), freq.end());
         
-        vector<vector<bool>> dp(n,vector<bool> (1<<m));
-        vector<vector<bool>> mem(n,vector<bool> (1<<m));
-        
-      for(int i=0;i<n;i++){
-        for(int mask=0;mask<(1<<m);mask++){
-            int val = res[i];
-            for(int bit=0;bit<m;bit++){
-                if(mask & (1<<bit)){
-                    val-=quantity[bit];
-                }
-            }
-            
-            mem[i][mask] = val>=0;
- 
-            if(i==0){
-                dp[i][mask] = mem[i][mask];
-            }
-        }
-          
-        if(mem[i][(1<<m)-1])return true;
-      }
-
-        for(int i=1;i<n;i++){
-            for(int mask=0;mask<(1<<m);mask++){
-                dp[i][mask] = mem[i][mask];
-                for(int submask=mask;submask;submask = (submask-1) & mask){
-                    dp[i][mask] = dp[i][mask] | (mem[i][mask^submask] & dp[i-1][submask]);
-                }
-            }
-            if(dp[i][(1<<m)-1])return true;
-        }
-        
-       return false;
+        return find(0,freq,quantity);
     }
 };
