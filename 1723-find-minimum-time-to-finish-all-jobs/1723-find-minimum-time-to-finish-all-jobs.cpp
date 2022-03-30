@@ -1,39 +1,36 @@
 class Solution {
 public:
-
-    int dp[12][1<<12];
     
-    int minimumTimeRequired(vector<int>& jobs, int k){
+    int ans = INT_MAX;
+    int time[12];
+    
+    void find(int i,int val,vector<int> &jobs,int k){
         
         int n = jobs.size();
+    
+        if(i == n){
+            ans = min(ans,val);
+            return ;
+        }
+         
         
-        int target = 1<<n;
-        memset(dp,-1,sizeof(dp));
-        
-        
-        for(int mask=0;mask<target;mask++){
+        for(int j=0;j<k;j++){
             
-            int sum = 0;
+           if(j > 0 && time[j] == time[j-1])continue;
             
-            for(int i=0;i<n;i++){
-                if(mask & (1<<i)){
-                    sum += jobs[i];
-                }
-            }
-            
-            dp[0][mask] = sum;
+            time[j] += jobs[i];
+            if(time[j] < ans)find(i+1,max(val,time[j]),jobs,k);
+            time[j] -= jobs[i];
         }
         
-        for(int i=1;i<k;i++){
-            for(int mask=0;mask<target;mask++){
-                int val = INT_MAX;
-                for(int submask=mask;submask;submask=(submask-1)&mask){
-                    val=min(val,max(dp[0][submask],dp[i-1][mask^submask]));
-                    dp[i][mask] = val;
-                }
-            }
-        }
+    }
+    
+    int minimumTimeRequired(vector<int>& jobs, int k) {
         
-        return dp[k-1][target-1];
+        memset(time,0,sizeof(time));
+        
+        find(0,0,jobs,k);
+        
+        return ans;
     }
 };
