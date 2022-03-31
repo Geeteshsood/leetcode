@@ -1,35 +1,9 @@
 class Solution {
 public:
-    
-    int find(int i,int j,vector<int> &piles,vector<vector<int>> &dp,bool player1,vector<int> &score){
-        
-         if(i==j){
-             return 0;
-         }
-        
-         if(dp[i][j] != -1)return dp[i][j];
-        
-         int s1 = find(i+1,j,piles,dp,!player1,score);
-         int s2 = find(i,j-1,piles,dp,!player1,score);
-        
-         int total = score[j+1]-score[i] , val = 0;
-        
-         if(player1){
-              val = max(s1 + piles[i] , s2 + piles[j]);
-         }
-         else{
-              int p1 = total - (piles[i] + score[j+1]-score[i+1] - s1);
-              int p2 = total - (piles[j] + score[j] - score[i] - s2);
-              val = min(p1,p2);
-         }
-        
-        return dp[i][j] = val;
-    }
-    
     bool stoneGame(vector<int>& piles) {
         
         int n = piles.size();
-        vector<vector<int>> dp(n,vector<int>(n,-1));
+        bool player1 = false;
         
         vector<int> score(n+1);
         
@@ -40,8 +14,27 @@ public:
             score[i+1] = sum;
         }
         
-        int p1 =  find(0,n-1,piles,dp,true,score);
+        vector<vector<int>> dp(n,vector<int>(n));
         
-        return p1>=sum-p1;
+        for(int g=1;g<n;g++){
+            
+            player1 = !player1;
+            
+            for(int i=0,j=g;i<n && j<n;i++,j++){
+                 
+                 if(player1){
+                     dp[i][j] = max(piles[i] + dp[i+1][j] , piles[j] + dp[i][j-1]);
+                 }
+                 else{
+                     
+                     int score1 = piles[i] + score[j+1]-score[i+1] - dp[i+1][j];
+                     int score2 = piles[j] + score[j]-score[i] - dp[i][j-1];
+                     
+                     dp[i][j] = score[j+1] - score[i] - max(score1,score2);
+                 }
+            }
+        }
+        
+     return dp[0][n-1] >= sum-dp[0][n-1];
     }
 };
