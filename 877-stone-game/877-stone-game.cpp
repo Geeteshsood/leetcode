@@ -1,28 +1,47 @@
 class Solution {
 public:
     
-    vector<int> find(int i,int j,vector<int> &piles,bool flag,vector<vector<vector<int>>> &dp){
+    int find(int i,int j,vector<int> &piles,vector<vector<int>> &dp,bool player1,vector<int> &score){
         
          if(i==j){
-             return {piles[i],0};
+             return 0;
          }
         
-         if(dp[i][j][0] != -1)return dp[i][j];
+         if(dp[i][j] != -1)return dp[i][j];
         
-         auto s1 = find(i+1,j,piles,!flag,dp);
-         auto s2 = find(i,j-1,piles,!flag,dp);
+         int s1 = find(i+1,j,piles,dp,!player1,score);
+         int s2 = find(i,j-1,piles,dp,!player1,score);
         
-         if(piles[i] + s1[0] >= piles[j] + s2[0]) return dp[i][j] = {piles[i] + s1[0],s1[1]};
-         else return dp[i][j] = {piles[j] + s2[0],s2[1]};
+         int total = score[j+1]-score[i] , val = 0;
+        
+         if(player1){
+              val = max(s1 + piles[i] , s2 + piles[j]);
+         }
+         else{
+              int p1 = total - (piles[i] + score[j+1]-score[i+1] - s1);
+              int p2 = total - (piles[j] + score[j] - score[i] - s2);
+              val = min(p1,p2);
+         }
+        
+        return dp[i][j] = val;
     }
     
     bool stoneGame(vector<int>& piles) {
         
         int n = piles.size();
-        vector<vector<vector<int>>> dp(n,vector<vector<int>>(n,vector<int>(2,-1)));
+        vector<vector<int>> dp(n,vector<int>(n,-1));
         
-        vector<int> score = find(0,n-1,piles,true,dp);
+        vector<int> score(n+1);
         
-        return score[0] >= score[1];
+        int sum = 0;
+        
+        for(int i=0;i<n;i++){
+            sum += piles[i];
+            score[i+1] = sum;
+        }
+        
+        int p1 =  find(0,n-1,piles,dp,true,score);
+        
+        return p1>=sum-p1;
     }
 };
