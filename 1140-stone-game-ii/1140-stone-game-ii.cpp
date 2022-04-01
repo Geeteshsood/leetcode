@@ -1,43 +1,54 @@
 class Solution {
 public:
     
-    typedef pair<int,int> pi;
-    pi dp[101][65][2];
+    int dp[101][65];
     
-    pi find(int i,int M,vector<int> &piles,bool player1){
+    int find(int i,int M,vector<int> &piles,vector<int> &score){
         
-        int stone = 0 , maxi = 0 , sec = 0 , n = piles.size();
+        // cout<<i<<endl;
         
-        if(i >= n)return {0,0};
+        int n = piles.size();
         
-        if(dp[i][M][player1].first != -1)return dp[i][M][player1];
+        if(i >= n)return 0;
+        
+        if(dp[i][M] != -1)return dp[i][M];
+        
+        int ans = 0;
+        
+        for(int X=1;X<=2*M && i+X<=n;X++){  // p1 choice
             
-        for(int X=1;X<=2*M && i+X-1<n;X++){
+              int sum = score[i+X] - score[i];
             
-            stone += piles[i+X-1];
+              int m = max(M,X) , val = INT_MAX;
             
-            auto it = find(i+X,max(M,X),piles,!player1);
+              for(int j=1;j<=2*m;j++){    // p2 choice
+                  
+                 int x = find(i+j+X,max(m,j),piles,score);
+                 
+                 val = min(val,sum + x);
+              }
             
-            if(player1 && stone + it.first > maxi){
-                maxi = stone + it.first;
-                sec = it.second;
-            }
-            else if(!player1 && stone + it.second > sec){
-                sec = stone + it.second;
-                maxi = it.first;
-            }
+             // cout<<i<<" "<<sum<<" "<<val<<endl;
+            ans = max(ans,val);
         }
       
-        return dp[i][M][player1] = {maxi,sec};
+        return dp[i][M] = ans;
     }
     
     int stoneGameII(vector<int>& piles) {
         
-        int n = piles.size();
         memset(dp,-1,sizeof(dp));
         
-        pi it = find(0,1,piles,true);
+        int n = piles.size();
+        vector<int> score(n+1);
         
-        return it.first;
+        int sum = 0;
+        
+        for(int i=0;i<n;i++){
+            sum += piles[i];
+            score[i+1] = sum;
+        }
+
+        return find(0,1,piles,score);
     }
 };
