@@ -2,7 +2,7 @@ class Solution {
 public:
     
     typedef pair<int,int> pi;
-    pi dp[101][101][2];
+    pi dp[101][65][2];
     
     pi find(int i,int M,vector<int> &piles,bool player1){
         
