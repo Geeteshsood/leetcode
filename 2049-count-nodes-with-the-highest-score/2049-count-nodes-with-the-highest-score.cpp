@@ -2,54 +2,46 @@ class Solution {
 public:
     typedef long long ll;
     
-    ll ans = INT_MIN , val = INT_MIN , cnt = 0;
+    ll cnt = 0 , val = 0 , ans = 0;
     
-    ll find(ll node,ll n,vector<vector<ll>> &child){
+    ll find(ll node,vector<vector<ll>> &child){
         
-        ll size = child[node].size() , left = 0 , right = 0;
+        ll n = child.size() , pro = 1 , sum = 0;
         
-        if(size == 2){
-            left  =  find(child[node][0],n,child);
-            right = find(child[node][1],n,child);
+        for(auto &it : child[node]){
+            
+            ll cnt = find(it,child);
+            
+            pro = pro*cnt;
+            sum += cnt;
         }
-        else if(size == 1){
-            left  = find(child[node][0],n,child);
-        }
         
-        // cout<<node<<" "<<left<<" "<<right<<endl;
+        ll rem = n - sum - 1;
         
-        ll total = 1 + left + right;
+        if(rem == 0)val = pro;
+        else val = pro*rem;
         
-        ll rem = n-left-right-1;
-        
-        if(left == 0)left = 1;
-        if(right == 0)right = 1;
-        if(rem == 0)rem = 1;
-        
-        val = left*right*rem;
-        // cout<<node<<" "<<val<<endl;
         if(val > ans){
             ans = val;
             cnt = 1;
         }
-        else if(val == ans){
-            cnt++;
-        }
+        else if(val == ans)cnt++;
         
-     return total;  
+        return 1 + sum;
     }
     
-    int countHighestScoreNodes(vector<int>& parents) {
+    int countHighestScoreNodes(vector<int>& par) {
         
-        ll n = parents.size();
-       
-        vector<vector<ll>> child(n,vector<ll>());
+        ll n = par.size();
+        vector<vector<ll>> child(n);
         
         for(ll i=0;i<n;i++){
-            if(parents[i] != -1)child[parents[i]].push_back(i);
+            if(par[i] != -1){
+                child[par[i]].push_back(i);
+            }
         }
         
-        find(0,n,child);
+        find(0,child);
         
         return cnt;
     }
