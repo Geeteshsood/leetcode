@@ -28,32 +28,32 @@ public:
               }
          }
         
+         unordered_map<int,vector<int>> mp;
+        
          for(int i=0;i<n;i++){
              par[i] = find(i,par);
+             mp[par[i]].push_back(i);
          }
          
-         unordered_map<int,string> mp;
-         unordered_map<int,int> freq;
-        
-         for(int i=0;i<n;i++){
-             // cout<<i<<" "<<par[i]<<endl;
-             mp[par[i]]+=s[i];
-         }
-        
-         for(auto &[x,y] : mp){
-             sort(mp[x].begin(),mp[x].end());
-             freq[x] = 0;
-         }
-        
-         string str;
-        
-         for(int i=0;i<n;i++){
-            str += mp[par[i]][freq[par[i]]];
-            freq[par[i]]++;
+         for(auto &it : mp){
+             
+             string str;
+             
+             for(auto &x : it.second){
+                 str += s[x];
+             }
+             
+             sort(str.begin(),str.end());
+             
+             int j = 0;
+             
+             for(auto &x : it.second){
+                 s[x] = str[j];
+                 j++;
+             }
+             
          }
          
-       return str;
-        
-        
+       return s;
     }
 };
