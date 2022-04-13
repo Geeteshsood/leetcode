@@ -23,6 +23,8 @@ public:
             
             q.pop();
             
+            if(k != diff[i][j])continue;
+            
             for(auto &it : dir){
                 
                 int x = i + it[0];
