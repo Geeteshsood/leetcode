@@ -1,7 +1,7 @@
 class Solution {
 public:
     
-    int find(int i,vector<vector<int>> &dp,vector<int> &vis){
+    int find(int i,vector<vector<int>> &dp,int mask){
         
         int m = dp.size();
         
@@ -11,10 +11,10 @@ public:
         
         for(int j=0;j<m;j++){
             
-            if(!vis[j]){
-                vis[j] = true;
-                val = max(val , dp[i][j] + find(i+1,dp,vis));
-                vis[j] = false;
+            if(!(mask & (1<<j))){
+                mask = mask | (1<<j);
+                val = max(val , dp[i][j] + find(i+1,dp,mask));
+                mask = mask ^ (1<<j);
             }
             
         }
@@ -43,8 +43,8 @@ public:
             }
         }
         
-        vector<int> vis(m,false) ;
+        int mask = 0;
         
-        return find(0,dp,vis);
+        return find(0,dp,mask);
     }
 };
