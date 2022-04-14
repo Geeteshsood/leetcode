@@ -1,7 +1,7 @@
 class Solution {
 public:
     
-    int mem[8][1<<8];
+    int mem[1<<8];
     
     int find(int i,vector<vector<int>> &dp,int mask){
         
@@ -9,8 +9,8 @@ public:
         
         if(i == m)return 0;
         
-        if(mem[i][mask] != -1){
-            return mem[i][mask];
+        if(mem[mask] != -1){
+            return mem[mask];
         }
         
         int val = 0;
@@ -25,7 +25,7 @@ public:
             
         }
         
-     return mem[i][mask] = val;   
+     return mem[mask] = val;   
     }
     
     int maxCompatibilitySum(vector<vector<int>>& students, vector<vector<int>>& mentors) {
