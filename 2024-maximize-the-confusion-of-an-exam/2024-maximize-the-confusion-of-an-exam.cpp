@@ -26,7 +26,7 @@ public:
             
             if(i != 0) t = tr[i-1] , f = fl[i-1];
             
-            int start = i , end = n-1 , ans = i;
+            int start = i+len , end = n-1 , ans = i;
             
             while(start <= end){
                 
