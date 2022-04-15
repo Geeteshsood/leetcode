@@ -1,48 +1,24 @@
 class Solution {
 public:
-    int maxConsecutiveAnswers(string str, int k) {
+    int maxConsecutiveAnswers(string str , int k) {
         
-        int n = str.size();
+        int n = str.size() , len = 0;
         
-        vector<int> tr(n),fl(n);
-        
-        if(str[0] == 'T')tr[0] = 1;
-        else fl[0] = 1;
-            
-        for(int i=1;i<n;i++){
-            if(str[i] == 'T'){
-                tr[i] = tr[i-1] + 1;
-                fl[i] = fl[i-1];
-            }
-            else{
-                fl[i] = fl[i-1] + 1;
-                tr[i] = tr[i-1];
-            }
-        }
-        
-        int len = 1 , t = 0 , f = 0;
+        int tr = 0 , fl = 0 , j = 0;
         
         for(int i=0;i<n;i++){
             
-            if(i != 0) t = tr[i-1] , f = fl[i-1];
+            if(str[i] == 'T')tr++;
+            else fl++;
             
-            int start = i+len , end = n-1 , ans = i;
-            
-            while(start <= end){
-                
-               int mid = start + (end - start)/2;
-                   
-               int x = tr[mid] - t;
-               int y = fl[mid] - f;
-                
-               if(x <= k || y <= k){
-                   ans = mid;
-                   start = mid+1;
-               }
-               else end = mid - 1;
+            if(tr <= k || fl <= k){
+                len = max(len,i-j+1);
             }
-            
-            len = max(len , ans - i + 1);
+            else{
+                if(str[j] == 'T')tr--;
+                else fl--;
+                j++;
+            }
         }
         
       return len;  
