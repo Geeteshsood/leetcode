@@ -18,15 +18,19 @@ public:
       sum = 0;
     
       for(ll i=n-1;i>=0;i--){
+          
          sum += nums[i];
          ll rem = p-(sum%p);
-         
+           if(sum%p == 0)len = max(len , n-i);
+         if(!mp.count(rem))continue;
+          
          for(auto &j : mp[rem]){
              if(j < i){
                  len = max(len , n-i + j + 1);
              }
          }
-         if(sum%p == 0)len = max(len , n-i);
+          // lower_bound(v.begin(),v.end(),i) - v.begin();
+         // if(sum%p == 0)len = max(len , n-i);
       }
         
         if(len == 0)return -1;
