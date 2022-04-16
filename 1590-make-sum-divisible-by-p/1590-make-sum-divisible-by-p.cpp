@@ -19,18 +19,29 @@ public:
     
       for(ll i=n-1;i>=0;i--){
           
-         sum += nums[i];
-         ll rem = p-(sum%p);
-           if(sum%p == 0)len = max(len , n-i);
+          sum += nums[i];
+          ll rem = p-(sum%p);
+          
+          if(sum%p == 0)len = max(len , n-i);
+          
          if(!mp.count(rem))continue;
           
-         for(auto &j : mp[rem]){
-             if(j < i){
-                 len = max(len , n-i + j + 1);
-             }
+         ll j = 0;
+          
+         auto it = lower_bound(mp[rem].begin(),mp[rem].end(),i) - mp[rem].begin();
+          
+         if(it == mp[rem].size()){
+              j = mp[rem].back();
          }
-          // lower_bound(v.begin(),v.end(),i) - v.begin();
-         // if(sum%p == 0)len = max(len , n-i);
+         else{
+             if(mp[rem].size() != 1 && it !=0){
+                 j = mp[rem][it-1];
+             }
+             else continue;
+         }
+          
+         len = max(len , n-i + j + 1);
+      
       }
         
         if(len == 0)return -1;
