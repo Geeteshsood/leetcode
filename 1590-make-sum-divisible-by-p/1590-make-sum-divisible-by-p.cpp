@@ -4,48 +4,37 @@ public:
     
     int minSubarray(vector<int>& nums, ll p) {
         
-      unordered_map<ll,vector<ll>> mp;
+        ll n = nums.size() , total = 0;
         
-      ll n = nums.size() , sum = 0 , len = 0;
+        for(ll i=0;i<n;i++){
+            total += nums[i];
+        }
         
-      for(ll i=0;i<n;i++){
-          sum += nums[i];
-          
-          mp[sum%p].push_back(i);
-          if(sum %p == 0)len = max(len , i+1);
-      } 
+        ll r = total%p;
         
-      sum = 0;
-    
-      for(ll i=n-1;i>=0;i--){
-          
-          sum += nums[i];
-          ll rem = p-(sum%p);
-          
-          if(sum%p == 0)len = max(len , n-i);
-          
-         if(!mp.count(rem))continue;
-          
-         ll j = 0;
-          
-         auto it = lower_bound(mp[rem].begin(),mp[rem].end(),i) - mp[rem].begin();
-          
-         if(it == mp[rem].size()){
-              j = mp[rem].back();
-         }
-         else{
-             if(mp[rem].size() != 1 && it !=0){
-                 j = mp[rem][it-1];
-             }
-             else continue;
-         }
-          
-         len = max(len , n-i + j + 1);
-      
-      }
+        if(r == 0)return 0;
         
-        if(len == 0)return -1;
+        unordered_map<ll,ll> mp;
+        mp[0] = -1;
         
-        return n-len;
+        ll sum = 0 , len = n;
+        
+        for(ll i=0;i<n;i++){
+            
+            sum += nums[i];
+            
+            ll val = ((sum%p - r) + p)%p;
+            
+            if(mp.find(val) != mp.end()){
+                len = min(len , i - mp[val]);
+            }
+            
+            mp[sum%p] = i;
+            
+        }
+        
+        if(len == n)return -1;
+        
+        return len;
     }
 };
