@@ -4,38 +4,21 @@ public:
         
         int n = nums.size();
         
-        stack<int> st;
-        vector<int> left(n);
+        vector<int> left(n,INT_MAX);
         
-        for(int i=0;i<n;i++){
-            
-            while(st.size() && nums[i] <= nums[st.top()]){
-                st.pop();
-            }
-            
-            if(st.size()){
-                left[i] = st.top();
-            }
-            else left[i] = -1;
-            
-            st.push(i);
+        for(int i=1;i<n;i++){
+            left[i] = min(left[i-1],nums[i-1]);
         }
         
-        while(st.size())st.pop();
+        int val = INT_MIN;
         
-        for(int i=n-1;i>=0;i--){
-            
-            while(st.size() && nums[i] >= nums[st.top()]){
-                st.pop();
+        for(int i=n-2;i>0;i--){
+            val = max(val,nums[i+1]);
+            if(left[i] < nums[i] && val > nums[i]){
+                return true;
             }
-            
-            if(st.size()){
-                if(left[i] != -1)return true;
-            }
-          
-            st.push(i);
         }
         
-      return false;  
+        return false;
     }
 };
