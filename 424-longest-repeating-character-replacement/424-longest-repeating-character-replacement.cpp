@@ -2,9 +2,9 @@ class Solution {
 public:
     int characterReplacement(string s, int k) {
         
-        int n = s.size() , len = INT_MIN , maxi = INT_MIN , j = 0;
+        int n = s.size() , maxi = INT_MIN , j = 0;
         
-        unordered_map<char,int> freq;
+        unordered_map<int,int> freq;
         
         for(int i=0;i<n;i++){
             
@@ -16,15 +16,12 @@ public:
             
             int val = i-j+1-maxi;
             
-            if(val <= k){
-                len = max(len,i-j+1);
-            }
-            else{
+            if(val > k){
                 freq[s[j]]--;
                 j++;
             }
         }
         
-       return len; 
+       return n-j; 
     }
 };
