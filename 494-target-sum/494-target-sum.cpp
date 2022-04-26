@@ -6,22 +6,26 @@ public:
         int n = nums.size();
         int sum = accumulate(nums.begin(),nums.end(),0);
         
-        int mini = -sum , maxi = sum;
+        int nsum = (sum + target)/2;
         
-        int dp[22][4*sum+1];
+        if((sum+target)%2 != 0 || nsum < 0)return 0;
+        
+        int dp[n+1][nsum+1];
         memset(dp,0,sizeof(dp));
         
-        dp[0][2*sum] = 1;
+        dp[0][0] = 1;
         
         for(int i=1;i<=n;i++){
             
-           for(int j=mini;j<=maxi;j++){
+           for(int j=0;j<=nsum;j++){
                
-              dp[i][j+2*sum] = dp[i-1][j-nums[i-1]+2*sum] + dp[i-1][j+nums[i-1]+2*sum];
-               
+               if(j-nums[i-1] >= 0){
+                   dp[i][j] = dp[i-1][j] + dp[i-1][j-nums[i-1]];
+               }
+               else dp[i][j] = dp[i-1][j];
            }
         }
-        
-        return dp[n][target+2*sum];
+
+        return dp[n][nsum];
     }
 };
