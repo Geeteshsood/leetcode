@@ -13,34 +13,27 @@ public:
         priority_queue<pair<int,char>> pq;
         
         for(auto &[x,y] : mp){
+            if(y > (n+1)/2)return "";
             pq.push({y,x});
         }
         
-        string str;
+        string str(s);
         
-        while(pq.size() > 1){
+        int idx = 0;
+        while(pq.size()){
+        
+          int freq = pq.top().first;
+          char ch  = pq.top().second;
             
-           auto x = pq.top();
-           pq.pop();
-           auto y = pq.top();
-           pq.pop();
-           
-           str += x.second;
-           str += y.second;
-              
-           if(x.first != 1)pq.push({x.first-1,x.second}); 
-           if(y.first != 1)pq.push({y.first-1,y.second});    
-            
-        }
-     
-        if(pq.size() == 0){
-            return str;
-        }
-        else if(pq.top().first == 1){
-            str += pq.top().second;
-            return str;
+          for(int i=0;i<freq;i++){
+              str[idx] = ch;
+              idx+=2;
+              if(idx > n-1)idx = 1;
+          }
+         
+          pq.pop();
         }
        
-        return "";
+        return str;
     }
 };
