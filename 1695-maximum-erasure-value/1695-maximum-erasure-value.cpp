@@ -3,7 +3,7 @@ public:
     
     int maximumUniqueSubarray(vector<int>& nums) {
         
-        vector<bool> vis(1e4+1,false);
+        unordered_map<int,int> mp;
         
         int n = nums.size() , val = 0;
         
@@ -14,24 +14,17 @@ public:
             dp[i+1] = val;
         }
         
-        int sum = 0 , j = 0;
+        int sum = 0 , idx = -1;
         
         for(int i=0;i<n;i++){
             
-            if(vis[nums[i]]){
-                
-                while(j < i && nums[j] != nums[i]){
-                    vis[nums[j]] = false;
-                    j++;
-                }
-                j++;
-                // cout<<i<<" "<<j<<endl;
-                sum = max(sum,dp[i+1]-dp[j]);
+            if(mp.count(nums[i])){
+                idx = max(idx,mp[nums[i]]);
             }
-            else{
-              vis[nums[i]] = true;
-              sum = max(sum,dp[i+1]-dp[j]);
-            }
+            
+            mp[nums[i]] = i;
+            // cout<<i<<" "<<idx<<endl;
+            sum = max(sum,dp[i+1]-dp[idx+1]);
         }
         
        return sum;
