@@ -23,7 +23,6 @@ public:
             }
             
             mp[nums[i]] = i;
-            // cout<<i<<" "<<idx<<endl;
             sum = max(sum,dp[i+1]-dp[idx+1]);
         }
         
