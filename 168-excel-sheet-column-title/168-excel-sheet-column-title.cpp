@@ -9,15 +9,11 @@ public:
         
         while(n){
           
-           val = val*26;
+           int x = (n-1)%26;
+           
+           str +=  x + 'A';
             
-           ll x = (n-1)%val;
-            
-           char ch = (x/(val/26)) + 'A';
-            
-           str += ch;
-            
-           n = n-x-1;
+           n = (n-1)/26;
         }
         
         reverse(str.begin(),str.end());
