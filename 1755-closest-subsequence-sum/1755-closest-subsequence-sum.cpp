@@ -21,18 +21,10 @@ public:
          find(n/2,n,0,nums,dp2);
         
          sort(dp2.begin(),dp2.end());
-        
-//          for(auto &i : dp1)cout<<i<<" ";
-//          cout<<endl;
-        
-//          for(auto &i : dp2)cout<<i<<" ";
-//          cout<<endl;
-         
-//          cout<<" ** "<<endl;
+
          for(auto &i : dp1){
              
              int start = 0 , end = dp2.size()-1 , idx = dp2.size()-1;
-             // cout<<i<<" ";
              while(start <= end){
                  
                  int mid = start + (end - start)/2;
@@ -43,7 +35,6 @@ public:
                  }
                  else start = mid + 1;
              }
-             // cout<<idx<<endl;
              if(idx > 0)ans = min(ans,abs(goal-(i + dp2[idx-1])) );
              ans = min(ans,abs(goal - (i + dp2[idx])));
          }
