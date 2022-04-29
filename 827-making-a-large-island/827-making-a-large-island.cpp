@@ -43,13 +43,6 @@ public:
             }
         }
         
-//            for(int i=0;i<m;i++){
-//             for(int j=0;j<n;j++){
-//                 cout<<mp[grid[i][j]]<<" ";
-//             }
-//                cout<<endl;
-//         }
-       
         bool flag = true;
         int ans= 0;
         
