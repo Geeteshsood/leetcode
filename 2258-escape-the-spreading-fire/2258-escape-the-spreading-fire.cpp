@@ -16,28 +16,28 @@ public:
         
         vector<vector<int>> fire(m,vector<int>(n,INT_MAX));
         
-        queue<pi> q;
+        queue<pi> qu;
         
         for(int i=0;i<m;i++){
             for(int j=0;j<n;j++){
                 if(grid[i][j] == 1){
                     fire[i][j] = 0;
-                    q.push({i,j});
+                    qu.push({i,j});
                 }
             }
         }
         
         int lev = 1;
         
-        while(q.size()){
+        while(qu.size()){
             
-            int size = q.size();
+            int size = qu.size();
             
             for(int k=0;k<size;k++){
                 
-                int i = q.front().first;
-                int j = q.front().second;
-                q.pop();
+                int i = qu.front().first;
+                int j = qu.front().second;
+                qu.pop();
                 
                 for(auto &it : dir){
                     
@@ -46,7 +46,7 @@ public:
                     
                     if(isValid(x,y,m,n) && grid[x][y] != 2 && fire[x][y] == INT_MAX){
                         fire[x][y] = lev;
-                        q.push({x,y});
+                        qu.push({x,y});
                     }
                 }
             }
@@ -60,21 +60,14 @@ public:
 //             cout<<endl;
 //         }
         
-        int ans = -1;
-        
-        int maxi = 2 * 1e4 + 1;
-        
-        int start = 0 , end = maxi;
-        
-        while(start <= end){
-            
-            int mid = start + (end - start)/2;
-            
+            int ans = -1;
+
             vector<vector<int>> vis(m,vector<int>(n,false));
             
             lev = 1;
         
-            q.push({0,0});
+            queue<pair<pair<int,int>,int>> q;
+            q.push({{0,0},INT_MAX});
             
             while(q.size()){
                 
@@ -82,8 +75,10 @@ public:
                 
                 for(int k=0;k<size;k++){
                     
-                    int i = q.front().first;
-                    int j = q.front().second;
+                    int i = q.front().first.first;
+                    int j = q.front().first.second;
+                    int val = q.front().second;
+                    
                     q.pop();
                     
                     for(auto &it : dir){
@@ -91,11 +86,17 @@ public:
                         int x = i + it[0];
                         int y = j + it[1];
                         
-                        if(x == m-1 && y == n-1 && mid + lev <= fire[x][y])vis[x][y] = true;
-                        
-                        if(isValid(x,y,m,n) && grid[x][y] != 2 && !vis[x][y] && mid + lev < fire[x][y]){
+                        if(x == m-1 && y == n-1 && lev <= fire[x][y]){
+                            int res = INT_MAX;
+                            if(fire[x][y] != INT_MAX){res = min(val , fire[x][y]-lev);
+                            ans = max(ans,res);}
                             vis[x][y] = true;
-                            q.push({x,y});
+                        }
+                        else if(isValid(x,y,m,n) && grid[x][y] != 2 && !vis[x][y] && lev < fire[x][y]){
+                            vis[x][y] = true;
+                            int res = INT_MAX;
+                            if(fire[x][y] != INT_MAX)res = min(val , fire[x][y]-lev-1);
+                            q.push({{x,y},res});
                         }
                     }
                 }
@@ -103,11 +104,9 @@ public:
                 lev++;
             }
                             
-            if(vis[m-1][n-1])ans = mid,start = mid + 1;
-            else end = mid-1;
-        }
+            if(!vis[m-1][n-1])return -1;
        
-        if(ans == maxi)return 1e9;
+            if(ans == -1)return 1e9;
         
         return ans;
     }
