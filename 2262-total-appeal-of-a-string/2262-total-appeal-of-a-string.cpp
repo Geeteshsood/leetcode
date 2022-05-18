@@ -4,25 +4,19 @@ public:
     
     long long appealSum(string s) {
         
-        ll n = s.size();
+        ll n = s.size() , sum = 0 , cur = 0 , prev = 0;
         vector<int> pos(26,-1);
         
-        vector<ll> dp(n);
-        
         for(ll i=0;i<n;i++){
             
-            if(i!=0)dp[i] = dp[i-1] + i-pos[s[i]-'a'];
-            else dp[i] = 1;
+            if(i!=0)cur = prev + i-pos[s[i]-'a'];
+            else cur = 1;
             
             pos[s[i]-'a'] = i;
+            sum += cur;
+            prev = cur;
         }
-       
-        ll sum = 0;
-        
-        for(ll i=0;i<n;i++){
-            sum += dp[i];
-        }
-        
+
         return sum;
     }
 };
