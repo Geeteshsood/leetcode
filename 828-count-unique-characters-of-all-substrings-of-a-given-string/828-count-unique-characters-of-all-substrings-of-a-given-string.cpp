@@ -4,7 +4,7 @@ public:
     
     int uniqueLetterString(string s) {
         
-        int n = s.size();
+        int n = s.size() , sum = 0;
         vector<pi> pos(26,{-1,-1});
         
         vector<int> dp(n);
@@ -21,14 +21,9 @@ public:
             pos[s[i]-'A'].second = pos[s[i]-'A'].first;
             pos[s[i]-'A'].first = i;
             
-        }
-
-        int sum = 0;
-        
-        for(int i=0;i<n;i++){
             sum += dp[i];
         }
-        
+
         return sum;
     }
 };
