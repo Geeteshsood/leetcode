@@ -14,21 +14,21 @@ public:
         
        ll n = word.size();
         
-       vector<ll> dp(n);
-       ll sum = 0;
+       ll sum = 0 , cur = 0 , prev = 0;
         
-       if(isVowel(word[0]))dp[0] = 1,sum = 1;
+       if(isVowel(word[0]))prev = 1,sum = 1;
         
        for(ll i=1;i<n;i++){
            
            if(isVowel(word[i])){
-               dp[i] = dp[i-1] + i+1;
+               cur = prev + i+1;
            }
            else{
-               dp[i] = dp[i-1];
+               cur = prev;
            }
            
-           sum += dp[i];
+           sum += cur;
+           prev = cur;
        }
     
         return sum;
