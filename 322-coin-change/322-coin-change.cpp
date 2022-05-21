@@ -1,32 +1,32 @@
 class Solution {
 public:
-    
-    int find(int i,int sum,vector<int> &coins ,int amount,vector<vector<int>> &dp){
-        
-        if(amount == sum)return 0;
-        else if(amount < sum || i == coins.size())return INT_MAX;
-        
-        if(dp[i][sum] != -1)return dp[i][sum];
-        
-         int x = INT_MAX;
-        
-        if(coins[i] <= amount)x = find(i,sum + coins[i],coins,amount,dp);
-        
-        int y = find(i+1,sum,coins,amount,dp);
-        
-        if(x == INT_MAX)return dp[i][sum] = y;
-        
-        else return dp[i][sum] = min(1+x,y);
-    }
-    
     int coinChange(vector<int>& coins, int amount) {
         
-        vector<vector<int>> dp(coins.size(),vector<int>(amount,-1));
+        int n = coins.size();
         
-        int ans = find(0,0,coins,amount,dp);
+        vector<vector<int>> dp(n,vector<int>(amount+1,INT_MAX));
         
-        if(ans == INT_MAX)return -1;
+        for(int i=0;i<n;i++)dp[i][0] = 1;
         
-        return ans;
+        for(int i=0;i<n;i++){
+            for(int j=0;j<=amount;j++){
+                
+                if(i == 0){
+                    if(j-coins[i]>=0 && dp[i][j-coins[i]] != INT_MAX){
+                        dp[i][j] = 1 + dp[i][j-coins[i]];
+                    }
+                }
+                else{
+                    if(j-coins[i]>=0 && dp[i][j-coins[i]] != INT_MAX){
+                        dp[i][j] = min(dp[i-1][j] , 1 + dp[i][j-coins[i]]);
+                    }
+                    else dp[i][j] = dp[i-1][j];
+                }
+            }
+        }
+        
+        if(dp[n-1][amount] == INT_MAX)return -1;
+        
+        return dp[n-1][amount]-1;
     }
 };
