@@ -91,56 +91,44 @@ int main(void) {
 }
 // } Driver Code Ends
 
-
-/* Node structure  used in the program
-
-struct Node{
-	int data;
-	struct Node * next;
-	struct Node * bottom;
-	
-	Node(int x){
-	    data = x;
-	    next = NULL;
-	    bottom = NULL;
-	}
-	
-};
-*/
-
-/*  Function which returns the  root of 
-    the flattened linked list. */
 Node *flatten(Node *root)
 {
-    vector<int> res;
-    
-    while(root){
-        
-        Node* temp = root;
-        
-        while(temp){
-           res.push_back(temp->data);
-           temp = temp->bottom;
-        }
-        
-        root = root->next;
-    }
-    
-    sort(res.begin(),res.end());
-    
-    Node* dummy = new Node(0);
-    
-    Node* head = dummy;
-    
-    for(auto &i : res){
-        
-        Node* temp = new Node(i);
-        // cout<<temp->data<<endl;
-        dummy->bottom = temp;
-      
-        dummy = dummy->bottom;
-    }
+        if(root == NULL)return root;
 
-    return head->bottom;
+        Node* temp1 = root;
+        Node* temp2 = flatten(root->next);
+
+        Node* dummy = new Node(0);
+        Node* head = dummy;
+        dummy->next = NULL;
+        
+        while(temp1 && temp2){
+            
+            if(temp1->data < temp2->data){
+                dummy->bottom = temp1;
+                temp1 = temp1->bottom;
+            }
+            else {
+                dummy->bottom = temp2;
+                temp2 = temp2->bottom;
+            }
+            
+            dummy = dummy->bottom;
+        }
+    
+    
+        while(temp1){
+            dummy->bottom = temp1;
+            dummy = dummy->bottom;
+            temp1 = temp1->bottom;
+        }
+   
+        while(temp2){
+            dummy->bottom = temp2;
+            dummy = dummy->bottom;
+            temp2 = temp2->bottom;
+        }
+  
+      return head->bottom;  
 }
 
