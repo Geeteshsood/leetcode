@@ -1,42 +1,34 @@
 class Solution {
 public:
     
-    int memo[601][101][101];
-    
-    int find(int i,int zero,int one,int m,int n,vector<vector<int>> &dp){
+    void count(string &s,int &zero,int &one){
         
-        int size = dp.size();
-        
-        if(zero > m || one > n)return -1;
-
-        if(i == size)return 0;
-            
-        if(memo[i][zero][one] != -1)return memo[i][zero][one];
-        
-        int consider = 1 + find(i+1,zero+dp[i][0],one+dp[i][1],m,n,dp);
-        int skip = find(i+1,zero,one,m,n,dp);
-        
-        return memo[i][zero][one] = max(consider,skip);
-    }
-    
-    int findMaxForm(vector<string>& str, int m, int n) {
-        
-        int size = str.size();
-        
-        memset(memo,-1,sizeof(memo));
-        
-        vector<vector<int>> dp(size);
-        
-        for(int i=0;i<size;i++){
-            int zero = 0 , one = 0;
-            for(int j=0;j<str[i].size();j++){
-                if(str[i][j] == '0')zero++;
-                else one++;
-            }
-            dp[i].push_back(zero);
-            dp[i].push_back(one);
+        for(auto &i : s){
+            if(i == '0')zero++;
+            else one++;
         }
         
-        return find(0,0,0,m,n,dp);
+    }
+    
+    int findMaxForm(vector<string>& strs, int m, int n) {
+        
+        int size = strs.size();
+        vector<vector<int>> dp(m+1,vector<int>(n+1));
+        
+        for(auto &str : strs){
+            
+            int zero = 0 , one = 0;
+            
+            count(str,zero,one); 
+            
+            for(int i=m;i>=zero;i--){
+                for(int j=n;j>=one;j--){
+                    dp[i][j] = max(1 + dp[i-zero][j-one] , dp[i][j]);
+                }
+            }
+            
+        }
+       
+     return dp[m][n];
     }
 };
