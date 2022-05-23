@@ -3,31 +3,31 @@ public:
     
     int memo[601][101][101];
     
-    int find(int i,int x,int y,int m,int n,vector<vector<int>> &dp){
+    int find(int i,int zero,int one,int m,int n,vector<vector<int>> &dp){
         
-        int sz = dp.size();
-        // cout<<i<<" "<<x<<" "<<y<<endl;
-        if(x > m || y > n)return -1;
+        int size = dp.size();
+        
+        if(zero > m || one > n)return -1;
 
-        if(i == sz)return 0;
+        if(i == size)return 0;
             
-        if(memo[i][x][y] != -1)return memo[i][x][y];
+        if(memo[i][zero][one] != -1)return memo[i][zero][one];
         
-        int a = 1 + find(i+1,x+dp[i][0],y+dp[i][1],m,n,dp);
-        int b = find(i+1,x,y,m,n,dp);
+        int consider = 1 + find(i+1,zero+dp[i][0],one+dp[i][1],m,n,dp);
+        int skip = find(i+1,zero,one,m,n,dp);
         
-        return memo[i][x][y] = max(a,b);
+        return memo[i][zero][one] = max(consider,skip);
     }
     
     int findMaxForm(vector<string>& str, int m, int n) {
         
-        int sz = str.size();
+        int size = str.size();
         
         memset(memo,-1,sizeof(memo));
         
-        vector<vector<int>> dp(sz);
+        vector<vector<int>> dp(size);
         
-        for(int i=0;i<sz;i++){
+        for(int i=0;i<size;i++){
             int zero = 0 , one = 0;
             for(int j=0;j<str[i].size();j++){
                 if(str[i][j] == '0')zero++;
