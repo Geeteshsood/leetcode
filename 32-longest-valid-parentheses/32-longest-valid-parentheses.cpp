@@ -1,59 +1,28 @@
 class Solution {
 public:
+    
     int longestValidParentheses(string s) {
         
-        int n = s.size();
-        
+        int n = s.size() , ans = 0;
         stack<int> st;
         
+        st.push(-1);
+        
         for(int i=0;i<n;i++){
-            // cout<<i<<" "<<st.size()<<endl;
+            
             if(s[i] == '('){
-                st.push(s[i]);
-                continue;
+                st.push(i);
             }
-            
-            int sum = 0;
-            bool flag = true;
-            
-            while(st.size() && st.top() != ')' ){
-                if(st.top() == '('){
-                     flag = false;
-                     st.pop();
-                     sum += 2;
-                     st.push(sum + '0'); 
-                     break;
+            else{
+                st.pop();
+                if(st.empty()){
+                    st.push(i);
                 }
-                else{
-                    sum += st.top()-'0';
-                    st.pop();
-                }
+                else ans = max(ans , i - st.top());
             }
             
-            if(flag){
-                if(sum)st.push(sum + '0');
-                st.push(')');
-            }
-            
-             // cout<<i<<" "<<st.size()<<endl;
-        }
-        // cout<<st.size()<<endl;
-        int sum = 0 , ans = 0;
-        
-        while(st.size()){
-    
-            if(st.top() == ')' || st.top() == '('){
-                ans = max(ans,sum);
-                sum = 0;
-            }
-            else {
-                // cout<<st.top()-'0'<<endl;
-                sum += st.top()-'0';
-            }
-            
-            st.pop();
         }
         
-        return max(sum,ans);
+     return ans;   
     }
 };
