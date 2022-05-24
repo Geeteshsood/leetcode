@@ -47,7 +47,7 @@ public:
                 sum = 0;
             }
             else {
-                cout<<st.top()-'0'<<endl;
+                // cout<<st.top()-'0'<<endl;
                 sum += st.top()-'0';
             }
             
