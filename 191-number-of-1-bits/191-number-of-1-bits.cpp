@@ -6,10 +6,7 @@ public:
         
         while(n){
             
-           int rsb = n & -n;
-            
-           n = n - rsb;
-            
+           n &= (n-1);
            counter++;
         }
         
