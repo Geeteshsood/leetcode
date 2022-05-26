@@ -13,7 +13,7 @@ public:
             char ch;
             
             if(s[i] >= 'a' && s[i] <= 'z'){
-                ch = toupper(s[i]);
+                ch = (s[i]-'a') + 'A';
             }
             else ch = s[i];
             
