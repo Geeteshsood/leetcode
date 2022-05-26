@@ -36,12 +36,6 @@ public:
              str = '0' + str;
          }
         
-         string res;
-        
-         res = str.substr(0,2);
-         res += ":";
-         res += str.substr(2);
-        
-        return res;
+         return str.substr(0,2) + ":" + str.substr(2);
     }
 };
