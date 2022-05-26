@@ -2,16 +2,17 @@ class Solution {
 public:
     int hammingWeight(uint32_t n) {
         
-        int cnt = 0;
+        int counter = 0;
         
         while(n){
             
-            int rsb = n & -n;
-            n = n - rsb;
-            cnt++;
+           int rsb = n & -n;
             
+           n = n - rsb;
+            
+           counter++;
         }
-      
-        return cnt;
+        
+        return counter;
     }
 };
