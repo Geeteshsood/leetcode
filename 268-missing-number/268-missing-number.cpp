@@ -2,20 +2,14 @@ class Solution {
 public:
     int missingNumber(vector<int>& nums) {
         
+        int n = nums.size() , sum = 0;
         
-        int n = nums.size();
+        int total = (n*(n+1))/2;
         
-        int Xor = 0;
-        
-        if(n%4 == 0)Xor = n;
-        else if(n%4 == 1)Xor = 1;
-        else if(n%4 == 2)Xor = n+1;
-        else Xor = 0;
-          
-        for(int i=0;i<n;i++){
-            Xor = Xor^nums[i];
+        for(auto &i : nums){
+            sum += i;
         }
-          
-        return Xor;
+        
+        return total - sum;
     }
 };
