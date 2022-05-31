@@ -22,7 +22,7 @@ public:
                 fast = next(next(fast,nums),nums);
                 
                 if(slow == fast){
-                    if(abs(nums[slow])%n != 0)return true;
+                    if(abs(nums[slow])%n != 0)return true;  // cycle length == 1
                     else break;
                 }
                 
