@@ -2,27 +2,43 @@ class Solution {
 public:
     bool hasAllCodes(string s, int k) {
        
-        unordered_set<string> se;
-        
-        int n = s.size();
-        string str;
+        int n = s.size() , mask = 0 , fill = 0;
         
         if(k > n)return false;
         
-        for(int i=0;i<k;i++){
-            str += s[i];
-        }
+        vector<bool> vis(1<<k,false);
         
-        se.insert(str);
+        for(int i=0;i<k;i++){
+            
+            int bit = s[i]-'0';
+            
+            if(bit){
+                mask = mask | (1<<i);
+            }
+        }
+
+           if(!vis[mask]){
+                fill++;
+                vis[mask] = true;
+            }
         
         for(int i=k;i<n;i++){
             
-            string temp = str.substr(1) + s[i];
-            se.insert(temp);
+            mask = mask>>1;
             
-            str = temp;
+            int bit = s[i]-'0';
+            
+            if(bit){
+                mask = mask | (1<<(k-1));
+            }
+
+            if(!vis[mask]){
+                fill++;
+                vis[mask] = true;
+            }
+            
         }
         
-        return se.size() == (1<<k);
+        return fill == 1<<k;
     }
 };
