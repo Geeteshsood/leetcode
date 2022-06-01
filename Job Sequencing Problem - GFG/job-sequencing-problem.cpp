@@ -40,13 +40,13 @@ class Solution
     
     vector<int> JobScheduling(Job arr[], int n) 
     { 
-        vector<int> vis(101,-1);
+        vector<int> vis(n+1,-1);
         
         sort(arr,arr+n,cmp);
         
         for(int i=0;i<n;i++){
             
-            int tm = arr[i].dead;
+            int tm = min(n,arr[i].dead);
             
             while(vis[tm] != -1 && tm > 0){
                 tm--;
@@ -58,7 +58,7 @@ class Solution
    
         int cnt = 0 , pro = 0;
         
-        for(int i=0;i<101;i++){
+        for(int i=0;i<=n;i++){
             if(vis[i] > 0){
                 cnt++;
                 pro += vis[i];
