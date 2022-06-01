@@ -33,17 +33,13 @@ public:
         
         int n = res.size();
         
-        if(i == n){
-            return 0;
-        }
+        if(i == n)return 0;
 
         if(dp[i] != -1)return dp[i];
 
-        int et = res[i][1];
-          
-        int nex = search(i,res);
+        int next = search(i,res) , profit = res[i][2];
         
-        int x = res[i][2] + find(nex,res,dp);
+        int x = profit + find(next,res,dp);
         
         int y = find(i+1,res,dp);
         
