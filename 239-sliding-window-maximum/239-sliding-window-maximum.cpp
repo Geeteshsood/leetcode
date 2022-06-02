@@ -1,30 +1,28 @@
 class Solution {
 public:
-    vector<int> maxSlidingWindow(vector<int>& nums, int k) {
+    typedef pair<int,int> pi;
     
-        int n = nums.size();
-        vector<int> ans;
+    vector<int> maxSlidingWindow(vector<int>& nums, int k) {
         
-        map<int,int,greater<int>> mp;
+          int n = nums.size();
+          deque<pi> dq;
+          vector<int> ans;
         
-        for(int i=0;i<k;i++){
-            mp[nums[i]]++;
-        }
+          for(int i=0;i<n;i++){
+              
+              while(dq.size() && nums[i] > dq.back().first){
+                  dq.pop_back();
+              }
+              
+              while(dq.size() && i-k >= dq.front().second){
+                  dq.pop_front();
+              }
+              
+              dq.push_back({nums[i],i});
+              
+              if(i >= k-1)ans.push_back(dq.front().first);
+          }
         
-        ans.push_back(mp.begin()->first);
-        
-        for(int i=k;i<n;i++){
-            
-            mp[nums[i]]++;
-            
-            if(mp[nums[i-k]] == 1){
-                mp.erase(nums[i-k]);
-            }
-            else mp[nums[i-k]]--;
-            
-            ans.push_back(mp.begin()->first);
-        }
-       
         return ans;
     }
 };
