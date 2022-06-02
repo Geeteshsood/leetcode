@@ -2,45 +2,28 @@ class Solution {
 public:
     int largestRectangleArea(vector<int>& heights) {
         
-        int n = heights.size();
-        vector<int> lse(n) , rse(n);
+        int n = heights.size() , ans = 0;
+        vector<int> lse(n+1);
         
         stack<int> st;
         
-        for(int i=0;i<n;i++){
+        for(int i=0;i<=n;i++){
             
-            while(st.size() && heights[i] <= heights[st.top()]){
+            while(st.size() && (i == n || heights[i] <= heights[st.top()])){
+                
+                  int val = (i - lse[st.top()]-1)*heights[st.top()];
+                  // cout<<i<<" "<<lse[st.top()]<<" "<<st.top()<<endl;
+                  ans = max(ans,val);
+                
                   st.pop();
             }
             
             if(st.size())lse[i] = st.top();
             else lse[i] = -1;
+            
             st.push(i);
         }
-        
-        while(st.size())st.pop();
-        
-        for(int i=n-1;i>=0;i--){
-            
-            while(st.size() && heights[i] <= heights[st.top()]){
-                  st.pop();
-            }
-            
-            if(st.size())rse[i] = st.top();
-            else rse[i] = n;
-            st.push(i);
-        }
-        // for(int i=0;i<n;i++){
-        //     cout<<lse[i]<<" "<<rse[i]<<endl;
-        // }
-        int ans = 0;
-        
-        for(int i=0;i<n;i++){
-            int val = (rse[i]-lse[i]-1)*heights[i];
-            
-            ans = max(ans,val);
-        }
-        
+
         return ans;
     }
 };
