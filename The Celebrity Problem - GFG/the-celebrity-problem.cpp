@@ -18,8 +18,8 @@ class Solution
         
         while(i < j){
             
-            if(M[i][j] == 1 || M[j][i] == 0)i++;
-            if(M[i][j] == 0 || M[j][i] == 1)j--;
+            if(M[i][j] == 1)i++;
+            else j--;
             
         }
         
