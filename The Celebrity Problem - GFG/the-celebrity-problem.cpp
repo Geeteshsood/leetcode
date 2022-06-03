@@ -14,38 +14,23 @@ class Solution
     int celebrity(vector<vector<int> >& M, int n) 
     {
 
-        stack<int> st;
+        int i=0 , j = n-1;
         
-        for(int i=0;i<n;i++){
-            st.push(i);
-        }
-
-        while(st.size() > 1){
+        while(i < j){
             
-            int i = st.top();
-            st.pop();
+            if(M[i][j] == 1 || M[j][i] == 0)i++;
+            if(M[i][j] == 0 || M[j][i] == 1)j--;
             
-            int j = st.top();
-            st.pop();
-            
-            if(M[i][j] == 0 && M[j][i] == 1){
-                st.push(i);
-            }
-            if(M[i][j] == 1 && M[j][i] == 0){
-                st.push(j);
-            }
-  
         }
         
-        for(int i=0;i<M[0].size();i++){
-            if(M[st.top()][i] == 1)return -1;
+        for(int r=0;r<n;r++){
+            if(M[r][i] == 0 && i!=r)return -1;
+        }
+        for(int c=0;c<n;c++){
+           if(M[i][c] == 1)return -1;
         }
         
-        for(int i=0;i<M.size();i++){
-            if(M[i][st.top()] == 0 && i != st.top())return -1;
-        }
-        
-       return st.top() ;
+       return i; 
     }
 };
 
