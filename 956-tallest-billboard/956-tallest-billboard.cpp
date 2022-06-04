@@ -1,43 +1,39 @@
 class Solution {
 public:
     
-     int dp[21][5001];
-    
-    int find(int i,int sum1,int sum2,vector<int> &rods){
+    int tallestBillboard(vector<int>& rods) {
         
         int n = rods.size();
         
-        // cout<<i<<" "<<sum1<<" "<<sum2<<endl;
+        int sum = accumulate(rods.begin(),rods.end(),0);
+        sum = sum/2;
         
-        if(i == n){
-            if(sum1 == sum2)return sum1;
-            else return -2;
+        vector<vector<int>> dp(n+1,vector<int> (5001,INT_MIN));
+        
+        dp[0][2500] = 0;
+        
+        for(int i=1;i<=n;i++){
+            for(int j=-sum;j<=sum;j++){
+                
+                dp[i][2500 + j] = max(dp[i][2500 + j],dp[i-1][2500 + j]);
+                
+                if(j + rods[i-1] <= sum && dp[i-1][2500 + j+rods[i-1]] != INT_MIN){
+                    dp[i][2500 + j] = max(dp[i][2500 + j],dp[i-1][2500 + j+rods[i-1]]);
+                }
+                if(j - rods[i-1] >= -sum && dp[i-1][2500 + j-rods[i-1]] != INT_MIN){
+                    dp[i][2500 + j] = max(dp[i][2500 + j],dp[i-1][2500 + j-rods[i-1]] + rods[i-1]);
+                }
+            }
         }
-
-        if(dp[i][abs(sum1-sum2)] != -1){
-            
-            if(dp[i][abs(sum1-sum2)] == -2)return -2;
-            
-            return max(sum1,sum2) + dp[i][abs(sum1-sum2)];
-        }
         
-        int x = find(i+1,sum1 + rods[i],sum2,rods);
-        int y = find(i+1,sum1,sum2 + rods[i],rods);
-        int z = find(i+1,sum1,sum2,rods);
+//         for(int i=0;i<=n;i++){
+//             for(int j=-sum;j<=sum;j++){
+//                 if(dp[i][j+2500] == INT_MIN)cout<<"*"<<" ";
+//                 else cout<<dp[i][j+2500]<<" ";
+//             }
+//             cout<<endl;
+//         }
         
-        int val = max({x,y,z});
-
-        if(val == -2)return dp[i][abs(sum1-sum2)] = val; 
-            
-        dp[i][abs(sum1-sum2)] = val - max(sum1,sum2);
-        
-        return val;
-    }
-    
-    int tallestBillboard(vector<int>& rods) {
-        
-        memset(dp,-1,sizeof(dp));
-        
-        return find(0,0,0,rods);
+        return dp[n][2500];
     }
 };
