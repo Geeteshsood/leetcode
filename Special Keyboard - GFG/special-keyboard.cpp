@@ -11,6 +11,10 @@ class Solution{
 public:
 typedef long long int ll;
 
+    // j -> 0 to i
+         
+    // for any point     j + ctrlv + ctrlv + ctrlv ------;
+  
     long long int optimalKeys(int n){
         
         vector<vector<ll>> dp(n+1,vector<ll>(2,0));
