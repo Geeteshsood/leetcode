@@ -23,38 +23,50 @@ class Solution
     string smallestWindow (string s, string p)
     {
         
-        int m = p.size() , n = s.size() , start = -1 , end = -1;
+        int m = p.size() , n = s.size();
         
-        vector<int> freq1(26) , freq2(26);
+        vector<int> freq(26);
+        
+        int count = 0;
         
         for(int i=0;i<m;i++){
-            freq1[p[i]-'a']++;
+            if(freq[p[i]-'a'] == 0)count++;
+            freq[p[i]-'a']++;
         }
     
-        int i = 0 , j = 0 , mini = INT_MAX;
+        int i = 0 , j = 0 , mini = INT_MAX , start = -1 , end = -1;
         
-        while(i<=j && j<=n){
+        while(j < n){
             
-            if(check(freq1,freq2)){
-                // cout<<j<<" "<<i<<endl;
-                int len = j-i+1;
-                if(len < mini){
-                    mini = len;
-                    start = i , end = j;
+            freq[s[j]-'a']--;
+            
+            if(freq[s[j]-'a'] == 0)count--;
+            
+            if(count == 0){
+                
+                while(i<=j && count == 0){
+                    
+                    int len = j - i + 1;
+                    
+                    if(len < mini){
+                        mini = len;
+                        start = i , end = j;
+                    }
+                    
+                    freq[s[i]-'a']++;
+                    
+                    if(freq[s[i]-'a'] > 0)count++;
+                    
+                    i++;
                 }
-                freq2[s[i]-'a']--;
-                i++;
+                
             }
-            else{
-                if(j!=n)freq2[s[j]-'a']++;
-                j++;
-            }
-            
+            j++;
         }
         
         if(start == -1)return "-1";
         
-        return s.substr(start,end-start);
+        return s.substr(start,end-start+1);
     }
 };
 
