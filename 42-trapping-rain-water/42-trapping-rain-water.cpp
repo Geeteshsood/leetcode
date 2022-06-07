@@ -3,49 +3,27 @@ public:
     int trap(vector<int>& height) {
         
         int n = height.size();
-        vector<int> lg(n) , rg(n);
-        stack<int> st;
+        int l = 0 , r = n-1 , store = 0 , leftmax = INT_MIN , rightmax = INT_MIN;
         
-        for(int i=0;i<n;i++){
+        while(l <= r){
             
-            while(st.size() && height[i] >= height[st.top()]){
-                st.pop();
+            if(height[l] <= height[r]){
+                
+                if(height[l] >= leftmax)leftmax = height[l];
+                else store += leftmax - height[l];
+                
+                l++;
+            }
+            else{
+                
+                if(height[r] >= rightmax)rightmax = height[r];
+                else store += rightmax - height[r];
+                
+                r--;
             }
             
-            if(st.size())lg[i] = st.top();
-            else lg[i] = -1;
-            
-            st.push(i);
-        }
-
-        while(st.size())st.pop();
-        
-        for(int i=n-1;i>=0;i--){
-            
-            while(st.size() && height[i] > height[st.top()]){
-                st.pop();
-            }
-            
-            if(st.size())rg[i] = st.top();
-            else rg[i] = n;
-            
-            st.push(i);
         }
         
-        int ans = 0;
-        
-        for(int i=0;i<n;i++){
-            
-            if(lg[i] == -1 || rg[i] == n)continue;
-            
-            int h = min(height[lg[i]],height[rg[i]]) - height[i];
-            int width = rg[i]-lg[i]-1;
-            
-            int val = h*width;
-            // cout<<i<<" "<<val<<endl;
-            ans += val;
-        }
-        
-        return ans;
+       return store; 
     }
 };
