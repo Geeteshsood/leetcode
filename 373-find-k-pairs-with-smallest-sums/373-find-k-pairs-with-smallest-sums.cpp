@@ -23,17 +23,17 @@ public:
            pii cur = pq.top();
             
            int sum = cur.first;
-           int x = cur.second.first , y = cur.second.second;
+           int i = cur.second.first , j = cur.second.second;
             
            pq.pop();
             
            cnt++;
             
-           ans.push_back({nums1[x],nums2[y]});
+           ans.push_back({nums1[i],nums2[j]});
             
-           if(y != n-1){
-               y++;
-               pq.push({nums1[x] + nums2[y],{x,y}});
+           if(j != n-1){
+               j++;
+               pq.push({nums1[i] + nums2[j],{i,j}});
            }
              
         }
