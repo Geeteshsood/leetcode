@@ -16,8 +16,9 @@ public:
             
             for(int i=0;i<word.size();i++){
                string s = word.substr(0,i) + word.substr(i+1);
-                
-               dp[word] = max(dp[word] , 1 + dp[s]);
+               
+                if(dp.find(s) == dp.end())dp[word] = max(dp[word],1);
+                else dp[word] = max(dp[word] , 1 + dp[s]);
             }
             
             ans = max(ans,dp[word]);
