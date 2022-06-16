@@ -1,38 +1,39 @@
 class Solution {
 public:
     
-    string longestPalindrome(string s) {
+    int check(int i,int j,string &s){
         
-        int n = s.size() , len = 0 , maxi = INT_MIN , st = -1;
+        int n = s.size();
         
-        vector<vector<bool>> dp(n,vector<bool>(n,false));
-        
-        for(int g=0;g<n;g++){
-            for(int i=0,j=g;i<n && j<n;i++,j++){
-                if(g == 0){
-                    dp[i][j] = true;
-                }
-                else if(g == 1){
-                    dp[i][j] = (s[i] == s[j]);
-                }
-                else{
-                    
-                   if(s[i] == s[j] && dp[i+1][j-1]){
-                       dp[i][j] = true;
-                   }
-                    
-                }
-                
-                if(dp[i][j]){
-                    int len = j-i+1;
-                    if(len > maxi){
-                        st = i;
-                        maxi = len;
-                    }
-                }
-            }
+        while(i >= 0 && j < n && s[i] == s[j]){
+              i--;
+              j++;
         }
         
-       return s.substr(st,maxi);
+      return j-i-1;  
+    }
+    
+    string longestPalindrome(string s) {
+        
+        int n = s.size() , st = -1 , len = 0;
+        
+        for(int i=0;i<n;i++){
+            
+            int len1 = check(i,i+1,s);
+            int len2 = check(i,i,s);
+            
+            // cout<<i<<" "<<len1<<" "<<len2<<endl;
+            
+            if(len1 > len2 && len1 > len){
+                st = i-(len1-1)/2;  
+            }
+            else if(len2 > len1 && len2 > len){
+                st = i-(len2/2);
+            }
+            
+            len = max({len,len1,len2});
+        }
+        
+     return s.substr(st,len);
     }
 };
