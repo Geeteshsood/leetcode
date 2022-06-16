@@ -89,18 +89,7 @@ public:
         int lsum = find(root->left,node,ans);
         int rsum = find(root->right,node,ans);
         
-        if(root == node){
-            // cout<<" ** "<<root->data<<endl;
-            if(lsum == INT_MIN){
-                ans = max(ans , root->data + rsum);
-            }
-            else if(rsum == INT_MIN){
-                ans = max(ans , root->data + lsum);
-            }
-        }
-        
         if(lsum != INT_MIN && rsum != INT_MIN){
-        //   cout<<root->data<<endl;
            ans = max(ans,root->data + lsum + rsum);
         }
         
@@ -110,9 +99,13 @@ public:
     int maxPathSum(Node* root)
     {
         int ans = INT_MIN;
-        find(root,root,ans);
+        int val = find(root,root,ans);
         
-        return ans;
+        if(root->left && root->right){
+             return ans;
+        }
+        
+        return max(val,ans);
     }
 };
 
