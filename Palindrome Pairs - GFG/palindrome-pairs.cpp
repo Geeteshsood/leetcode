@@ -40,7 +40,6 @@ class Solution{
            for(int j=0;j<n;j++){
              if(check(0,j,arr[k])){
                  string str = arr[k].substr(j+1);
-                 reverse(str.begin(),str.end());
                  if(mp.find(str) != mp.end()){
                       return true;
                  }
@@ -50,7 +49,6 @@ class Solution{
            for(int i=0;i<n;i++){
              if(check(i,n-1,arr[k])){
                  string str = arr[k].substr(0,i);
-                 reverse(str.begin(),str.end());
                  if(mp.find(str) != mp.end()){
                       return true;
                  }
@@ -58,10 +56,10 @@ class Solution{
            }
            
            string str = arr[k];
-           reverse(str.begin(),str.end());
            
            if(mp.find(str) != mp.end())return true;
            
+           reverse(arr[k].begin(),arr[k].end());
            mp[arr[k]] = k;
        }
         
