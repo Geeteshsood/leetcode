@@ -1,5 +1,6 @@
 class Solution {
 public:
+    typedef long long ll;
     
     vector<vector<int>> fourSum(vector<int>& nums, int target) {
         
@@ -21,14 +22,15 @@ public:
                     
                     while(x < y){
                         
-                       int  left = nums[i] + nums[j];
-                       int right = nums[x] + nums[y];
-                       
-                       if(left == target - right){
+                       ll  left = nums[i] + nums[j];
+                       ll right = nums[x] + nums[y];
+                       ll val = (ll)target - right;
+                        
+                       if(left == val){
                            ans.push_back({nums[i],nums[j],nums[x],nums[y]});
                        }
                         
-                       if(left <= target - right){
+                       if(left <= val){
                            while( x<y && nums[x] == nums[x+1])x++;
                            x++;
                        }
