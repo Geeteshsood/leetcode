@@ -4,45 +4,48 @@ public:
     
     vector<vector<int>> fourSum(vector<int>& nums, int target) {
         
-             sort(nums.begin(),nums.end());
-
-             vector<vector<int>> ans;
+             vector<vector<int>>ans;
+        if(nums.size()==0)return ans;
         
-             int n = nums.size() , i = 0;
-        
-            for(int i=0;i<n;i++){
+        int n=nums.size();
+        sort(nums.begin(),nums.end());
+        for(int i=0;i<n;i++){
+            for(int j=i+1;j<n;j++){
                 
-                while(i>0 && i<n && nums[i] == nums[i-1])i++;  
+                ll a= (ll)target - (ll)(nums[i] + nums[j]);
                 
-                for(int j=i+1;j<n;j++){
+                int front=j+1;
+                int last=n-1;
+                while(front<last){
                     
-                    while(j > i+1 && j<n && nums[j] == nums[j-1])j++;
+                    ll sum=nums[front]+nums[last];
                     
-                    int x = j+1 , y = n-1;
-                    
-                    while(x < y){
+                    if(sum<a){
+                        front++;
+                    }
+                   else if(sum>a){
+                        last--;
+                    }
+                    else{
+                           vector<int>v(4,0);
+                       v[0]=nums[i]; 
+                          v[1]=nums[j];  
+                           v[2]=nums[front]; 
+                           v[3]=nums[last]; 
+                        ans.push_back(v);
                         
-                       ll  left = nums[i] + nums[j];
-                       ll right = nums[x] + nums[y];
-                       ll val = (ll)target - right;
-                        
-                       if(left == val){
-                           ans.push_back({nums[i],nums[j],nums[x],nums[y]});
-                       }
-                        
-                       if(left <= val){
-                           while( x<y && nums[x] == nums[x+1])x++;
-                           x++;
-                       }
-                       else{
-                           while( x<y && nums[y] == nums[y-1])y--;;
-                           y--;
-                       }
-                    } 
-  
+                        while(front<last && nums[front]==v[2])++front;
+                         while(front<last && nums[last]==v[3])--last;
+                    }
                 }
+            
+                 while(j+1<n && nums[j+1]==nums[j])++j;
+                    
             }
-        
+               while(i+1<n && nums[i+1]==nums[i])++i;
+                     
+        }
         return ans;
+    
     }
 };
