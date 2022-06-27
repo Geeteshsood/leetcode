@@ -1,23 +1,40 @@
 class Solution {
 public:
-    
-     void dfs(TreeNode* root,vector<int> &res){
-        
-        if(root == NULL)return ;
-        
-        res.push_back(root->val);
-         
-        dfs(root->left,res);
-        dfs(root->right,res);
-        
-    }
-    
     vector<int> preorderTraversal(TreeNode* root) {
         
         vector<int> res;
-        dfs(root,res);
+        
+        TreeNode *cur = root;
+            
+        while(cur != NULL){
+            
+            if(cur->left == NULL){
+                
+                res.push_back(cur->val);
+                cur = cur->right;
+                
+            }
+            else{
+                
+                TreeNode* prev = cur->left;
+                
+                while(prev->right != NULL && prev->right != cur){
+                    prev = prev->right;
+                }
+                
+                if(prev->right == NULL){
+                    res.push_back(cur->val);
+                    prev->right = cur;
+                    cur = cur->left;
+                }
+                else{
+                    prev->right = NULL;
+                    cur = cur->right;
+                }
+            }
+            
+        }
         
        return res; 
-        
     }
 };
