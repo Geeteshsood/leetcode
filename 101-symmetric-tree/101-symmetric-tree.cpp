@@ -1,20 +1,47 @@
 class Solution {
 public:
-    
-    bool find(TreeNode* root1,TreeNode* root2){
-        
-       if(!root1 || !root2)return root1 == root2;
-       
-       if(root1->val != root2->val)return false;
-        
-       int left = find(root1->left,root2->right);
-       int right = find(root1->right,root2->left);
-        
-       return left && right;
-    }
-    
     bool isSymmetric(TreeNode* root) {
         
-        return find(root,root);
+        queue<TreeNode*> q;
+        
+        q.push(root);
+        
+        while(q.size()){
+            
+          int size = q.size();
+          vector<int> res;
+            
+          for(int i=0;i<size;i++){
+              
+              TreeNode* node = q.front();
+              q.pop();
+              
+              if(node->left){
+                  q.push(node->left);
+                  res.push_back(node->left->val);
+              }
+              else res.push_back(-101);
+              
+              if(node->right){
+                  res.push_back(node->right->val);
+                  q.push(node->right);
+              }
+              else res.push_back(-101);
+              
+          }
+          int n = res.size() ;
+            
+          if(n%2 != 0)return false;
+            
+          int i = 0 , j = n-1;
+            
+          while(i < j){
+              if(res[i] != res[j])return false;
+              i++,j--;
+          }
+            
+        }
+        
+        return true;
     }
 };
