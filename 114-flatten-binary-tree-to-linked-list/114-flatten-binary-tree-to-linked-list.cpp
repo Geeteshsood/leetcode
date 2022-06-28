@@ -1,22 +1,32 @@
 class Solution {
 public:
-    TreeNode* prev = NULL;
-    
-     void dfs(TreeNode* root){
-        
-        if(root == NULL)return ;
-        
-        dfs(root->right);
-        dfs(root->left);
-        
-        root->right = prev;
-        root->left = NULL;
-        prev = root;
-    }
-    
     void flatten(TreeNode* root) {
         
-         dfs(root);
+        TreeNode* cur = root;
+        
+        while(cur){
+            
+          if(cur->left == NULL){
+              cur = cur->right;
+          }
+          else{
+              
+              TreeNode* pre = cur->left;
+              
+              while(pre->right != NULL){
+                  pre = pre->right;
+              }
+
+              if(pre->right == NULL){
+                  pre->right = cur->right;
+                  cur->right = cur->left;
+                  cur->left = NULL;
+              }
+              
+              cur = cur->right;
+          }  
+            
+        }
 
     }
 };
