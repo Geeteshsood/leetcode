@@ -1,44 +1,22 @@
 class Solution {
 public:
-    typedef pair<TreeNode*,TreeNode*> pi;
+    TreeNode* prev = NULL;
     
-    pi dfs(TreeNode* root){
+     void dfs(TreeNode* root){
         
-        if(root == NULL)return {NULL,NULL};
+        if(root == NULL)return ;
         
-        pi left = dfs(root->left);
-        pi right = dfs(root->right);
+        dfs(root->right);
+        dfs(root->left);
         
-        if(!root->left && !root->right)return {root,root};
-        
-        
-        if(left.first){
-            root->right = left.first;
-            root->left = NULL;
-        }
-        if(left.second && right.first)left.second->right = right.first;
-        
-        if(right.second){
-            // cout<<root->val<<" "<<right.second->val<<endl;
-            return {root,right.second};
-        }
-        // cout<<root->val<<" "<<left.second->val<<endl;
-        return {root,left.second};
+        root->right = prev;
+        root->left = NULL;
+        prev = root;
     }
-    
-//     void print(TreeNode* root){
-        
-//         if(root == NULL)return ;
-            
-//         cout<<root->val<<endl;
-//         print(root->right);
-        
-//     }
     
     void flatten(TreeNode* root) {
         
          dfs(root);
-         // cout<<"**"<<endl;
-         // print(root);
+
     }
 };
