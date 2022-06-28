@@ -96,23 +96,15 @@ void inOrder(struct Node *node) {
 class Solution {
   public:
     
-    Node* dfs(Node* node){
-        
-        if(node == NULL)return node;
-        
-        Node* left = dfs(node->left);
-        Node* right = dfs(node->right);
-        
-        node->left = right;
-        node->right = left;
-      
-       return node; 
-    }
-    
     void mirror(Node* node) {
     
-        dfs(node);
-    
+        if(node == NULL)return ;
+        
+         mirror(node->left);
+         mirror(node->right);
+        
+         swap(node->left,node->right);
+
     }
 };
 
