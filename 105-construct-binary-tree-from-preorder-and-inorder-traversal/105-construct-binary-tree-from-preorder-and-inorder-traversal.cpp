@@ -14,12 +14,10 @@ public:
         }
         
         int loc = mp[root->val];
-        int leftele = loc-instart;
-        int rightele = inend - loc;
-        int dest = prestart+leftele;
+        int ele = loc-instart;
         
-        root->left = find(instart,loc-1,in,prestart+1,dest,pre);
-        root->right = find(loc+1,inend,in,dest+1,preend,pre);
+        root->left = find(instart,loc-1,in,prestart+1,prestart + ele,pre);
+        root->right = find(loc+1,inend,in,prestart+ele+1,preend,pre);
         
         return root;
     }
