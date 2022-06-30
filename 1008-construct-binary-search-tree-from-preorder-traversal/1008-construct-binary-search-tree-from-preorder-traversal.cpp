@@ -1,46 +1,28 @@
-
 class Solution {
 public:
     
-    int search(int i,int j,vector<int> &pre){
+    int idx = 0;
+    
+    TreeNode* find(int ub,vector<int> &pre){
         
-        int ans = i , val = pre[i];
-        int start = i+1,end = j;
+        int n = pre.size();
         
-        while(start <= end){
-            
-            int mid = start + (end-start)/2;
-            
-            if(val >= pre[mid]){
-                ans = mid;
-                start = mid+1;
-            }
-            else{
-                end = mid-1;
-            }
-                
+        TreeNode* root = new TreeNode(pre[idx]);
+        idx++;
+        
+        if(idx < n && pre[idx] < root->val){
+            root->left = find(root->val,pre);
         }
         
-        return ans;
-    }
-    
-    TreeNode* find(int st,int end,vector<int> &pre){
-        
-        if(st > end)return NULL;
-        
-        int loc = search(st,end,pre);
-        
-        TreeNode* root = new TreeNode(pre[st]);
-        
-        root->left = find(st+1,loc,pre);
-        root->right = find(loc+1,end,pre);
+        if(idx < n && pre[idx] < ub){
+            root->right = find(ub,pre);
+        }
         
         return root;
     }
     
     TreeNode* bstFromPreorder(vector<int>& pre) {
         
-        int n = pre.size();
-        return find(0,n-1,pre);
+        return find(INT_MAX,pre);
     }
 };
