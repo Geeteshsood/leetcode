@@ -14,35 +14,27 @@ public:
     
     stack<TreeNode*> st;
     
+    void push(TreeNode* node){
+        
+        while(node){
+           st.push(node);
+           node = node->left;
+        }
+    }
+    
     BSTIterator(TreeNode* root) {
         
-         while(root){
-           st.push(root);
-           root = root->left;
-        }
-        
+        push(root);
     }
     
     int next() {
+            
+        TreeNode* node = st.top();
+        st.pop();
         
-        TreeNode* temp = NULL;
-        
-        if(st.size()){
-            
-            TreeNode* node = st.top();
-            temp = node;
-            st.pop();
-            
-            node = node->right;
-            
-            while(node){
-                st.push(node);
-                node = node->left;
-            }
+        push(node->right);
            
-        }
-        
-        return temp->val;
+        return node->val;
     }
     
     bool hasNext() {
