@@ -1,21 +1,69 @@
 class Solution {
 public:
+
+    stack<TreeNode*> nex,bef;
     
-    unordered_set<int> s;    
+    int pushleft(TreeNode* node){
+        
+        while(node){
+           nex.push(node);
+           node = node->left;
+        }
+        
+        if(nex.empty())return NULL;
+        
+        return nex.top()->val;
+    }
     
-    bool dfs(TreeNode* root,int k){
+     int pushright(TreeNode* node){
         
-        if(root == NULL)return false;
+        while(node){
+           bef.push(node);
+           node = node->right;
+        }
+         
+        if(bef.empty())return NULL;
+         
+        return bef.top()->val;
+    }
+    
+    int next() {
+            
+        TreeNode* node = nex.top();
+        nex.pop();
         
-        if(s.find(k - root->val) != s.end())return true;
-        else s.insert(root->val);
+        pushleft(node->right);
         
-        return dfs(root->left,k) || dfs(root->right,k);
+        return node->val;
+    }
+    
+    int before() {
+            
+        TreeNode* node = bef.top();
+        bef.pop();
+        
+        pushright(node->left);
+        
+        return node->val;
     }
     
     bool findTarget(TreeNode* root, int k) {
+       
+        int left = pushleft(root);
+        int right = pushright(root);
         
-        return dfs(root,k);
+        while(left < right){
+            
+           // cout<<left<<" "<<right<<endl;
+            
+          int sum = left + right;
+          
+          if(sum == k)return true;
+          else if(sum > k)right = before();
+          else left = next();
+            
+        }
         
+        return false;
     }
 };
