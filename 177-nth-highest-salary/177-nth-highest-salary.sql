@@ -1,6 +1,7 @@
 CREATE FUNCTION getNthHighestSalary(N INT) RETURNS INT
 BEGIN
+Set N = N-1;
   RETURN (
-      select distinct salary from Employee e1 where N-1 = (select count(distinct salary) from Employee e2 where e1.salary < e2.salary)
+      select distinct salary from Employee order by salary desc limit 1 offset N
   );
 END
