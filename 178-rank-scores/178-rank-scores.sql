@@ -1,2 +1,2 @@
 
-select s1.score , (select count(distinct s2.score) + 1 from Scores s2 where s1.score < s2.score) as 'rank' from Scores s1 order by s1.score desc;
+select s1.score,count(distinct s2.score) 'rank' from Scores s1 join scores s2 where s1.score <= s2.score group by s1.id order by s1.score desc;
