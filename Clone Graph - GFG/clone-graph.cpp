@@ -79,39 +79,36 @@ bool checkedClone(Node* prev, Node* new1 ) {
 class Solution {
 public:
 
-   Node* dfs(Node* temp,Node* node,vector<bool> &vis){
+  unordered_map<Node*, Node*> mp;
     
-    vis[temp->val] = true;
-    
-    for(auto &cur : node->neighbors){
-       
-        Node* copy = new Node(cur->val);
+    Node* clone(Node* node){
         
-        temp->neighbors.push_back(copy); 
+        if(node == NULL)return NULL;
         
-        if(!vis[cur->val]){
+        Node* temp = new Node(node->val);
+        
+        mp[node] = temp;
+        
+        for(auto &cur : node->neighbors){
             
-            dfs(copy,cur,vis);
+            Node* copy = new Node(cur->val);
+            
+            if(mp.find(cur) == mp.end()){
+                 temp->neighbors.push_back(clone(cur));
+            }
+            else{
+                temp->neighbors.push_back(mp[cur]);
+            }
             
         }
-    }
-    
-    return temp;
-}
-
-    Node* cloneGraph(Node* node) {
-         vector<bool> vis(101,false);
-        
-       Node* temp = new Node(node->val);
-        
-        dfs(temp,node,vis);
-
-        
-//         vis = vector<bool> (101,false);
-//         print(temp,vis);
         
         return temp;
     }
+    
+    Node* cloneGraph(Node* node) {
+        return clone(node);
+    }
+
 };
 
 
