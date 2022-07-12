@@ -28,45 +28,93 @@ void printList(Node* node)
 }
 
  // } Driver Code Ends
+/*Linked list Node structure
+
+struct Node
+{
+	int data;
+	Node* next;
+	
+	Node(int x){
+	    data = x;
+	    next = NULL;
+	}
+	
+};
+*/ 
 
 class Solution{
   public:
-    //Function to merge K sorted linked list.
-    typedef pair<int,Node*> pi;
+        Node* mergeTwoLists(Node* l1, Node* l2) {
+        
+       Node* temp = NULL , *node = NULL;  
+        
+       if(!l1 && !l2)return NULL;
+       else if(l1 && l2==NULL)return l1; 
+       else if(l1==NULL && l2)return l2;
+
+        
+       while(l1!=NULL && l2!=NULL){
+         
+          if(l1->data<l2->data){
+               if(temp == NULL){
+                 temp = l1;
+                 node = l1;
+                 l1 = l1->next;
+               }
+               else{
+                 temp->next = l1;
+                 temp = l1;
+                 l1 = l1->next;
+               }    
+          }
+          else{
+              if(temp == NULL){
+                 temp = l2;
+                 node = l2;
+                 l2 = l2->next;
+              }
+              else{
+                temp->next = l2;
+                temp = l2;
+                l2 = l2->next;
+              }    
+          }
+       }  
+        
+       while(l1){
+         temp->next = l1;
+         temp = l1;
+         l1 = l1->next;
+       }
+       
+       while(l2){
+         temp->next = l2;
+         temp = l2;
+         l2 = l2->next;
+       } 
+        
+     return node;   
+    }
     
+    Node* merge(int start,int end,Node* arr[]){
+        
+        if(start > end)return NULL;
+        else if(start == end){
+            return arr[start];
+        }
+        
+        int mid = start + (end - start)/2;
+        
+        Node* l1 = merge(start,mid,arr);
+        Node* l2 = merge(mid+1,end,arr);
+        
+        return mergeTwoLists(l1,l2);
+    }
+    //Function to merge K sorted linked list.
     Node * mergeKLists(Node *arr[], int k)
     {
-
-        Node* pre = NULL , *head = NULL;
-        
-        priority_queue<pi,vector<pi>,greater<pi>> pq;
-
-        for(int i=0;i<k;i++){
-            if(arr[i]){
-                pq.push({arr[i]->data,arr[i]});
-            }
-        }
-        
-        while(pq.size()){
-            
-            Node* node = pq.top().second;
-            
-            pq.pop();
-            
-            if(node->next)pq.push({node->next->data,node->next});
-            
-            if(head == NULL){
-                head = node;
-                pre =  node;
-            }
-            else {
-                pre->next = node;
-                pre = pre->next;
-            }
-            
-        }
-        
-        return head;
+        return merge(0,k-1,arr);
     }
 };
 
