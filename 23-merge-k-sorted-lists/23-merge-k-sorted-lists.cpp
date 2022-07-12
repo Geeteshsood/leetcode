@@ -1,40 +1,37 @@
 class Solution {
 public:
+    typedef pair<int,ListNode*> pi;
     
     ListNode* mergeKLists(vector<ListNode*>& lists) {
         
         int k = lists.size();
         ListNode* pre = NULL , *head = NULL;
+        
+        priority_queue<pi,vector<pi>,greater<pi>> pq;
 
-        while(true){
-            
-            int idx = -1 , mini = INT_MAX;
-            
-            for(int i=0;i<k;i++){
-                
-                if(lists[i] == NULL)continue;
-                
-                int val = lists[i]->val;
-                
-                if(val < mini){
-                    mini = val;
-                    idx = i;
-                }
-                
+        for(int i=0;i<k;i++){
+            if(lists[i]){
+                pq.push({lists[i]->val,lists[i]});
             }
+        }
+        
+        while(pq.size()){
             
-            if(idx == -1)break;
+            ListNode* node = pq.top().second;
+            
+            pq.pop();
+            
+            if(node->next)pq.push({node->next->val,node->next});
             
             if(head == NULL){
-                head = lists[idx];
-                pre =  lists[idx];
+                head = node;
+                pre =  node;
             }
             else {
-                pre->next = lists[idx];
+                pre->next = node;
                 pre = pre->next;
             }
             
-            lists[idx] = lists[idx]->next;
         }
         
         return head;
