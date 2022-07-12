@@ -32,40 +32,38 @@ void printList(Node* node)
 class Solution{
   public:
     //Function to merge K sorted linked list.
+    typedef pair<int,Node*> pi;
+    
     Node * mergeKLists(Node *arr[], int k)
     {
 
         Node* pre = NULL , *head = NULL;
+        
+        priority_queue<pi,vector<pi>,greater<pi>> pq;
 
-        while(true){
-            
-            int idx = -1 , mini = INT_MAX;
-            
-            for(int i=0;i<k;i++){
-                
-                if(arr[i] == NULL)continue;
-                
-                int val = arr[i]->data;
-                
-                if(val < mini){
-                    mini = val;
-                    idx = i;
-                }
-                
+        for(int i=0;i<k;i++){
+            if(arr[i]){
+                pq.push({arr[i]->data,arr[i]});
             }
+        }
+        
+        while(pq.size()){
             
-            if(idx == -1)break;
+            Node* node = pq.top().second;
+            
+            pq.pop();
+            
+            if(node->next)pq.push({node->next->data,node->next});
             
             if(head == NULL){
-                head = arr[idx];
-                pre =  arr[idx];
+                head = node;
+                pre =  node;
             }
             else {
-                pre->next = arr[idx];
+                pre->next = node;
                 pre = pre->next;
             }
             
-            arr[idx] = arr[idx]->next;
         }
         
         return head;
