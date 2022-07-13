@@ -1,21 +1,11 @@
 class Solution {
 public:
     
-    int fact(int n){
-        int num = 1;
-        for(int i=1;i<=n;i++){
-            num = num*i;
-        }
-        return num;
-    }
-    
-    string dfs(string &str,int n,int k){
-        
-        // cout<<str<<"      "<<k<<endl;
+    string dfs(string &str,int fact,int n,int k){
         
         if(n == 0)return "";
         
-        int block = fact(n)/n;
+        int block = fact/n;
         
         int idx =((k-1)/block);
         
@@ -24,7 +14,7 @@ public:
         char ch = str[idx];
         str.erase(idx,1);
         
-        return ch + dfs(str,n-1,k);
+        return ch + dfs(str,fact/n,n-1,k);
      
     }
     
@@ -36,6 +26,11 @@ public:
            str += to_string(i);
        }
         
-       return dfs(str,n,k);
+        int fact = 1;
+        for(int i=1;i<=n;i++){
+            fact= fact*i;
+        }
+        
+       return dfs(str,fact,n,k);
     }
 };
