@@ -107,35 +107,35 @@ struct Node
 class Solution
 {
     public: 
-    typedef pair<Node*,Node*> pi;
     //Function to convert binary tree to doubly linked list and return it.
     
-    pi dfs(Node* root){
+    Node* head = NULL , *prev = NULL;
+    
+    void dfs(Node* root){
         
-        if(root == NULL)return {NULL,NULL};
+        if(root == NULL)return ;
         
-        pi l = dfs(root->left);
-        pi r = dfs(root->right);
+        dfs(root->left);
         
-        root->right = r.first;
-        if(r.first)r.first->left = root;
+        if(prev == NULL)head = root;
+        else{
+            prev->right = root;
+            root->left = prev;
+        }
         
-        root->left = l.second;
-        if(l.second)l.second->right = root;
+        prev = root;
         
-        if(l.first && r.second)return {l.first,r.second};
-        else if(l.first)return {l.first,root};
-        else if(r.second)return {root,r.second};
+        dfs(root->right);
         
-        return {root,root};
     }
+
     
     Node * bToDLL(Node *root)
     {
        
-       pi node = dfs(root);
+         dfs(root);
         
-    return node.first;
+    return head;
     }
 };
 
