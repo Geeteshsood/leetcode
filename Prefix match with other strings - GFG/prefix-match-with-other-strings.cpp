@@ -9,17 +9,52 @@ using namespace std;
 
 class Solution{   
 public:
+   
+    class Node{
+        public:
+        Node* links[26];
+        int count;
+    };
+    
+    Node* root;
+    
+    void insert(string &word){
+        
+        Node* node = root;
+        
+        for(auto &ch : word){
+            
+            if(node->links[ch-'a'] == NULL){
+                Node* temp = new Node();
+                node->links[ch-'a'] = temp;
+            }
+            
+            node = node->links[ch-'a'];
+            node->count += 1;
+        }
+        
+    }
+
     int klengthpref(string arr[], int n, int k, string str){    
         
-       int cnt = 0;
-       string s1 = str.substr(0,k);
-       
-       for(int i=0;i<n;i++){
-           string s2 = arr[i].substr(0,k);
-           if(s1 == s2)cnt++;
-       }
-       
-       return cnt;
+        root = new Node();
+        
+        for(int i=0;i<n;i++){
+            insert(arr[i]);
+        }
+        
+        string temp = str.substr(0,k);
+        
+        Node* node = root;
+        
+        for(auto &ch : temp){
+            
+            if(node->links[ch-'a'] == NULL)return 0;
+        
+            node = node->links[ch-'a'];
+        }
+      
+      return node->count;
     }
 };
 
