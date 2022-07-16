@@ -35,7 +35,7 @@ public:
         
         for(int i=0;i<n;i++){
             
-            int x = s[i]-'0';
+            int x = !(s[i]-'0');
             
             if(node->links[x] == NULL){
                 x = !x;
@@ -78,6 +78,8 @@ public:
                 
             }
             
+            mp[i] = str;
+            
             insert(str);
         }
         
@@ -86,19 +88,8 @@ public:
         for(int i=0;i<n;i++){
             
             int num = nums[i];
-            string str;
-            
-            for(int j=30;j>=0;j--){
-                
-                  if(num >= (1<<j)){
-                      num -= (1<<j);
-                      str += '0';
-                  }
-                  else str += '1';
-                
-            }
-            
-            int val = findmaxy(str);
+
+            int val = findmaxy(mp[i]);
             ans = max(ans,val^nums[i]);
         }
         
