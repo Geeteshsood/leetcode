@@ -58,10 +58,10 @@ public:
         
         int n = queries.size() , m = nums.size();
         
-        vector<pair<int,pair<int,int>>> que;
+        vector<vector<int>> que;
         
         for(int i=0;i<n;i++){
-            que.push_back({queries[i][1],{queries[i][0],i}});
+            que.push_back({queries[i][1],queries[i][0],i});
         }
         
         sort(que.begin(),que.end());
@@ -73,7 +73,7 @@ public:
         
         for(auto &q : que){
             
-            int val = q.first , num = q.second.first , id = q.second.second;
+            int val = q[0] , num = q[1] , id = q[2];
            
             while(j < m && nums[j] <= val){
                 insert(nums[j]);
