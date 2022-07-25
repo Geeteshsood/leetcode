@@ -1,33 +1,53 @@
+/*
+// Definition for a Node.
+class Node {
+public:
+    int val;
+    vector<Node*> neighbors;
+    Node() {
+        val = 0;
+        neighbors = vector<Node*>();
+    }
+    Node(int _val) {
+        val = _val;
+        neighbors = vector<Node*>();
+    }
+    
+    Node(int _val, vector<Node*> _neighbors) {
+        val = _val;
+        neighbors = _neighbors;
+    }
+};
+*/
+
 class Solution {
 public:
     
-    unordered_map<Node*, Node*> mp;
+    unordered_map<Node*,Node*> mp;
     
-    Node* clone(Node* node){
+    Node* dfs(Node* node){
         
-        if(node == NULL)return NULL;
+       if(node == NULL)return NULL;
         
-        Node* temp = new Node(node->val);
+       Node* newNode = new Node(node->val);
+       mp[node] = newNode;
         
-        mp[node] = temp;
-        
-        for(auto &cur : node->neighbors){
-            
-            Node* copy = new Node(cur->val);
-            
-            if(mp.find(cur) == mp.end()){
-                 temp->neighbors.push_back(clone(cur));
-            }
-            else{
-                temp->neighbors.push_back(mp[cur]);
-            }
-            
-        }
-        
-        return temp;
+       for(auto &it : node->neighbors){
+           
+           if(mp.find(it) != mp.end()){
+                
+               newNode->neighbors.push_back(mp[it]);
+           }
+           else{
+               newNode->neighbors.push_back(dfs(it));
+           }
+       }
+       
+      return newNode;
     }
     
     Node* cloneGraph(Node* node) {
-        return clone(node);
+    
+       return dfs(node);
     }
 };
