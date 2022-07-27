@@ -19,13 +19,14 @@ public:
           
           if(n >= val){
               int x = n/val;
-              int num = val*x;
+             
               
               while(x){
                   str += res;
                   x--;
               }
-              n -= num;
+             
+              n = n%val;
               
               if(n == 0)break;
           }
