@@ -27,6 +27,7 @@ public:
               }
               n -= num;
               
+              if(n == 0)break;
           }
       } 
       
