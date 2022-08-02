@@ -1,41 +1,54 @@
 class Solution {
 public:
-    
-   int quickselect(int start , int end,vector<int> &nums,int k){
+    /*
+        quick select：idea from quick sort
         
-        int n = nums.size();
+            ---------mid---------
+               <=           >=
+                  nums[mid]
+        size:  j - l + 1   r - j
 
-        int i = start , j = start;
-       
-        while(i <= end){
-            
-            if(nums[i] <= nums[end]){
-                swap(nums[i],nums[j]);
-                i++,j++;
-            }
-            else if(nums[i] > nums[end]){
-                 i++;
-            }
-        }
+        quick sort: i's left  <= nums[mid]
+                    j's right >= nums[mid]
+    */
+    
+//     void quick_sort(vector<int>& nums, int l, int r) {
+//         if (l >= r) return;
+//         int pivot = nums[l + r >> 1];
+//         int i = l - 1, j = r + 1;
+//         while (i < j) {
+//         // swap when equal
+//             // do i++; while (nums[i] < nums[mid]);  x since nums[mid] may change
+//             // do j--; while (nums[j] > nums[mid]);  x
+//             do i++; while (nums[i] < pivot);
+//             do j--; while (nums[j] > pivot);
+//             if (i < j) swap(nums[i], nums[j]);
+//         }
         
-        int idx = j-1;
-       
-        if(idx > k){
-            return quickselect(start,idx-1,nums,k);
+//         quick_sort(nums, l, j);
+//         quick_sort(nums, j + 1, r);
+//     }
+    
+    // 0-based
+    int quick_select(vector<int>& nums, int l, int r, int k) {
+        if (l == r) return nums[l];
+        int pivot = nums[l + r >> 1], i = l - 1, j = r + 1;
+        
+        while (i < j) {
+            do i++; while (nums[i] > pivot);
+            do j--; while (nums[j] < pivot);
+            if (i < j) swap(nums[i], nums[j]);
         }
-        else if(idx < k){
-            return quickselect(idx+1,end,nums,k);
-        }
-       
-         return nums[idx];
+
+        int lsz = j - l + 1;
+        if (k <= lsz) return quick_select(nums, l, j, k);
+        else return quick_select(nums, j + 1, r, k - lsz);
     }
     
     int findKthLargest(vector<int>& nums, int k) {
-        
-        int n = nums.size();
-        k =  n - k;
-        
-        return quickselect(0,n-1,nums,k);
-        
+        // kth largest is (n - k + 1)th smallest
+        const int n = nums.size();
+        int res = quick_select(nums, 0, n - 1, k);
+        return res;
     }
 };
