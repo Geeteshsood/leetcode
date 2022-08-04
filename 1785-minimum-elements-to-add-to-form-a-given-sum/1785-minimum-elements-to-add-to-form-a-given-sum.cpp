@@ -10,13 +10,9 @@ public:
             sum+=nums[i];
         }
         
-        ll rem = goal - sum;
+        ll rem = abs(goal - sum);
         
-        long double x = (long double)abs(rem)/(long double)limit;
-        
-        int y = ceil(x);
-        
-        return y;
+        return (rem + limit - 1)/limit;
         
     }
 };
