@@ -11,16 +11,12 @@ public:
 class Solution {
 public:
     
-    int find(int id , vector<vector<int>> &adj,vector<int> &dp){
+    int find(int id , unordered_map<int,Employee*> &mp){
         
-        if(dp[id] == INT_MIN)return 0;
+        int sum = mp[id]->importance;
         
-        int sum = dp[id];
-        
-        dp[id] = INT_MIN;
-        
-        for(auto &it : adj[id]){
-            sum += find(it,adj,dp);
+        for(auto &it : mp[id]->subordinates){
+            sum += find(it,mp);
         }
         
         return sum;
@@ -28,20 +24,14 @@ public:
     
     int getImportance(vector<Employee*> employees, int id) {
 
-         vector<int> dp(2001,INT_MIN);
-         vector<vector<int>> adj(2001);
+         unordered_map<int,Employee*> mp;
         
          for(auto &emp : employees){
              
-            int i = emp->id;
-            int imp = emp->importance;
-            dp[i] = imp;
-            for(auto &it : emp->subordinates){
-                  adj[i].push_back(it);
-            }
+            mp[emp->id] = emp;
          }
         
         
-      return find(id,adj,dp);
+      return find(id,mp);
     }
 };
