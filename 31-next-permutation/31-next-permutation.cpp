@@ -11,23 +11,21 @@ public:
             }
         }
         
-        if(idx == -1){
-            reverse(nums.begin(),nums.end());
-            return ;
-        }
-        
-        int temp = -1 , mini = INT_MAX;
-        
-        for(int i=n-1;i>idx;i--){
-            if(nums[i] > nums[idx] && nums[i] < mini){
-                mini = nums[i];
-                temp = i;
+        // cout<<idx<<endl;
+        if(idx != -1){
+            int val = INT_MAX , temp = -1;
+            for(int i=n-1;i>idx;i--){
+                if(nums[i] > nums[idx] && nums[i] < val){
+                      val = nums[i];
+                      temp = i;
+                }
             }
+            // cout<<temp<<endl;
+            swap(nums[idx],nums[temp]);
         }
         
-        swap(nums[idx],nums[temp]);
         
-        reverse(nums.begin() + idx+1,nums.end());
+        reverse(nums.begin() + idx + 1,nums.end());
         
     }
 };
