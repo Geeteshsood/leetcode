@@ -1,24 +1,3 @@
-e , i, j
-​
-we dont need 3 variables , whereas we only need 2 variables egg and floor.
-​
-because.=> breaking 2 eggs  at floor 1 - 3
-is same as breaking 2 eggs at floor  4-6.
-​
-​
-e , f
-time complexity will be  e* f^2
-​
-TLE
-​
-AC Solution.
-e*f*logf
-​
-​
-how ? -> watch pepcoding solution for understanding .
-​
-egg = 2 ,floor = 10.
-​
 1   2   3    4    5    6    7    8     9    10
 ​
 there will be  1 out of these 10 floor which will be our ans.
@@ -40,3 +19,21 @@ but after choosing floor egg will break or not it is not in our hands.
 3
 2        ways = 5(worst case)
 1
+​
+choosing index is in our hands  we want to have  best of the worst case  means minimum from all the
+worst case here max(5,10) = 10.
+​
+as we go up down case will increase and up case will decrease .
+egg -> (break,notbreak)
+-> down inc , up dec                                  <-  down dec,up inc
+1      2      3      4                            9       10
+2,20   3,14   4,12 , 5,10                          14,3     18 ,2
+​
+if we reach  4 and up is greater than down then we do not need go to left.
+as it will only up and decrease down which is of our no benefit.
+as we are not going to get the best ans below 4 .
+​
+because choosing floor is in our hand .
+below 4 worst case is going to increase .
+​
+we have to take best of the worst cases. so need to go below 4.
