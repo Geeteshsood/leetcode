@@ -1,33 +1,43 @@
 class Solution {
 public:
-    int superEggDrop(int k, int n) {
+    
+    int find(int e,int f,vector<vector<int>> &dp){
         
-        vector<vector<int>> dp(k+1,vector<int>(n+1));
+        if(e == 1)return f;
+        else if(e ==0 || f == 0)return 0;
+        else if(f == 1)return 1;
+    
+        if(dp[e][f] != -1)return dp[e][f];
         
-        for(int f=1;f<n+1;f++)dp[1][f] = f;
+        int ans = INT_MAX;
+        int start = 1 , end = f;
+        
+        while(start <= end){
             
-        for(int e=2;e<k+1;e++){
-            for(int f=1;f<n+1;f++){
-                int ans = INT_MAX ,val = 0;
-                
-                int start = 1 , end = f;
-                
-                while(start <= end){
-                     int mid = end - (end-start)/2;
-                     int up = dp[e][f-mid] , down = dp[e-1][mid-1];
-                    
-                     if(up > down){
-                         start = mid + 1;
-                     }
-                     else end = mid - 1;
-                    
-                     val = 1 + max(down , up);
-                     ans = min(val,ans);
-                }
-                dp[e][f] = ans;
+            int mid = start + (end - start)/2;
+            
+            int down = 1 + find(e-1,mid-1,dp);
+            int up = 1 + find(e,f-mid,dp);
+            
+            int val =  max(up,down);
+            
+            if(down < up){
+                start = mid+1;
             }
+            else end = mid-1;
+            
+            ans = min(val,ans);
         }
         
-     return dp[k][n];
+        return dp[e][f] = ans;
+        
+    }
+    
+    int superEggDrop(int k, int n) {
+        
+        vector<vector<int>> dp(k+1,vector<int>(n+1,-1));
+        
+       return find(k,n,dp) ;
+        
     }
 };
