@@ -1,27 +1,32 @@
-class Solution {
+class Solution { 
 public:
+    
+    void find(int i,vector<int> &arr,vector<int> &temp,vector<vector<int>> &ans){
+        
+        int n = arr.size();
+        
+        if(i == n){
+            ans.push_back(temp);
+            return ;
+        }
+        
+        find(i+1,arr,temp,ans);
+        
+        temp.push_back(arr[i]);
+        
+        find(i+1,arr,temp,ans);
+        
+        temp.pop_back();
+        
+    }
+    
     vector<vector<int>> subsets(vector<int>& arr) {
         
          vector<vector<int>> ans;
+         vector<int> temp;
         
-         int n = arr.size();
-    
-         for(int num=0;num<(1<<n);num++){
-             
-             vector<int> v;
-             int val = num;
-             
-             for(int i=0;i<n;i++){
-                 if(val & 1){
-                     v.push_back(arr[i]);
-                 }
-                 
-                 val = val >> 1;
-             }
-             
-             ans.push_back(v);
-         }
-    
+         find(0,arr,temp,ans);
+        
         return ans;
     }
 };
