@@ -1,34 +1,44 @@
 class Solution {
 public:
-    string removeOuterParentheses(string s) {
-        
-        string str;
-        int n = s.size();
-        int cnt = 0 , i = 0;
-        
-        while(i < n){
+    
+   string removeOuterParentheses(string s) {
+       
+        string a="";
+        int n=s.size();
+        if(n==0)return s;
+       
+        unordered_map<char,char>m;
+        m['(']=')';
+        int i=0;
+        stack<char> st;
+        string g="";
+       
+        while(i<n){
             
-            if(s[i] == '(')cnt++;
-            else cnt--;
+            st.push(s[i]);
+            i++;
+            int j=i;
+            string a="";
             
-            s[i] = ' ';
-            
-            for(int j=i+1;j<n;j++){
-                
-                if(s[j] == '(')cnt++;
-                else cnt--;
-                
-                if(cnt == 0){
-                    s[j] = ' ';
-                    i = j+1;
-                    break;
+            while(!st.empty() && j<n){
+                char c=s[j];
+                if(c=='('){
+                    st.push(c);
+                    a+=c;   
+                }
+                else{
+                    st.pop();
+                    a+=c;
                 }
                 
-                str += s[j];
+                    j++;
             }
+                        
+            a.pop_back();
+            i=j;
+            g+=a;
         }
-        
-       return str;       
-    }
-    
+       
+        return g;
+    }    
 };
