@@ -1,31 +1,35 @@
 class Solution {
 public:
-    
     Node* connect(Node* root) {
         
-        Node* cur = root;
+        queue<Node*> q;
+        if(root)q.push(root);
         
-        while(cur){
+        while(q.size()){
             
-           Node* temp = cur , *nex = NULL;
-               
-           while(cur != NULL && cur->left != NULL){
-              
-              if(nex != NULL){
-                  nex->next = cur->left;
-                  nex = nex->next;
-              }
-              else nex = cur->left;
-               
-              nex->next = cur->right;
-              nex = nex->next;
-              cur = cur->next;
-           }
-         
-           if(nex)nex->next = NULL;
-           cur = temp->left;
+            int size = q.size();
+            Node* pre = NULL;
+            
+            for(int g=0;g<size;g++){
+                
+                Node* cur = q.front();
+                q.pop();
+                
+                if(pre ==  NULL){
+                    pre = cur;
+                }
+                else{
+                    pre->next = cur;
+                    pre = pre->next;
+                }
+                
+                if(cur->left)q.push(cur->left);
+                if(cur->right)q.push(cur->right);
+            }
+            
+           pre->next = NULL;
         }
         
-        return root;
+       return root; 
     }
 };
