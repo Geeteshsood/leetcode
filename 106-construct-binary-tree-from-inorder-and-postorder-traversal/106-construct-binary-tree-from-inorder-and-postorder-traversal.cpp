@@ -1,36 +1,35 @@
 class Solution {
 public:
     
-        unordered_map<int,int> mp;
+    unordered_map<int,int> mp;
     
-    TreeNode* find(int instart,int inend,vector<int> &in,int poststart,int postend,vector<int> &post){
+TreeNode* find(int instart,int inend,vector<int> &in,int posstart,int posend,vector<int> &post){
         
-        if(instart > inend || poststart > postend)return NULL;
+        if(instart > inend || posstart > posend)return NULL;
         
-        TreeNode* root = new TreeNode(post[postend]);
+        int val = post[posend];
         
-        if(postend == poststart){
-            return root;
-        }
+        TreeNode* root = new TreeNode(val);
         
-        int loc = mp[root->val];
-        int ele = loc-instart;
+        int idx = mp[val];
+        int len = idx - instart-1;
         
-        root->left = find(instart,loc-1,in,poststart,poststart + ele-1,post);
-        root->right = find(loc+1,inend,in,poststart+ele,postend-1,post);
+        root->left = find(instart,idx-1,in,posstart,posstart + len,post);
+        root->right = find(idx+1,inend,in,posstart + len+1,posend-1,post);
         
         return root;
     }
     
     TreeNode* buildTree(vector<int>& in, vector<int>& post) {
         
-        int n = in.size();
+        int n = post.size();
         
         for(int i=0;i<n;i++){
             mp[in[i]] = i;
         }
         
-        return find(0,n-1,in,0,n-1,post);
+        TreeNode* root = find(0,n-1,in,0,n-1,post);
         
+        return root;
     }
 };
