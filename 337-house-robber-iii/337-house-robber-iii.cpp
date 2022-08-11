@@ -1,32 +1,24 @@
 class Solution {
 public:
+    typedef pair<int,int> pi;
     
-    unordered_map<TreeNode*,int> mp[2];
-    
-    int find(TreeNode* root,bool flag){
+    pi dfs(TreeNode* root){
         
-        if(root == NULL)return 0;
+        if(root == NULL)return {0,0};
         
-        if(mp[flag].find(root) != mp[flag].end())return mp[flag][root];
+        auto left = dfs(root->left);
+        auto right = dfs(root->right);
         
-        int left1 = find(root->left , !flag);
-        int right1 = find(root->right, !flag);
+        int rob = left.second + right.second + root->val;
         
-        int val1 = left1 + right1;
-        if(flag)val1 += root->val;
+        int notrob = max(left.first , left.second) + max(right.first , right.second);
         
-        int left2 = find(root->left , flag);
-        int right2 = find(root->right, flag);
-        
-        int val2 = left2 + right2;
-        
-        
-        return mp[flag][root] = max(val1,val2);
+        return {rob,notrob};
     }
-    
     int rob(TreeNode* root) {
         
-        return find(root,true);
+        auto it = dfs(root);
         
+        return max(it.first , it.second);
     }
 };
