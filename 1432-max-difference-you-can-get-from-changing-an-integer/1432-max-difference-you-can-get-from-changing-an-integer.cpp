@@ -5,9 +5,17 @@ public:
         string s = to_string(num);
         int n = s.size();
         
+        vector<int> vis(10);
+        for(int i=0;i<n;i++){
+            vis[s[i]-'0'] = true;
+        }
+        
         int ans = INT_MIN;
         
         for(int x=0;x<10;x++){
+            
+            if(!vis[x])continue;
+            
             for(int y=0;y<10;y++){
                 
                 string str = s;
@@ -26,6 +34,9 @@ public:
                 // if(x == 1 || x == 4)cout<<a<<endl;
                 
                 for(int u=0;u<10;u++){
+                    
+                  if(!vis[u])continue;
+                    
                   for(int v=0;v<10;v++){
                       
                       string res = s;
@@ -48,7 +59,7 @@ public:
                       if(a == 0 || b == 0)continue;
                       
                       if(val > ans){
-                          if(val == 899)cout<<a<<" "<<b<<endl;
+                          // if(val == 899)cout<<a<<" "<<b<<endl;
                           ans = val;
                       }
                   }
