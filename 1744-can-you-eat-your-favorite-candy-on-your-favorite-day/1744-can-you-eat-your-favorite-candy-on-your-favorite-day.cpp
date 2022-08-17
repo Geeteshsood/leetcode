@@ -24,7 +24,7 @@ public:
             if(type != 0)sum = pre[type-1];
 
             ll minday = (sum/lim);
-            ll maxday = pre[type]-1;
+            ll maxday = pre[type]-1; // we start from day 0;
             
             // cout<<minday<<" "<<maxday<<endl;
             ans[i] = day>=minday && day<=maxday;
