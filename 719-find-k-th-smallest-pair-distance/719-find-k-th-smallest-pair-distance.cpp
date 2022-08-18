@@ -25,11 +25,7 @@ public:
         
         int n = nums.size();
         sort(nums.begin(),nums.end());
-        // for(auto &it : nums){
-        //     cout<<it<<" ";
-        // }
-        // cout<<endl;
-        
+
         vector<int> prefix(nums[n-1]+1);
 
         int i = 0;
@@ -58,11 +54,7 @@ public:
             
            int mid = start + (end - start)/2;
             
-           int cnt = count(mid,nums,prefix);
-            
-            // cout<<mid<<" "<<cnt<<endl;
-            
-           if(cnt >= k){
+           if(count(mid,nums,prefix) >= k){
                ans = mid;
                end = mid-1;
            }
