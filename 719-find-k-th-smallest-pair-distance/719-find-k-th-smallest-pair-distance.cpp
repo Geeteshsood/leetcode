@@ -10,17 +10,14 @@ public:
              int low = nums[i] - mid;
             int high = nums[i] + mid;
             
-            int x = lower_bound(nums.begin(),nums.end(),low) - nums.begin();
             int y = upper_bound(nums.begin(),nums.end(),high) - nums.begin();
             
-            // cout<<nums[i]<<" , "<<low<<" , "<<high<<" -> "<<x<<" "<<y<<endl;
-            
-            cnt += (y-x-1);
+            cnt += (y-i-1);
             
         }
         
         
-      return cnt/2;  
+      return cnt;  
     }
     
     int smallestDistancePair(vector<int>& nums, int k) {
