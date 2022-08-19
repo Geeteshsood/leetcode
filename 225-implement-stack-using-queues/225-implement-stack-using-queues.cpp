@@ -10,26 +10,28 @@ public:
     void push(int x) {
         
         q.push(x);
-        int size = q.size() - 1;
         
-        for(int i=0;i<size;i++){
-            int ele = q.front();
+        int size = q.size();
+        
+        for(int i=0;i<size-1;i++){
+            int x = q.front();
             q.pop();
-            q.push(ele);
+            q.push(x);
         }
         
     }
     
     int pop() {
         
-       int ele = q.front();
-       q.pop();
+        int x = top();
         
-       return ele;
+        q.pop();
+        
+        return x;
     }
     
     int top() {
-       return  q.front();
+        return q.front();
     }
     
     bool empty() {
