@@ -15,20 +15,8 @@ public:
     
     int pop() {
         
-        int x = -1;
-        
-        if(output.size()){
-            x = output.top();
-        }
-        else{
-            while(input.size()){
-                output.push(input.top());
-                input.pop();
-            }
-            
-            x = output.top();
-        }
-        
+        int x = peek();
+
         output.pop();
         
         return x;
