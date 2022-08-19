@@ -1,7 +1,7 @@
 class MyQueue {
 public:
     
-    stack<int> inp,out;
+    stack<int> input,output;
     
     MyQueue() {
         
@@ -9,43 +9,55 @@ public:
     
     void push(int x) {
         
-        inp.push(x);
+        input.push(x);
         
     }
     
     int pop() {
         
-        if(out.empty()){
-            while(inp.size()){
-                out.push(inp.top());
-                inp.pop();
+        int x = -1;
+        
+        if(output.size()){
+            x = output.top();
+        }
+        else{
+            while(input.size()){
+                output.push(input.top());
+                input.pop();
             }
+            
+            x = output.top();
         }
         
-        int ele = out.top();
-        out.pop();
+        output.pop();
         
-        return ele;
+        return x;
     }
     
     int peek() {
         
-        if(out.empty()){
-            while(inp.size()){
-                out.push(inp.top());
-                inp.pop();
+        int x = -1;
+        
+        if(output.size()){
+            x = output.top();
+        }
+        else{
+            while(input.size()){
+                output.push(input.top());
+                input.pop();
             }
+            
+            x = output.top();
         }
         
-        int ele = out.top();
-        
-        return ele;
+        return x;
         
     }
     
     bool empty() {
         
-        return inp.empty() && out.empty();
+        return !(input.size() || output.size());
+        
     }
 };
 
