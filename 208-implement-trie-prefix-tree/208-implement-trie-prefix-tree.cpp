@@ -2,28 +2,9 @@ class Trie {
 public:
     
     class Node{
-        public:
-        
-        Node* links[26];
-        bool flag = false;
-        
-        bool contain(char ch){
-            
-            return (links[ch-'a'] != NULL);
-            
-        }
-        
-        void put(char ch , Node* temp){
-            
-            links[ch-'a'] = temp;
-            
-        }
-        
-        Node* next(char ch){
-            
-            return links[ch-'a'];
-        }
-
+        public : 
+        Node *links[26];
+        bool flag;
     };
     
     Node* root;
@@ -34,32 +15,40 @@ public:
     
     void insert(string word) {
         
+        int n = word.size();
+        
         Node* node = root;
         
-        for(int i=0;i<word.size();i++){
+        for(int i=0;i<n;i++){
             
-            if(!node->contain(word[i])){
-                node->put(word[i],new Node());
+            int ch = word[i]-'a';
+            
+            if(node->links[ch] == NULL){
+                Node* temp = new Node();
+                node->links[ch] = temp;
             }
             
-            node = node->next(word[i]);
+            node = node->links[ch];
         }
         
         node->flag = true;
-        
     }
     
     bool search(string word) {
         
+        int n = word.size();
+        
         Node* node = root;
         
-        for(int i=0;i<word.size();i++){
+        for(int i=0;i<n;i++){
             
-            if(!node->contain(word[i])){
+            int ch = word[i]-'a';
+            
+            if(node->links[ch] == NULL){
                 return false;
             }
             
-            node = node->next(word[i]);
+            node = node->links[ch];
         }
         
         return node->flag;
@@ -67,18 +56,23 @@ public:
     
     bool startsWith(string prefix) {
         
-         Node* node = root;
+        int n = prefix.size();
         
-        for(int i=0;i<prefix.size();i++){
+        Node* node = root;
+        
+        for(int i=0;i<n;i++){
             
-            if(!node->contain(prefix[i])){
+            int ch = prefix[i]-'a';
+            
+            if(node->links[ch] == NULL){
                 return false;
             }
             
-            node = node->next(prefix[i]);
+            node = node->links[ch];
         }
         
         return true;
+        
     }
 };
 
