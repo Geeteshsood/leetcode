@@ -5,7 +5,7 @@ public:
         
         vector<int> isPrime(n,true);
         
-        for(int num=2;num<=sqrt(n);num++){
+        for(int num=2;num*num < n;num++){
             
             if(isPrime[num]){
                 
