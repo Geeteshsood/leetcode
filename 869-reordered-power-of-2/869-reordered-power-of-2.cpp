@@ -1,52 +1,37 @@
 class Solution {
 public:
-    bool reorderedPowerOf2(int n) {
+    
+    void count(int n,vector<int> &arr){
         
-        string s = to_string(n);
-        
-        vector<int> nums1(10);
-        
-        for(auto &ch : s){
-            nums1[ch-'0']++;
+        while(n){
+            arr[n%10]++;
+            n = n/10;
         }
         
-        int sz = s.size();
+    }
+    
+    bool reorderedPowerOf2(int n) {
         
-        string str = s;
-        sort(str.begin(),str.end());
+        vector<int> arr(10);
+        count(n,arr);
         
-        int num = stoi(str);
-        
-        int dig = log2(num);
-        int val = pow(2,dig);
-        
-        while(true){
+        for(int bit=0;bit<31;bit++){
             
-           vector<int> nums(10);
-              
-           int x = val;
-           int cnt = 0;
+            vector<int> arr2(10);
             
-           while(x > 0){
-               nums[x%10]++;
-               x = x/10;
-               cnt++;
-           }
+            count(1<<bit,arr2);
             
-           bool flag = true;
+            bool flag = true;
             
-           for(int i=0;i<10;i++){
-               if(nums1[i] != nums[i]){
-                   flag = false;
-                   break;
-               }
-           }
+            for(int i=0;i<10;i++){
+                if(arr[i] != arr2[i]){
+                    flag = false;
+                    break;
+                }
+            }
             
-           if(flag)return true;
+            if(flag)return true;
             
-           if(cnt > sz)break;
-            
-           val = 2*val;
         }
         
         return false;
