@@ -28,14 +28,7 @@ public:
 
         ll val1 = it1->first;
 
-        it1++;
-         
-        ll val2 = INT_MAX;
-         
-        if(it1 != mp.end())val2 = it1->first;
-         
         if(abs(val1-(ll)nums[i]) <= (ll)t)return true;
-        if(abs(val2-(ll)nums[i]) <= (ll)t)return true;
          
      }
     
