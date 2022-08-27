@@ -2,23 +2,29 @@ class Solution {
 public:
     typedef long long ll;
     
-    bool containsNearbyAlmostDuplicate(vector<int>& nums, int k, int t) {
+    bool containsNearbyAlmostDuplicate(vector<int>& nums, int k, ll t) {
         
         int n = nums.size();
         
         map<ll,ll> mp;
      
         for(int i=1;i<=min(n-1,k);i++){
-            if(abs((ll)nums[0] - (ll)nums[i]) <= t)return true;
-            mp[(ll)nums[i]]++;
+            
+            ll num = nums[i];
+            
+            if(abs((ll)nums[0] - num) <= t)return true;
+            
+            mp[num]++;
         }
         
         int j = k+1;
         
      for(int i=1;i<n-1;i++,j++){
          
-        if(mp[(ll)nums[i]] == 1)mp.erase((ll)nums[i]);
-        else mp[(ll)nums[i]]--;
+        ll num = nums[i];
+         
+        if(mp[num] == 1)mp.erase(num);
+        else mp[num]--;
          
         if(j < n)mp[(ll)nums[j]]++;
     
@@ -28,11 +34,10 @@ public:
 
         ll val1 = it1->first;
 
-        if(abs(val1-(ll)nums[i]) <= (ll)t)return true;
+        if(abs(val1-num) <= t)return true;
          
      }
     
         return false;
-        
     }
 };
