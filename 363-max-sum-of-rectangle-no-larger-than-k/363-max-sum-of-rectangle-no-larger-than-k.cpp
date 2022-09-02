@@ -27,9 +27,9 @@ public:
         return ans;
     }
     
-    int maxSumSubmatrix(vector<vector<int>>& matrix, int k) {
+    int find1(vector<vector<int>>& matrix, int k){
         
-        int m = matrix.size() , n = matrix[0].size();
+         int m = matrix.size() , n = matrix[0].size();
 
         int ans = INT_MIN;
         
@@ -62,6 +62,55 @@ public:
             }
         }
         return ans;
+    }
+    
+    int find2(vector<vector<int>> &matrix,int k){
+        
+        int m = matrix.size() , n = matrix[0].size();
+
+        int ans = INT_MIN;
+        
+        for(int col=0;col<n;col++){
+          
+           vector<int> sums(m);
+            
+            for(int j=col;j<n;j++){
+                
+                int val = 0 , maxi = INT_MIN;
+                
+                for(int row=0;row<m;row++){
+                    
+                    sums[row] += matrix[row][j];
+                    
+                    val = max(val + sums[row],sums[row]);
+                    maxi = max(maxi,val);
+                    
+                }
+                
+                if(maxi <= k){
+                    ans = max(ans,maxi);
+                    continue;
+                }
+                
+                int x = maxSum(sums,k);
+                
+                ans = max(ans,x);
+               
+            }
+        }
+        return ans;
+        
+    }
+    
+    int maxSumSubmatrix(vector<vector<int>>& matrix, int k) {
+        
+        int m = matrix.size() , n = matrix[0].size();
+        
+        if(n > m){
+            return find1(matrix,k);
+        }
+        
+        return find2(matrix,k);
     }
     
 };
