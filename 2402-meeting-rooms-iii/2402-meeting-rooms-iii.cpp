@@ -11,28 +11,19 @@ public:
         
         sort(nums.begin(),nums.end());
         
-        priority_queue<vv,vector<vv>,greater<vv>> pq;
-        priority_queue<ll,vector<ll>,greater<ll>> av;
+        priority_queue<vv,vector<vv>,greater<vv>> pq; // endTime , room , startTime.
+        priority_queue<ll,vector<ll>,greater<ll>> av; // for avalaiblem rooms.
         
-        for(ll i=0;i<n;i++){
+        for(ll i=0;i<n;i++){ // all avalaible rooms.
             av.push(i);
         }
         
         for(ll i=0;i<m;i++){
-            
-            if(pq.empty()){
-                ll sm = (ll)nums[i][0] , em = (ll)nums[i][1];
-                ll rm = av.top();
-                av.pop();
-                pq.push({em,rm,sm});
-                meet[rm]++;
-                continue;
-            }
-            
+                   
             ll sm = (ll)nums[i][0] , em = (ll)nums[i][1];
             
-            while(pq.size() && sm >= pq.top()[0]){
-                
+            while(pq.size() && sm >= pq.top()[0]){    // free all the rooms in which meeting is over before 
+                                                      // new meeting .
                 ll start = pq.top()[2] , end = pq.top()[0] , rm = pq.top()[1];
                 
                 pq.pop();
@@ -40,7 +31,7 @@ public:
                 
             }
             
-            if(av.empty()){
+            if(av.empty()){     // if no room is available then wait.
                 
                 ll start = pq.top()[2] , end = pq.top()[0] , rm = pq.top()[1];
                 
@@ -49,7 +40,7 @@ public:
                 meet[rm]++;
                 
             }
-            else{
+            else{               // allot in minimum number room.
               ll rm = av.top();
               av.pop();
                 
@@ -61,7 +52,6 @@ public:
         ll mini = -1 , ans = -1;
         
         for(ll i=0;i<n;i++){
-            // cout<<meet[i]<<endl;
             if(meet[i] > mini){
                 mini = meet[i];
                 ans = i;
