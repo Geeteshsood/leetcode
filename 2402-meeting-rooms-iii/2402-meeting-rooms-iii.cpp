@@ -11,11 +11,11 @@ public:
         
         sort(nums.begin(),nums.end());
         
-        priority_queue<vv,vector<vv>,greater<vv>> pq; // endTime , room , startTime.
-        priority_queue<ll,vector<ll>,greater<ll>> av; // for avalaiblem rooms.
+        priority_queue<vv,vector<vv>,greater<vv>> pq; // endTime , room.
+        priority_queue<ll,vector<ll>,greater<ll>> avail; // for availalaiblem rooms.
         
-        for(ll i=0;i<n;i++){ // all avalaible rooms.
-            av.push(i);
+        for(ll i=0;i<n;i++){ // all availaible rooms.
+            avail.push(i);
         }
         
         for(ll i=0;i<m;i++){
@@ -24,28 +24,26 @@ public:
             
             while(pq.size() && sm >= pq.top()[0]){    // free all the rooms in which meeting is over before 
                                                       // new meeting .
-                ll start = pq.top()[2] , end = pq.top()[0] , rm = pq.top()[1];
+                ll rm = pq.top()[1];
                 
                 pq.pop();
-                av.push(rm);
-                
+                avail.push(rm);
             }
             
-            if(av.empty()){     // if no room is available then wait.
+            if(avail.empty()){     // if no room is availailable then wait.
                 
-                ll start = pq.top()[2] , end = pq.top()[0] , rm = pq.top()[1];
+                ll end = pq.top()[0] , rm = pq.top()[1];
                 
                 pq.pop();
-                pq.push({end + em-sm,rm,end});
+                pq.push({end + em-sm,rm});
                 meet[rm]++;
-                
             }
             else{               // allot in minimum number room.
-              ll rm = av.top();
-              av.pop();
+              ll rm = avail.top();
+              avail.pop();
                 
               meet[rm]++;
-              pq.push({em,rm,sm});
+              pq.push({em,rm});
             }
         }
         
